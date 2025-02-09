@@ -5,6 +5,8 @@ VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DuAnTotNghiep01", "DuAnTotNghiep01\DuAnTotNghiep01.csproj", "{584CA666-5292-4138-8439-4A744A007B90}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DATN_MVC", "DATN_MVC\DATN_MVC.csproj", "{27E593E4-602F-4F00-BBF4-C1D6B6D7D79A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{584CA666-5292-4138-8439-4A744A007B90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{584CA666-5292-4138-8439-4A744A007B90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{584CA666-5292-4138-8439-4A744A007B90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27E593E4-602F-4F00-BBF4-C1D6B6D7D79A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27E593E4-602F-4F00-BBF4-C1D6B6D7D79A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27E593E4-602F-4F00-BBF4-C1D6B6D7D79A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27E593E4-602F-4F00-BBF4-C1D6B6D7D79A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
