@@ -2,7 +2,7 @@
 
 namespace DATN_MVC.Controllers
 {
-    public class DangNhapController : Controller
+    public class TrangChuController : Controller
     {
         public IActionResult Index()
         {
