@@ -55,7 +55,7 @@ namespace DATN_API.Controllers
             }
             else
             {
-                // Trả về lỗi nếu email không tồn tại
+               
                 return BadRequest(new { Message = "Email không tồn tại trong hệ thống." });
             }
         }

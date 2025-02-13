@@ -17,12 +17,12 @@ namespace DATN_MVC.Controllers
         }
         //đăng nhập
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult DangNhap()
         {
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Index1(DangNhapND loginguser)
+        public async Task<IActionResult> DangNhap(DangNhapND loginguser)
         {
             var response = await _httpClient.PostAsJsonAsync("DangNhaps/DangNhap", loginguser);
             var result = await response.Content.ReadFromJsonAsync<JsonElement>();
