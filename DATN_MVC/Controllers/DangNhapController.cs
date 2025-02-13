@@ -15,9 +15,6 @@ namespace DATN_MVC.Controllers
             _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri("https://localhost:7189/");
         }
-
-
-
         //đăng nhập
         [HttpGet]
         public IActionResult Index()
