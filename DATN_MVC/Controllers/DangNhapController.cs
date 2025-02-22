@@ -79,23 +79,17 @@ namespace DATN_MVC.Controllers
 
 
 
-        // đăng ký 
-        [HttpGet("DangKy")]
-        public IActionResult DangKy()
+     
+        [HttpPost]
+        public async Task<IActionResult> DangKy(DangNhapND nguoiDung)
         {
-            return View();
-        }
-
-        [HttpPost("DangKy")]
-        public async Task<IActionResult> DangKy(NguoiDung nguoiDung)
-        {
-            if (!Regex.IsMatch(nguoiDung.SoDienThoai.ToString(), @"^0\d{9}$"))
+            if (nguoiDung.NguoiDungss.SoDienThoai.Length < 10 ||!nguoiDung.NguoiDungss.SoDienThoai.All(char.IsDigit))
             {
                 ViewBag.ErrorField = "Sdt";
-                ViewBag.ErrorMessage = "Số điện thoại phải bắt đầu bằng 0 và có đúng 10 chữ số.";
+                ViewBag.ErrorMessage = "Số điện thoại phải có đúng 10 chữ số và chỉ chứa số.";
                 return View();
             }
-            if (!Regex.IsMatch(nguoiDung.Email.ToString(), "^[a-zA-Z0-9._%+-]+@gmail\\.com$"))
+            if (!Regex.IsMatch(nguoiDung.NguoiDungss.Email.ToString(), "^[a-zA-Z0-9._%+-]+@gmail\\.com$"))
             {
                 ViewBag.ErrorField = "Email";
                 ViewBag.ErrorMessage = "không đúng đinh dạng email!";
@@ -139,7 +133,7 @@ namespace DATN_MVC.Controllers
                     ViewBag.ErrorMessage = "Đăng ký thất bại. Vui lòng thử lại1.";
                 }
 
-                return View();
+                return RedirectToAction("DangNhap");
             }
         }
 

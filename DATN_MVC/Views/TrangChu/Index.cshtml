@@ -272,8 +272,8 @@
                                         <svg class="user">
                                             <use xlink:href="#user"></use>
                                         </svg>
-                                    </a>
-                                    <!-- Dangnhap -->
+                                    </a>    
+                                    <!------- Dangnhap------------>
                                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -324,25 +324,43 @@
                                                                     }
                                                                 </form>
                                                             </div>
+                                                           @*  dang ky *@
                                                             <div class="tab-pane fade" id="nav-register" role="tabpanel" aria-labelledby="nav-register-tab">
-                                                                <form asp-action="DangKy" asp-controller="DangNhap"method="post">
+                                                                <form asp-action="DangKy" asp-controller="DangNhap" method="post">
                                                                     <div class="form-group py-3">
-                                                                        <label asp-for ="Email" class="mb-2" for="register">Email *</label>
+                                                                        <label asp-for ="NguoiDungss.Email" class="mb-2" for="register">Email *</label>
                                                                         <input asp-for="NguoiDungss.Email"  type="email" minlength="2"  placeholder="Email" class="form-control w-100 rounded-3 p-3" required>
                                                                     </div>
                                                                     <div class="form-group py-3">
                                                                         <label asp-for="NguoiDungss.TenNguoiDung" class="mb-2" for="register">Tên người dùng *</label>
-                                                                        <input asp-for="NguoiDungss.TenNguoiDung" type="email" minlength="2"  placeholder="Tên người dùng" class="form-control w-100 rounded-3 p-3" required>
+                                                                        <input asp-for="NguoiDungss.TenNguoiDung"  minlength="2"  placeholder="Tên người dùng" class="form-control w-100 rounded-3 p-3" required>
                                                                     </div>
                                                                     <div class="form-group pb-3">
                                                                         <label asp-for="NguoiDungss.MatKhau" class="mb-2" for="sign-in">Mật khẩu *</label>
                                                                         <input asp-for="NguoiDungss.MatKhau" type="password" minlength="2"  placeholder="Mật khẩu" class="form-control w-100 rounded-3 p-3" required>
                                                                     </div>
+                                                                    <div class="form-group pb-3">
+                                                                        <label asp-for="NguoiDungss.DiaChi" class="mb-2" for="sign-in">DiaChi</label>
+
+                                                                        <input asp-for="NguoiDungss.DiaChi"  minlength="2" placeholder="DiaChi" class="form-control w-100 rounded-3 p-3" required>
+                                                                    </div>
+                                                                    <div class="form-group pb-3">
+                                                                        <label asp-for="NguoiDungss.SoDienThoai" class="mb-2" for="sign-in">số điện thoại</label>
+                                                                        <input asp-for="NguoiDungss.SoDienThoai" minlength="10" maxlength="10" placeholder="số điện thoại" class="form-control w-100 rounded-3 p-3" required>
+
+                                                                       
+                                                                    </div>
+                                                                    <div class="form-group pb-3">
+                                                                        <label asp-for="NguoiDungss.SoDienThoai" class="mb-2" for="sign-in">số điện thoại</label>
+                                                                        <input asp-for="NguoiDungss.SoDienThoai"  minlength="2" placeholder="số điện thoại" class="form-control w-100 rounded-3 p-3" required>
+
+                                                                    </div>
+                                                                    
                                                                     <div class="py-3">
                                                                         <input type="checkbox" required class="me-2">
                                                                         <span class="label-body">Tôi đồng ý với <a href="#" class="fw-bold text-decoration-none">Bảo mật</a></span>
                                                                     </div>
-                                                                    <button type="submit" name="submit" class="btn btn-dark w-100 my-3">Đăng Ký</button>
+                                                                    <button type="submit"  class="btn btn-dark w-100 my-3">Đăng Ký</button>
                                                                 </form>
                                                             </div>
                                                         </div>
