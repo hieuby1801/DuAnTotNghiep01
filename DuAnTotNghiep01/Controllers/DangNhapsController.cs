@@ -94,8 +94,8 @@ namespace DATN_API.Controllers
                         {
                             dangky.Email,
                             dangky.TenNguoiDung,
-                            
-                          /*  dangky.NgaySinh,*/
+                         
+                            dangky.NgaySinh,
                             dangky.SoDienThoai,
                             dangky.VaiTro
                         }

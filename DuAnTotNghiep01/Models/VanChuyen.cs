@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DATN_API.Models;
 
 public partial class VanChuyen
 {
+    [Key]
     public int MaVanChuyen { get; set; }
 
     public int? MaDonHang { get; set; }

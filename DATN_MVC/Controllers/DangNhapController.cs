@@ -13,7 +13,7 @@ namespace DATN_MVC.Controllers
         public DangNhapController(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("https://localhost:7189/");
+            _httpClient.BaseAddress = new Uri("https://localhost:7189/api/");
         }
         //đăng nhập
         [HttpGet]
@@ -93,11 +93,12 @@ namespace DATN_MVC.Controllers
                 ViewBag.ErrorMessage = "không đúng đinh dạng email!";
                 return View();
             }
-            var response = await _httpClient.PostAsJsonAsync("DangNhaps/DangKy", nguoiDung);
+           
+            var response = await _httpClient.PostAsJsonAsync("DangNhaps/DangKy", nguoiDung.NguoiDungss);
 
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("TrangChu", "index"); 
+                return RedirectToAction("index","TrangChu"); 
             }
 
             else

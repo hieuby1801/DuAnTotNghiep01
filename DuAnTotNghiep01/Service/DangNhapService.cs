@@ -28,13 +28,18 @@ namespace DATN_API.Service
             return saft;
         }
         // đăng nhập
-        public string? XacNhanEmail(string email)
+        public string XacNhanEmail(string email)
         {
-            return _Context.NguoiDungs.FirstOrDefault(x => x.Email == email)?.Email;
+            var check =  _Context.NguoiDung.FirstOrDefault(x => x.Email == email)?.Email;
+            if (check != null)
+            {
+                return check;
+            }
+            return null;
         }
         public NguoiDung XacNhanMatKhau(string Pass)
         {
-            var check = _Context.NguoiDungs.FirstOrDefault(x => x.MatKhau == Pass);
+            var check = _Context.NguoiDung.FirstOrDefault(x => x.MatKhau == Pass);
             if (check != null)
             {
                 return check;
@@ -67,7 +72,7 @@ namespace DATN_API.Service
         public IActionResult DangNhap(DangNhapND dangNhap)
         {
 
-            var user = _Context.NguoiDungs.FirstOrDefault(x => x.Email == dangNhap.Email && x.MatKhau == dangNhap.MatKhau);
+            var user = _Context.NguoiDung.FirstOrDefault(x => x.Email == dangNhap.Email && x.MatKhau == dangNhap.MatKhau);
             if (user != null)
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
@@ -99,13 +104,13 @@ namespace DATN_API.Service
 
         public string LaySaft(string email)
         {
-            return _Context.NguoiDungs.FirstOrDefault(x => x.Email == email)?.Saft;
+            return _Context.NguoiDung.FirstOrDefault(x => x.Email == email)?.Saft;
         }
 
         // đăng ký
         public string XacNhanSdt(string sdt)
         {
-            var chacek = _Context.NguoiDungs.FirstOrDefault(x => x.SoDienThoai == sdt);
+            var chacek = _Context.NguoiDung.FirstOrDefault(x => x.SoDienThoai == sdt);
             if (chacek != null)
             {
                 return chacek.SoDienThoai;
@@ -118,17 +123,17 @@ namespace DATN_API.Service
             {
                 Email = nguoiDung.Email,
                 TenNguoiDung = nguoiDung.TenNguoiDung,
-                
-                //NgaySinh = nguoiDung.NgaySinh,
+
+                NgaySinh = nguoiDung.NgaySinh,
                 SoDienThoai = nguoiDung.SoDienThoai,
                 Saft = nguoiDung.Saft,
                 MatKhau = HashPassword(nguoiDung.Saft, nguoiDung.MatKhau),
                 VaiTro = "User",
-               
+                TrangThai = "ON",
                 DiaChi = nguoiDung.DiaChi,
 
             };
-            _Context.NguoiDungs.Add(tao);
+            _Context.NguoiDung.Add(tao);
             _Context.SaveChanges();
             return tao;
         }
@@ -185,7 +190,7 @@ namespace DATN_API.Service
         }
         public NguoiDung ThayDoiMatKhau(string email, string matkhau)
         {
-            var user = _Context.NguoiDungs.FirstOrDefault(x => x.Email == email);
+            var user = _Context.NguoiDung.FirstOrDefault(x => x.Email == email);
             if (user != null)
             {
 
@@ -196,7 +201,7 @@ namespace DATN_API.Service
                     return null;
                 }
                 user.MatKhau = HashPassword(user.Saft, matkhau);
-                _Context.NguoiDungs.Update(user);
+                _Context.NguoiDung.Update(user);
                 _Context.SaveChanges();
                 return user;
             }
@@ -205,7 +210,7 @@ namespace DATN_API.Service
         // chinh sua thong tin
         public NguoiDung LayTheoId(int id)
         {
-            var user = _Context.NguoiDungs.FirstOrDefault(x => x.MaNguoiDung == id);
+            var user = _Context.NguoiDung.FirstOrDefault(x => x.MaNguoiDung == id);
             if (user != null)
             {
                 return user;
@@ -214,7 +219,7 @@ namespace DATN_API.Service
         }
         public NguoiDung ChinhSua(int id, NguoiDung nguoiDung)
         {
-            var user = _Context.NguoiDungs.FirstOrDefault(x => x.MaNguoiDung == id);
+            var user = _Context.NguoiDung.FirstOrDefault(x => x.MaNguoiDung == id);
             if (user != null)
             {
                 var newuse = new NguoiDung
@@ -228,7 +233,7 @@ namespace DATN_API.Service
                     Saft = user.Saft,
                     MatKhau = HashPassword(user.Saft, user.MatKhau),
                 };
-                _Context.NguoiDungs.Update(newuse);
+                _Context.NguoiDung.Update(newuse);
                 _Context.SaveChanges();
                 return newuse;
             }

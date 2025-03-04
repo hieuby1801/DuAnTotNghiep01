@@ -18,10 +18,10 @@
 
         public string? VaiTro { get; set; }
 
-        public string TrangThai { get; set; } = null!;
+        public string? TrangThai { get; set; } = null!;
 
-        public virtual ICollection<DanhGium> DanhGia { get; set; } = new List<DanhGium>();
+        public virtual ICollection<DanhGium>? DanhGia { get; set; } = new List<DanhGium>();
 
-        public virtual ICollection<DonHang> DonHangs { get; set; } = new List<DonHang>();
+        public virtual ICollection<DonHang>? DonHangs { get; set; } = new List<DonHang>();
     }
 }

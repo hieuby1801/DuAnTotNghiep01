@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DATN_API.Models;
 
 public partial class Sach
 {
+    [Key]
     public int MaSach { get; set; }
 
     public string? TenSach { get; set; }
@@ -23,11 +25,11 @@ public partial class Sach
 
     public int? SoLuongNhap { get; set; }
 
-    public virtual ICollection<ChiTietDonHang> ChiTietDonHangs { get; set; } = new List<ChiTietDonHang>();
+    public virtual ICollection<ChiTietDonHang>? ChiTietDonHangs { get; set; } = new List<ChiTietDonHang>();
 
-    public virtual ICollection<DanhGium> DanhGia { get; set; } = new List<DanhGium>();
+    public virtual ICollection<DanhGia> DanhGia { get; set; } = new List<DanhGia>();
 
     public virtual NhaCungCap? MaNhaCungCapNavigation { get; set; }
 
-    public virtual ICollection<TheLoai> MaTheLoais { get; set; } = new List<TheLoai>();
+    public virtual ICollection<TheLoai>? MaTheLoais { get; set; } = new List<TheLoai>();
 }

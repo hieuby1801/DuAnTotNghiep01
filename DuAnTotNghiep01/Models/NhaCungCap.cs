@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DATN_API.Models;
 
 public partial class NhaCungCap
 {
+    [Key]
     public int MaNhaCungCap { get; set; }
 
     public string? TenNhaCungCap { get; set; }
@@ -17,5 +19,5 @@ public partial class NhaCungCap
 
     public string TrangThai { get; set; } = null!;
 
-    public virtual ICollection<Sach> Saches { get; set; } = new List<Sach>();
+    public virtual ICollection<Sach>? Saches { get; set; } = new List<Sach>();
 }

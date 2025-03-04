@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DATN_API.Models;
 
 public partial class NguoiDung
 {
+    [Key]
     public int MaNguoiDung { get; set; }
 
     public string? TenNguoiDung { get; set; }
@@ -21,9 +23,9 @@ public partial class NguoiDung
 
     public string? VaiTro { get; set; }
 
-    public string TrangThai { get; set; } = null!;
+    public string? TrangThai { get; set; } = null!;
 
-    public virtual ICollection<DanhGium> DanhGia { get; set; } = new List<DanhGium>();
+    public virtual ICollection<DanhGia>? DanhGia { get; set; }
+    public virtual ICollection<DonHang>? DonHangs { get; set; }
 
-    public virtual ICollection<DonHang> DonHangs { get; set; } = new List<DonHang>();
 }
