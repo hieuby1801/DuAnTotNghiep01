@@ -119,7 +119,7 @@ namespace DATN_API.Service
                 Email = nguoiDung.Email,
                 TenNguoiDung = nguoiDung.TenNguoiDung,
                 
-                NgaySinh = nguoiDung.NgaySinh,
+                //NgaySinh = nguoiDung.NgaySinh,
                 SoDienThoai = nguoiDung.SoDienThoai,
                 Saft = nguoiDung.Saft,
                 MatKhau = HashPassword(nguoiDung.Saft, nguoiDung.MatKhau),

@@ -77,8 +77,6 @@ namespace DATN_MVC.Controllers
             return View();
         }
 
-
-
      
         [HttpPost]
         public async Task<IActionResult> DangKy(DangNhapND nguoiDung)
@@ -99,8 +97,9 @@ namespace DATN_MVC.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("DangNhap");
+                return RedirectToAction("TrangChu", "index"); 
             }
+
             else
             {
                 var responseContent = await response.Content.ReadAsStringAsync();
