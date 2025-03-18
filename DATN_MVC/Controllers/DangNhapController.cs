@@ -64,18 +64,18 @@ namespace DATN_MVC.Controllers
                         // Chuyển hướng dựa trên vai trò
                         return vaitro switch
                         {
-                            "User" => RedirectToAction("Trangchu", "NguoiDung"),//mấy azai tự phân quyền ở đây nha
+                            "User" => RedirectToAction("index", "TrangChu") ,//mấy azai tự phân quyền ở đây nha
                             "Admin" => RedirectToAction("Admin", "NguoiDung"),
                             _ => RedirectToAction("DefaultPage")
                         };
                     }
-                    ViewBag.ErrorMessage = errorMessage.ToString();
-                    return View();
+                    TempData["ErrorMessage"] = errorMessage.ToString();
+                    RedirectToAction("index", "TrangChu");
 
                 }
             }
-            ViewBag.ErrorMessage = errorMessage.ToString();
-            return View();
+            TempData["ErrorMessage"] = errorMessage.ToString();
+          return RedirectToAction("index", "TrangChu");
         }
 
      
@@ -146,10 +146,8 @@ namespace DATN_MVC.Controllers
             {
                 var reponconten = await repon.Content.ReadAsStringAsync();
                 var error = JsonConvert.DeserializeObject<dynamic>(reponconten);
-
                 string errorField = error?.field?.ToString();
                 string errorMessage = error?.message?.ToString();
-
                 TempData["ErrorField"] = errorField;
                 TempData["ErrorMessage"] = errorMessage;
                 return RedirectToAction("QuenMatKhau", "TrangChu");
