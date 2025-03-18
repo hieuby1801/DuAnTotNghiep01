@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DATN_API.Models;
 
 public partial class ChiTietDonHang
 {
+    [Key]
+    public int ChiTietDonHangID { get; set; }
     public int MaDonHang { get; set; }
 
     public int MaSach { get; set; }
