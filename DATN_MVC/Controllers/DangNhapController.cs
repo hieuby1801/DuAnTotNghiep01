@@ -1,5 +1,6 @@
 ﻿using DATN_MVC.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text.Json;
@@ -63,36 +64,24 @@ namespace DATN_MVC.Controllers
                         // Chuyển hướng dựa trên vai trò
                         return vaitro switch
                         {
-                            "User" => RedirectToAction("Trangchu", "NguoiDung"),//mấy azai tự phân quyền ở đây nha
+                            "User" => RedirectToAction("index", "TrangChu"),//mấy azai tự phân quyền ở đây nha
                             "Admin" => RedirectToAction("Admin", "NguoiDung"),
                             _ => RedirectToAction("DefaultPage")
                         };
                     }
-                    ViewBag.ErrorMessage = errorMessage.ToString();
-                    return View();
+                    TempData["ErrorMessage"] = errorMessage.ToString();
+                    RedirectToAction("index", "TrangChu");
 
                 }
             }
-            ViewBag.ErrorMessage = errorMessage.ToString();
-            return View();
+            TempData["ErrorMessage"] = errorMessage.ToString();
+          return RedirectToAction("index", "TrangChu");
         }
 
      
         [HttpPost]
         public async Task<IActionResult> DangKy(DangNhapND nguoiDung)
         {
-            if (nguoiDung.NguoiDungss.SoDienThoai.Length < 10 ||!nguoiDung.NguoiDungss.SoDienThoai.All(char.IsDigit))
-            {
-                ViewBag.ErrorField = "Sdt";
-                ViewBag.ErrorMessage = "Số điện thoại phải có đúng 10 chữ số và chỉ chứa số.";
-                return View();
-            }
-            if (!Regex.IsMatch(nguoiDung.NguoiDungss.Email.ToString(), "^[a-zA-Z0-9._%+-]+@gmail\\.com$"))
-            {
-                ViewBag.ErrorField = "Email";
-                ViewBag.ErrorMessage = "không đúng đinh dạng email!";
-                return View();
-            }
            
             var response = await _httpClient.PostAsJsonAsync("DangNhaps/DangKy", nguoiDung.NguoiDungss);
 
@@ -114,37 +103,31 @@ namespace DATN_MVC.Controllers
                     if (errorField == "Email")
                     {
                         ViewBag.ErrorField = "Email";
-                        ViewBag.ErrorMessage = errorMessage;
-                        return View();
+                        TempData["ErrorMessage1"] = errorMessage;
                     }
                     else if (errorField == "Sdt")
                     {
                         ViewBag.ErrorField = "Sdt";
-                        ViewBag.ErrorMessage = errorMessage;
-                        return View();
+                        TempData["ErrorMessage1"] = errorMessage;           
                     }
                     else
                     {
-                        ViewBag.ErrorMessage = "Đăng ký thất bại. Vui lòng thử lại.1";// 
+                        TempData["ErrorMessage1"] = "Đăng ký thất bại. Vui lòng thử lại.1";// 
                     }
                 }
                 else
                 {
-                    ViewBag.ErrorMessage = "Đăng ký thất bại. Vui lòng thử lại1.";
+                    TempData["ErrorMessage1"] = "Đăng ký thất bại. Vui lòng thử lại1.";
                 }
 
-                return RedirectToAction("DangNhap");
+                return RedirectToAction("index", "TrangChu");
             }
         }
 
 
         // đổi mật khẩu
-        [HttpGet("layOtp")]
-        public IActionResult layOtp()
-        {
-            return View();
-        }
-        [HttpPost("layOtp")]
+      
+        [HttpPost]
         public async Task<IActionResult> layOtp(string Email)
         {
             var repon = await _httpClient.PostAsJsonAsync("DangNhaps/layotp", Email);
@@ -154,48 +137,57 @@ namespace DATN_MVC.Controllers
                 TempData["SuccessMessage"] = "Email đặt lại mật khẩu đã được gửi thành công.";
                 HttpContext.Session.SetString("Email1", Email);
                 TempData["email"] = Email;
-                return RedirectToAction("DMK");
+                HttpContext.Session.SetString("OtpSent", "true"); // Đánh dấu đã gửi OTP
+                return RedirectToAction("QuenMatKhau", "TrangChu");
             }
             else
             {
                 var reponconten = await repon.Content.ReadAsStringAsync();
                 var error = JsonConvert.DeserializeObject<dynamic>(reponconten);
-
                 string errorField = error?.field?.ToString();
                 string errorMessage = error?.message?.ToString();
-
-                ViewBag.ErrorField = errorField;
-                ViewBag.ErrorMessage = errorMessage;
-                return View();
+                TempData["ErrorField"] = errorField;
+                TempData["ErrorMessage"] = errorMessage;
+                return RedirectToAction("QuenMatKhau", "TrangChu");
             }
         }
-        [HttpGet("DMK")]
-        public IActionResult DMK()
-        {
-            return View();
-        }
-        [HttpPost("DMK")]
+        [HttpPost]
         public async Task<IActionResult> DMK(string Otp, DangNhapND dangNhap)
         {
+            // Lấy email từ Session để tránh mất giá trị
             dangNhap.Email = HttpContext.Session.GetString("Email1");
-            var email = TempData["email"];
-            var checkotp = await _httpClient.PutAsJsonAsync($"DangNhaps/doimatkhau/{Otp}", dangNhap);
-            if (checkotp.IsSuccessStatusCode)
-            {
 
+            // Gửi OTP đến API để kiểm tra
+            var response = await _httpClient.PutAsJsonAsync($"DangNhaps/doimatkhau/{Otp}", dangNhap);
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["SuccessMessage"] = "Đổi mật khẩu thành công. Vui lòng đăng nhập lại!";
                 return RedirectToAction("DangNhap");
             }
             else
             {
-                // Xử lý trường hợp thất bại, có thể trả về thông báo lỗi
-                var result = await checkotp.Content.ReadFromJsonAsync<JsonElement>();
-                var json = result.ToString();
-                var error = JsonConvert.DeserializeObject<dynamic>(json);
-                string errorMessage = error.message?.ToString();
-                ViewBag.ErrorMessage = errorMessage.ToString();
-                return View();
+                // Lấy lỗi từ API
+                var result = await response.Content.ReadFromJsonAsync<JsonElement>();
+                string errorMessage = "Mã OTP không chính xác. Vui lòng thử lại.";
+
+                if (result.TryGetProperty("message", out JsonElement messageElement))
+                {
+                    errorMessage = messageElement.GetString() ?? errorMessage;
+                }
+
+                // Giữ lại email & SuccessMessage để không bị mất khi redirect
+                TempData["ErrorMessage"] = errorMessage;
+                TempData["email"] = dangNhap.Email;
+                TempData["SuccessMessage"] = "Email đặt lại mật khẩu đã được gửi thành công."; // Giữ thông báo để ẩn form email
+                TempData.Keep("ErrorMessage");
+                TempData.Keep("email");
+                TempData.Keep("SuccessMessage");
+
+                return RedirectToAction("QuenMatKhau", "TrangChu");
             }
         }
+
     }
 }
 
