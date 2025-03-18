@@ -64,7 +64,7 @@ namespace DATN_MVC.Controllers
                         // Chuyển hướng dựa trên vai trò
                         return vaitro switch
                         {
-                            "User" => RedirectToAction("index", "TrangChu") ,//mấy azai tự phân quyền ở đây nha
+                            "User" => RedirectToAction("index", "TrangChu"),//mấy azai tự phân quyền ở đây nha
                             "Admin" => RedirectToAction("Admin", "NguoiDung"),
                             _ => RedirectToAction("DefaultPage")
                         };
@@ -103,26 +103,24 @@ namespace DATN_MVC.Controllers
                     if (errorField == "Email")
                     {
                         ViewBag.ErrorField = "Email";
-                        ViewBag.ErrorMessage = errorMessage;
-                        return View();
+                        TempData["ErrorMessage1"] = errorMessage;
                     }
                     else if (errorField == "Sdt")
                     {
                         ViewBag.ErrorField = "Sdt";
-                        ViewBag.ErrorMessage = errorMessage;
-                        return View();
+                        TempData["ErrorMessage1"] = errorMessage;           
                     }
                     else
                     {
-                        ViewBag.ErrorMessage = "Đăng ký thất bại. Vui lòng thử lại.1";// 
+                        TempData["ErrorMessage1"] = "Đăng ký thất bại. Vui lòng thử lại.1";// 
                     }
                 }
                 else
                 {
-                    ViewBag.ErrorMessage = "Đăng ký thất bại. Vui lòng thử lại1.";
+                    TempData["ErrorMessage1"] = "Đăng ký thất bại. Vui lòng thử lại1.";
                 }
 
-                return RedirectToAction("DangNhap");
+                return RedirectToAction("index", "TrangChu");
             }
         }
 

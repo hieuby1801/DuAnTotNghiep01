@@ -363,12 +363,12 @@
                                                                         <span class="label-body">Tôi đồng ý với <a href="#" class="fw-bold text-decoration-none">Bảo mật</a></span>
                                                                     </div>
                                                                     <button type="submit"  class="btn btn-dark w-100 my-3">Đăng Ký</button>
-                                                                    @if (ViewBag.ErrorMessage != null)
+                                                                    @if (TempData["ErrorMessage1"] != null)
                                                                     {
                                                                         <div class="text-danger">
-                                                                            @ViewBag.ErrorMessage
+                                                                            @TempData["ErrorMessage1"]
                                                                         </div>
-                                                                    }
+                                                                    })
                                                                 </form>
                                                             </div>
                                                         </div>
