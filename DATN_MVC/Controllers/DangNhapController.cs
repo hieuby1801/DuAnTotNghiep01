@@ -1,5 +1,6 @@
 ﻿using DATN_MVC.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text.Json;
@@ -127,22 +128,19 @@ namespace DATN_MVC.Controllers
 
 
         // đổi mật khẩu
-        [HttpGet("layOtp")]
-        public IActionResult layOtp()
-        {
-            return View();
-        }
-        [HttpPost("layOtp")]
+      
+        [HttpPost]
         public async Task<IActionResult> layOtp(string Email)
         {
-            var repon = await _httpClient.PostAsJsonAsync("DangNhaps/LayOTP", Email);
+            var repon = await _httpClient.PostAsJsonAsync("DangNhaps/layotp", Email);
 
             if (repon.IsSuccessStatusCode)
             {
                 TempData["SuccessMessage"] = "Email đặt lại mật khẩu đã được gửi thành công.";
                 HttpContext.Session.SetString("Email1", Email);
                 TempData["email"] = Email;
-                return RedirectToAction("index", "TrangChu");
+                HttpContext.Session.SetString("OtpSent", "true"); // Đánh dấu đã gửi OTP
+                return RedirectToAction("QuenMatKhau", "TrangChu");
             }
             else
             {
@@ -152,39 +150,48 @@ namespace DATN_MVC.Controllers
                 string errorField = error?.field?.ToString();
                 string errorMessage = error?.message?.ToString();
 
-                ViewBag.ErrorField = errorField;
-                ViewBag.ErrorMessage = errorMessage;
-                return View();
+                TempData["ErrorField"] = errorField;
+                TempData["ErrorMessage"] = errorMessage;
+                return RedirectToAction("QuenMatKhau", "TrangChu");
             }
         }
-        [HttpGet("DMK")]
-        public IActionResult DMK()
-        {
-            return View();
-        }
-        [HttpPost("DMK")]
+        [HttpPost]
         public async Task<IActionResult> DMK(string Otp, DangNhapND dangNhap)
         {
+            // Lấy email từ Session để tránh mất giá trị
             dangNhap.Email = HttpContext.Session.GetString("Email1");
-            var email = TempData["email"];
-            var checkotp = await _httpClient.PutAsJsonAsync($"DangNhaps/doimatkhau/{Otp}", dangNhap);
-            if (checkotp.IsSuccessStatusCode)
-            {
 
+            // Gửi OTP đến API để kiểm tra
+            var response = await _httpClient.PutAsJsonAsync($"DangNhaps/doimatkhau/{Otp}", dangNhap);
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["SuccessMessage"] = "Đổi mật khẩu thành công. Vui lòng đăng nhập lại!";
                 return RedirectToAction("DangNhap");
             }
             else
             {
-                // Xử lý trường hợp thất bại, có thể trả về thông báo lỗi
-                var result = await checkotp.Content.ReadFromJsonAsync<JsonElement>();
-                var json = result.ToString();
-                var error = JsonConvert.DeserializeObject<dynamic>(json);
-                string errorMessage = error.message?.ToString();
-                ViewBag.ErrorMessage = errorMessage.ToString();
-                ViewBag.Otp = Otp;
-                return View();
+                // Lấy lỗi từ API
+                var result = await response.Content.ReadFromJsonAsync<JsonElement>();
+                string errorMessage = "Mã OTP không chính xác. Vui lòng thử lại.";
+
+                if (result.TryGetProperty("message", out JsonElement messageElement))
+                {
+                    errorMessage = messageElement.GetString() ?? errorMessage;
+                }
+
+                // Giữ lại email & SuccessMessage để không bị mất khi redirect
+                TempData["ErrorMessage"] = errorMessage;
+                TempData["email"] = dangNhap.Email;
+                TempData["SuccessMessage"] = "Email đặt lại mật khẩu đã được gửi thành công."; // Giữ thông báo để ẩn form email
+                TempData.Keep("ErrorMessage");
+                TempData.Keep("email");
+                TempData.Keep("SuccessMessage");
+
+                return RedirectToAction("QuenMatKhau", "TrangChu");
             }
         }
+
     }
 }
 

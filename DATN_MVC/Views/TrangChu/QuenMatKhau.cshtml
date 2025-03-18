@@ -50,33 +50,53 @@
 
     <div class="container">
         <h2>Quên Mật Khẩu</h2>
-        <form asp-action="layOtp" asp-controller="DangNhap" method="post">
-            <div class="form-group py-3">
-            <label asp-for="NguoiDungss.Email" class="mb-2" for="register">Email *</label>
-            <input asp-for="NguoiDungss.Email" type="email" minlength="2" placeholder="Email" class="form-control w-100 rounded-3 p-3" required>
-        </div>
-            <button type="submit" onclick="showOTP()">Gửi OTP</button>
-        </form>
-        
-        @if (ViewBag.Otp != null)
+
+        @if (TempData["SuccessMessage"] == null)
         {
-            <p>Mã OTP: @ViewBag.Otp</p>
-            <div id="otpSection">
-                <input type="text" id="otp" placeholder="Nhập OTP">
-                <button>Xác Nhận</button>
-            </div>
+            <!-- Nếu chưa gửi OTP thì hiển thị form nhập email -->
+            <form asp-action="layOtp" asp-controller="DangNhap" method="post" id="emailForm">
+                <div class="form-group py-3">
+                    <input asp-for="Email" type="email" name="Email" minlength="2" placeholder="Email" class="form-control w-100 rounded-3 p-3" required>
+                </div>
+                <button type="submit">Gửi OTP</button>
+            </form>
         }
-        else
+
+        @if (TempData["ErrorMessage"] != null)
         {
-            <div id="otpSection" class="hidden">
-                <input type="text" id="otp" placeholder="Nhập OTP">
-                <button>Xác Nhận</button>
+            <div class="alert alert-danger">
+                <strong>@TempData["ErrorField"]:</strong> @TempData["ErrorMessage"]
             </div>
         }
 
-        <!-- Phần nhập OTP, ban đầu bị ẩn -->
-      
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["SuccessMessage"]
+            </div>
+
+            <form asp-action="DMK" asp-controller="DangNhap" method="post" id="otpForm">
+                <p>Mã OTP đã được gửi đến email của bạn. Vui lòng nhập OTP để tiếp tục.</p>
+                <div id="otpSection">
+                    <div class="form-group py-3">
+                        <label asp-for="Email" class="mb-2">Email</label>
+                        <input asp-for="Email" value="@TempData["email"]" class="form-control w-100 rounded-3 p-3" readonly>
+                    </div>
+                    <div class="form-group py-3">
+                        <label asp-for="MatKhau" class="mb-2">Mật khẩu mới</label>
+                        <input asp-for="MatKhau" type="password" placeholder="Mật khẩu mới" class="form-control w-100 rounded-3 p-3" required>
+                    </div>
+                    <div class="form-group py-3">
+                        <label for="otp">Nhập OTP</label>
+                        <input type="text" id="otp" name="Otp" placeholder="Nhập OTP" class="form-control w-100 rounded-3 p-3" required>
+                    </div>
+                    <button type="submit">Xác Nhận</button>
+                </div>
+            </form>
+        }
     </div>
+
+
 
     <script>
         function showOTP() {
