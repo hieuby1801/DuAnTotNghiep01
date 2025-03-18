@@ -21,6 +21,66 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #ffffff;
+        }
+
+        .category-container {
+            width:100%;
+            max-width: 1300px;
+            margin: auto;
+            padding: 5px;
+            background: #ffffff;
+            border-radius: 8px;
+            border: 3px solid #ffffff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .category-list {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 0;
+            white-space: nowrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .category-item {
+            text-align: center;
+            min-width: 90px;
+            margin: 0;
+            padding: 5px;
+        }
+
+            .category-item img {
+                width: 120px;
+                height: 120px;
+                object-fit: cover;
+                border-radius: 8px;
+                transition: transform 0.3s;
+                
+            }
+
+                .category-item img:hover {
+                    transform: scale(1.1);
+                }
+
+            .category-item p {
+                margin-top: 2px;
+                font-size: 12px;
+            }
+    </style>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -539,7 +599,7 @@
         </div>
     </section>
 
-    <section id="company-services" class="padding-large pb-0">
+    <section id="company-services" class="padding-small">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-6 pb-3 pb-lg-0">
@@ -598,12 +658,21 @@
         </div>
     </section>
 
-    <section id="best-selling-items" class="position-relative padding-large ">
-        <div class="container">
-            <div class="section-title d-md-flex justify-content-between align-items-center mb-4">
-                <h3 class="d-flex align-items-center">Best selling items</h3>
-                <a href="index.html" class="btn">View All</a>
+    <section id="best-selling-items" class="position-relative padding-small ">
+        <div class="container">   
+            <div class="section-title d-md-flex justify-content-between align-items-center mb-3"
+                 style="background: #ffecec; padding: 6px 15px; border-radius: 8px;">
+                <h4 class="d-flex align-items-center"
+                    style="color: #ff4d4d; font-weight: bold; text-transform: uppercase; font-size: 18px;">
+                    ⚡ FLASH SALE ⚡
+                </h4>
+                <a href="index.html" class="btn"
+                   style="background: #ff4d4d; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: bold;">
+                    View All
+                </a>
             </div>
+
+
             <div class="position-absolute top-50 end-0 pe-0 pe-xxl-5 me-0 me-xxl-5 swiper-next product-slider-button-next">
                 <svg class="chevron-forward-circle d-flex justify-content-center align-items-center p-2" width="80" height="80">
                     <use xlink:href="#alt-arrow-right-outline"></use>
@@ -891,44 +960,48 @@
         </div>
     </section>
 
-    <section id="limited-offer" class="padding-large"
-             style="background-image: url(images/banner-image-bg-1.jpg); background-size: cover; background-repeat: no-repeat; background-position: center; height: 800px;">
-        <div class="container">
-            <div class="row d-flex align-items-center">
-                <div class="col-md-6 text-center">
-                    <div class="image-holder">
-                        <img src="images/banner-image3.png" class="img-fluid" alt="banner">
-                    </div>
+ <section>
+        <div class="category-container">
+            <div class="category-title">Danh mục sản phẩm</div>
+            <div class="category-list">
+                <div class="category-item">
+                    <img src="~/images/Danhmucdochoi (1).png"Đồ Chơi Lắp Ráp">
+                    <p>Đồ Chơi Lắp Ráp</p>
                 </div>
-                <div class="col-md-5 offset-md-1 mt-5 mt-md-0 text-center text-md-start">
-                    <h2>30% Discount on all items. Hurry Up !!!</h2>
-                    <div id="countdown-clock" class="text-dark d-flex align-items-center my-3">
-                        <div class="time d-grid pe-3">
-                            <span class="days fs-1 fw-normal"></span>
-                            <small>Days</small>
-                        </div>
-                        <span class="fs-1 text-primary">:</span>
-                        <div class="time d-grid pe-3 ps-3">
-                            <span class="hours fs-1 fw-normal"></span>
-                            <small>Hrs</small>
-                        </div>
-                        <span class="fs-1 text-primary">:</span>
-                        <div class="time d-grid pe-3 ps-3">
-                            <span class="minutes fs-1 fw-normal"></span>
-                            <small>Min</small>
-                        </div>
-                        <span class="fs-1 text-primary">:</span>
-                        <div class="time d-grid ps-3">
-                            <span class="seconds fs-1 fw-normal"></span>
-                            <small>Sec</small>
-                        </div>
-                    </div>
-                    <a href="index.html" class="btn mt-3">Shop Collection</a>
+                <div class="category-item">
+                    <img src="~/images/Dochoimohinh.png" alt="Đồ Chơi Mô Hình">
+                    <p>Đồ Chơi Mô Hình</p>
+                </div>
+                <div class="category-item">
+                    <img src="~/images/Denchongcan.png" alt="Đèn Chống Cận">
+                    <p>Đèn Chống Cận</p>
+                </div>
+                <div class="category-item">
+                    <img src="book.jpg" alt="Đam Mỹ">
+                    <p>Đam Mỹ</p>
+                </div>
+                <div class="category-item">
+                    <img src="economics.jpg" alt="Kinh Tế">
+                    <p>Kinh Tế</p>
+                </div>
+                 <div class="category-item">
+                    <img src="economics.jpg" alt="Kinh Tế">
+                    <p>Kinh Tế</p>
+                </div>
+                 <div class="category-item">
+                    <img src="economics.jpg" alt="Kinh Tế">
+                    <p>Kinh Tế</p>
+                </div>
+                 <div class="category-item">
+                    <img src="economics.jpg" alt="Kinh Tế">
+                    <p>Kinh Tế</p>
+                </div>
+                <div class="category-item">
+                    <img src="economics.jpg" alt="Kinh Tế">
+                    <p>Kinh Tế</p>
                 </div>
             </div>
-        </div>
-        </div>
-    </section>
+ </section>
 
     <section id="items-listing" class="padding-large">
         <div class="container">
