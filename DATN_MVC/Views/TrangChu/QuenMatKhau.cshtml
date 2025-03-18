@@ -1,0 +1,88 @@
+﻿@model DATN_MVC.Models.DangNhapND
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quên Mật Khẩu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        .hidden {
+            display: none; /* Ẩn phần nhập OTP */
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: darkblue;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Quên Mật Khẩu</h2>
+        <form asp-action="layOtp" asp-controller="DangNhap" method="post">
+            <div class="form-group py-3">
+            <label asp-for="NguoiDungss.Email" class="mb-2" for="register">Email *</label>
+            <input asp-for="NguoiDungss.Email" type="email" minlength="2" placeholder="Email" class="form-control w-100 rounded-3 p-3" required>
+        </div>
+            <button type="submit" onclick="showOTP()">Gửi OTP</button>
+        </form>
+        
+        @if (ViewBag.Otp != null)
+        {
+            <p>Mã OTP: @ViewBag.Otp</p>
+            <div id="otpSection">
+                <input type="text" id="otp" placeholder="Nhập OTP">
+                <button>Xác Nhận</button>
+            </div>
+        }
+        else
+        {
+            <div id="otpSection" class="hidden">
+                <input type="text" id="otp" placeholder="Nhập OTP">
+                <button>Xác Nhận</button>
+            </div>
+        }
+
+        <!-- Phần nhập OTP, ban đầu bị ẩn -->
+      
+    </div>
+
+    <script>
+        function showOTP() {
+            document.getElementById("otpSection").classList.remove("hidden");
+        }
+    </script>
+
+</body>
+</html>

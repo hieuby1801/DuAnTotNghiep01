@@ -116,7 +116,7 @@ namespace DATN_API.Controllers
 
         //quen mat khau
         [HttpPost("layotp")]
-        public IActionResult LayOTP([FromBody] string email)
+        public IActionResult LayOTP( string email)
         {
             var emailck = _dangNhapService.XacNhanEmail(email);
 
