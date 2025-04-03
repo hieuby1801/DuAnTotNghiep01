@@ -25,7 +25,4 @@ public partial class NguoiDung
 
     public string? TrangThai { get; set; } = null!;
 
-    public virtual ICollection<DanhGia>? DanhGia { get; set; }
-    public virtual ICollection<DonHang>? DonHangs { get; set; }
-
 }
