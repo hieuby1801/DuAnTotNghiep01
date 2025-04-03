@@ -12,6 +12,17 @@ namespace DATN_MVC.Controllers
         {
             return View();
         }
-
+        public IActionResult SanPham ()
+        {
+            return View();
+        }
+        public IActionResult GioiThieu()
+        {
+            return View();
+        }
+        public IActionResult LienHe()
+        {
+            return View();
+        }
     }
 }

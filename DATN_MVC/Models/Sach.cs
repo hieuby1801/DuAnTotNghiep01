@@ -2,7 +2,7 @@
 {
     public class Sach
     {
-        public int MaSach { get; set; }
+        public int? MaSach { get; set; }
 
         public string? TenSach { get; set; }
 
@@ -16,16 +16,16 @@
 
         public int? MaNhaCungCap { get; set; }
 
-        public string TrangThai { get; set; } = null!;
+        public string? TrangThai { get; set; } = null!;
 
         public int? SoLuongNhap { get; set; }
 
-        public virtual ICollection<ChiTietDonHang> ChiTietDonHangs { get; set; } = new List<ChiTietDonHang>();
+        public virtual ICollection<ChiTietDonHang>? ChiTietDonHangs { get; set; } = new List<ChiTietDonHang>();
 
-        public virtual ICollection<DanhGium> DanhGia { get; set; } = new List<DanhGium>();
+        public virtual ICollection<DanhGium>? DanhGia { get; set; } = new List<DanhGium>();
 
         public virtual NhaCungCap? MaNhaCungCapNavigation { get; set; }
 
-        public virtual ICollection<TheLoai> MaTheLoais { get; set; } = new List<TheLoai>();
+        public virtual ICollection<TheLoai>? MaTheLoais { get; set; } = new List<TheLoai>();
     }
 }

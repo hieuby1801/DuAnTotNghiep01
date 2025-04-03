@@ -1,0 +1,77 @@
+﻿@model IEnumerable<DATN_MVC.Models.Sach>
+
+@{
+    ViewData["Title"] = "SanPham";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>SanPham</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MaSach)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TenSach)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TacGia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GiaTien)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NamXuatBan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SoLuongTon)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaNhaCungCap)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TrangThai)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SoLuongNhap)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.MaSach)</td>
+                    <td>@Html.DisplayFor(modelItem => item.TenSach)</td>
+                    <td>@Html.DisplayFor(modelItem => item.TacGia)</td>
+                    <td>@Html.DisplayFor(modelItem => item.GiaTien)</td>
+                    <td>@Html.DisplayFor(modelItem => item.NamXuatBan)</td>
+                    <td>@Html.DisplayFor(modelItem => item.SoLuongTon)</td>
+                    <td>@Html.DisplayFor(modelItem => item.MaNhaCungCap)</td>
+                    <td>@Html.DisplayFor(modelItem => item.TrangThai)</td>
+                    <td>@Html.DisplayFor(modelItem => item.SoLuongNhap)</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.MaSach }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.MaSach }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.MaSach })
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="10" class="text-center">Không có dữ liệu.</td>
+            </tr>
+        }
+    </tbody>
+
+</table>
