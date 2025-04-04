@@ -18,17 +18,17 @@ public partial class MyDbContext : DbContext
 */
     public DbSet<NguoiDung> NguoiDung { get; set; }
 
-/*    public DbSet<NhaCungCap> NhaCungCap { get; set; }
+    public DbSet<NhaCungCap> NhaCungCap { get; set; }
 
     public DbSet<PhuongThucThanhToan> PhuongThucThanhToan { get; set; }
 
-    public DbSet<Sach> Saches { get; set; }
+    public DbSet<Sach> Sach { get; set; }
 
     public DbSet<ThanhToan> ThanhToan { get; set; }
 
     public DbSet<TheLoai> TheLoai { get; set; }
 
-    public DbSet<VanChuyen> VanChuyen { get; set; }*/
+    public DbSet<VanChuyen> VanChuyen { get; set; }
 }
   
 /*  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

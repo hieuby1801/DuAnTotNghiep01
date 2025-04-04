@@ -1,7 +1,10 @@
-﻿namespace DATN_MVC.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DATN_MVC.Models
 {
     public class NguoiDung
     {
+        [Key]
         public int MaNguoiDung { get; set; }
 
         public string? TenNguoiDung { get; set; }

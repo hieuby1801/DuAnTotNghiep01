@@ -19,5 +19,5 @@ public partial class NhaCungCap
 
     public string TrangThai { get; set; } = null!;
 
-    public virtual ICollection<Sach>? Saches { get; set; } = new List<Sach>();
+    public virtual ICollection<Sach>? Sach { get; set; } = new List<Sach>();
 }

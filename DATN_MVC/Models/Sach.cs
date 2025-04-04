@@ -19,12 +19,13 @@
         public string? TrangThai { get; set; } = null!;
 
         public int? SoLuongNhap { get; set; }
+        public string? HinhAnh { get; set; }
 
         public virtual ICollection<ChiTietDonHang>? ChiTietDonHangs { get; set; } = new List<ChiTietDonHang>();
 
         public virtual ICollection<DanhGium>? DanhGia { get; set; } = new List<DanhGium>();
 
-        public virtual NhaCungCap? MaNhaCungCapNavigation { get; set; }
+        public virtual NhaCungCap? MaNhaCung { get; set; }
 
         public virtual ICollection<TheLoai>? MaTheLoais { get; set; } = new List<TheLoai>();
     }

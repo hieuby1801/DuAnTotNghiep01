@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DATN_API.Models;
 
@@ -24,12 +25,14 @@ public partial class Sach
     public string TrangThai { get; set; } = null!;
 
     public int? SoLuongNhap { get; set; }
+    public string? HinhAnh { get; set; }
 
     public virtual ICollection<ChiTietDonHang>? ChiTietDonHangs { get; set; } = new List<ChiTietDonHang>();
 
     public virtual ICollection<DanhGia> DanhGia { get; set; } = new List<DanhGia>();
 
-    public virtual NhaCungCap? MaNhaCungCapNavigation { get; set; }
+    [ForeignKey("MaNhaCungCap")]
+    public virtual NhaCungCap? NhaCungCap { get; set; }
 
     public virtual ICollection<TheLoai>? MaTheLoais { get; set; } = new List<TheLoai>();
 }
