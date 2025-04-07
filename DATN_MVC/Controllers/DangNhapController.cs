@@ -23,7 +23,7 @@ namespace DATN_MVC.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> DangNhap(DangNhapND loginguser)
+        public async Task<IActionResult> DangNhap(Modeltong loginguser)
         {
             var response = await _httpClient.PostAsJsonAsync("DangNhaps/DangNhap", loginguser);
             var result = await response.Content.ReadFromJsonAsync<JsonElement>();
@@ -80,7 +80,7 @@ namespace DATN_MVC.Controllers
 
      
         [HttpPost]
-        public async Task<IActionResult> DangKy(DangNhapND nguoiDung)
+        public async Task<IActionResult> DangKy(Modeltong nguoiDung)
         {
            
             var response = await _httpClient.PostAsJsonAsync("DangNhaps/DangKy", nguoiDung.NguoiDungss);
@@ -152,7 +152,7 @@ namespace DATN_MVC.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> DMK(string Otp, DangNhapND dangNhap)
+        public async Task<IActionResult> DMK(string Otp, Modeltong dangNhap)
         {
             // Lấy email từ Session để tránh mất giá trị
             dangNhap.Email = HttpContext.Session.GetString("Email1");

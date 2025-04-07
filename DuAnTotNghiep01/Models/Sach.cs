@@ -26,6 +26,7 @@ public partial class Sach
 
     public int? SoLuongNhap { get; set; }
     public string? HinhAnh { get; set; }
+    public ICollection<SachTheLoai> SachTheLoais { get; set; }
 
     public virtual ICollection<ChiTietDonHang>? ChiTietDonHangs { get; set; } = new List<ChiTietDonHang>();
 
@@ -33,6 +34,4 @@ public partial class Sach
 
     [ForeignKey("MaNhaCungCap")]
     public virtual NhaCungCap? NhaCungCap { get; set; }
-
-    public virtual ICollection<TheLoai>? MaTheLoais { get; set; } = new List<TheLoai>();
 }

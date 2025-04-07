@@ -10,27 +10,46 @@ public partial class MyDbContext : DbContext
     {
     }
 
-   /* public DbSet<ChiTietDonHang> ChiTietDonHangs { get; set; }*/
+    public DbSet<ChiTietDonHang> ChiTietDonHangs { get; set; }
 
-   /* public DbSet<DanhGia> DanhGia { get; set; }
+    public DbSet<DanhGia> DanhGia { get; set; }
 
     public DbSet<DonHang> DonHangs { get; set; }
-*/
-    public DbSet<NguoiDung> NguoiDung { get; set; }
+
+
 
     public DbSet<NhaCungCap> NhaCungCap { get; set; }
 
     public DbSet<PhuongThucThanhToan> PhuongThucThanhToan { get; set; }
+    public DbSet<VanChuyen> VanChuyen { get; set; }
 
-    public DbSet<Sach> Sach { get; set; }
 
     public DbSet<ThanhToan> ThanhToan { get; set; }
-
+    public DbSet<NguoiDung> NguoiDung { get; set; }
     public DbSet<TheLoai> TheLoai { get; set; }
+    public DbSet<Sach> Sach { get; set; }
+    
+    public DbSet <SachTheLoai> SachTheLoai { get; set; }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        // Thiết lập khóa chính cho bảng SachTheLoai
+        modelBuilder.Entity<SachTheLoai>()
+            .HasKey(stl => new { stl.MaSach, stl.MaTheLoai });
 
-    public DbSet<VanChuyen> VanChuyen { get; set; }
+        // Quan hệ giữa Sach và SachTheLoai
+        modelBuilder.Entity<SachTheLoai>()
+            .HasOne(stl => stl.Sach)
+            .WithMany(s => s.SachTheLoais)  // Một sách có thể có nhiều thể loại
+            .HasForeignKey(stl => stl.MaSach);
+
+        // Quan hệ giữa TheLoai và SachTheLoai
+        modelBuilder.Entity<SachTheLoai>()
+            .HasOne(stl => stl.TheLoai)
+            .WithMany(t => t.SachTheLoais)  // Một thể loại có thể có nhiều sách
+            .HasForeignKey(stl => stl.MaTheLoai);
+    }
 }
-  
+
 /*  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
       => optionsBuilder.UseSqlServer("Server=WINDOWS-10;Database=WebBanSach;Trusted_Connection=True;TrustServerCertificate=True;");

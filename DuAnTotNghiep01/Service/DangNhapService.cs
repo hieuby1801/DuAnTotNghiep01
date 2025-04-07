@@ -30,7 +30,7 @@ namespace DATN_API.Service
         // đăng nhập
         public string XacNhanEmail(string email)
         {
-            var check =  _Context.NguoiDung.FirstOrDefault(x => x.Email == email)?.Email;
+            var check = _Context.NguoiDung.FirstOrDefault(x => x.Email == email)?.Email;
             if (check != null)
             {
                 return check;
