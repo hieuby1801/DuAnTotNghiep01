@@ -140,132 +140,177 @@
 			color: #0056b3;
 			text-decoration: underline;
 		}
+
+	.book-card-inner {
+		border-radius: 10px;
+		padding: 15px;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+		text-align: center;
+		background-color: white;
+		height: 100%;
+		transition: transform 0.3s ease;
+	}
+
+		.book-card-inner:hover {
+			transform: scale(1.03);
+		}
+
+	.book-image {
+		width: 100%;
+		height: 200px;
+		object-fit: cover;
+		border-radius: 8px;
+	}
+
+	.book-title {
+		font-weight: bold;
+		font-size: 1rem;
+		margin-top: 10px;
+		text-decoration: none;
+		color: #000;
+		display: block;
+		min-height: 40px;
+	}
+
+	.book-author {
+		color: #6c757d;
+		font-size: 0.9rem;
+	}
+
+	.book-price {
+		color: red;
+		font-weight: bold;
+		font-size: 1.1rem;
+	}
+
+	.card {
+		margin-bottom: 0 !important;
+	}
+
 </style>
 
-<div class="container mt-4">
-	<div class="row">
-		<!-- Sidebar bên trái -->
-		<div class="col-md-3">
+<div class="row">
+	<!-- Sidebar bọc trong form -->
+	<div class="col-md-3">
+		<form asp-action="LaySach" method="get">
 			<div class="sidebar">
 				<h5><i class="bi bi-book-half me-2"></i>Nhóm Sản Phẩm</h5>
 				<ul class="nav flex-column mb-4">
-					<li class="nav-item mb-2"><a class="nav-link" href="#"><i class="bi bi-grid-fill me-2"></i>Lịch Sử - Địa Lí</a></li>
-					<li class="nav-item mb-2"><a class="nav-link" href="#"><i class="bi bi-star-fill me-2 text-warning"></i>Văn Học</a></li>
-					<li class="nav-item mb-2"><a class="nav-link" href="#"><i class="bi bi-tags-fill me-2 text-danger"></i>Kinh Tế</a></li>
-					<li class="nav-item mb-2"><a class="nav-link" href="#"><i class="bi bi-clock-history me-2"></i>Tâm Lý - Kỹ Năng Sống</a></li>
-					<li class="nav-item mb-2"><a class="nav-link" href="#"><i class="bi bi-info-circle-fill me-2"></i>Ngoại Ngữ</a></li>
-					<li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-telephone-fill me-2"></i>Thiếu Nhi</a></li>
+					@if (Model.TheLoais != null && Model.TheLoais.Any())
+					{
+						foreach (var theLoai in Model.TheLoais)
+						{
+							<li class="nav-item mb-2">
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" name="theloai" value="@theLoai.TenTheLoai" id="@theLoai.TenTheLoai" />
+									<label class="form-check-label" for="@theLoai.TenTheLoai">@theLoai.TenTheLoai</label>
+								</div>
+							</li>
+						}
+					}
 				</ul>
 
 				<hr />
-
-				<!-- Lọc theo giá tiền -->
+				<!-- Lọc theo giá -->
 				<h6 class="mt-3">Lọc theo giá</h6>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" id="gia1">
-					<label class="form-check-label" for="gia1">0đ-50,000đ</label>
+					<input class="form-check-input" type="checkbox" name="gia" value="0-50000" id="gia1">
+					<label class="form-check-label" for="gia1">0đ - 50,000đ</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" id="gia2">
-					<label class="form-check-label" for="gia2">50,000₫ - 100,000₫</label>
+					<input class="form-check-input" type="checkbox" name="gia" value="50000-100000" id="gia2">
+					<label class="form-check-label" for="gia2">50,000đ - 100,000đ</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" id="gia3">
-					<label class="form-check-label" for="gia3">100,000đ-200,000đ</label>
+					<input class="form-check-input" type="checkbox" name="gia" value="100000-200000" id="gia3">
+					<label class="form-check-label" for="gia3">100,000đ - 200,000đ</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" id="gia3">
-					<label class="form-check-label" for="gia3">200,000đ-Trở Lên</label>
+					<input class="form-check-input" type="checkbox" name="gia" value="200000+" id="gia4">
+					<label class="form-check-label" for="gia4">200,000đ trở lên</label>
 				</div>
 
-				<!-- Lọc theo độ tuổi -->
+				<!-- Lọc theo tuổi -->
 				<h6 class="mt-4">Độ tuổi</h6>
 				<div class="form-check">
-					<input class="form-check-input" type="radio" name="tuoi" id="tuoi1">
+					<input class="form-check-input" type="radio" name="tuoi" value="duoi6" id="tuoi1">
 					<label class="form-check-label" for="tuoi1">Dưới 6 tuổi</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="radio" name="tuoi" id="tuoi2">
+					<input class="form-check-input" type="radio" name="tuoi" value="6-12" id="tuoi2">
 					<label class="form-check-label" for="tuoi2">6 - 12 tuổi</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="radio" name="tuoi" id="tuoi3">
+					<input class="form-check-input" type="radio" name="tuoi" value="tren12" id="tuoi3">
 					<label class="form-check-label" for="tuoi3">Trên 12 tuổi</label>
 				</div>
 
 				<!-- Lọc theo tác giả -->
 				<h6 class="mt-4">Tác giả</h6>
-				<input type="text" class="form-control" placeholder="Nhập tên tác giả..." />
+				<input type="text" name="tacgia" class="form-control" placeholder="Nhập tên tác giả..." />
 
 				<!-- Nút lọc -->
-				<button class="btn btn-primary w-100 mt-3"><i class="bi bi-funnel-fill me-1"></i>Lọc kết quả</button>
+				<button type="submit" class="btn btn-primary w-100 mt-3">
+					<i class="bi bi-funnel-fill me-1"></i>Lọc kết quả
+				</button>
 			</div>
-		</div>
-
-		<!-- Nội dung chính -->
-		<div class="col-md-9">
-			<h5 id="tentheloai1">Thể loại sách</h5>
-			<div class="theloai-container">
-				@foreach (var theLoai in Model.TheLoais)
+		</form>
+	</div>
+	
+	<!-- Phần hiển thị sách -->
+	<div class="col-md-9">
+		@{
+			var theLoaiDaChon = ViewBag.TheLoaiDaChon as List<string>;
+		}
+		@if (theLoaiDaChon != null && theLoaiDaChon.Any())
+		{
+			<div class="text-sm text-gray-700 bg-gray-100 px-3 py-2 rounded shadow-sm inline-block mb-3">
+				<span class="font-semibold">Thể loại tìm:</span> @string.Join(", ", theLoaiDaChon)
+			</div>
+		}
+		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mt-2">
+			@if (Model.sachDTOs != null && Model.sachDTOs.Any())
+			{
+				foreach (var item in Model.sachDTOs)
 				{
-					<div class="theloai-item">
-						<a href="#" class="theloai-link">@theLoai.TenTheLoai</a>
+					<div class="col">
+						<div class="book-card-inner">
+							<img src="@Url.Content(item.HinhAnh)" class="book-image" alt="@item.TenSach" />
+							<a href="#" class="book-title">@item.TenSach</a>
+							@if (Model.nhaCungCaps != null && Model.nhaCungCaps.Any())
+							{
+								var nhaCungCap = Model.nhaCungCaps.FirstOrDefault(ncc => ncc.MaNhaCungCap == item.MaNhaCungCap);
+								<small>Nhà cung cấp: @(nhaCungCap?.TenNhaCungCap ?? "Không tìm thấy")</small>
+							}
+							else
+							{
+								<small>Nhà cung cấp: Không có dữ liệu</small>
+							}
+							<p class="book-author mb-1">@item.TacGia</p>
+							<div class="text-warning mb-2">
+								<i class="bi bi-star-fill"></i>
+								<i class="bi bi-star-fill"></i>
+								<i class="bi bi-star-fill"></i>
+								<i class="bi bi-star-fill"></i>
+								<i class="bi bi-star-fill"></i>
+							</div>
+							<p class="book-price">@item.GiaTien ₫</p>
+							<p class="book-price" style="font-size: 12px; color: #000; margin: 4px 0;">
+								thể loại :@string.Join(", ", item.TheLoais)
+							</p>
+							
+							
+						</div>
 					</div>
 				}
-			</div>
-
-			<h5 id="tentheloai1" class="mt-4">Sách mới</h5>
-			<div class="carousel-wrapper mt-3">
-				<button class="carousel-btn left" onclick="moveSlide(-1)"><i class="bi bi-chevron-left"></i></button>
-				<div class="carousel-track" id="carouselTrack">
-					@if (Model.Saches != null && Model.Saches.Any())
-					{
-						foreach (var item in Model.Saches)
-						{
-							<div class="book-card">
-								<div class="book-card-inner">
-									<img src="@Url.Content(item.HinhAnh)" class="book-image" alt="@item.TenSach" />
-									<a href="#" class="book-title">@item.TenSach</a>
-									@if (Model.nhaCungCaps != null && Model.nhaCungCaps.Any())
-									{
-										var nhaCungCap = Model.nhaCungCaps.FirstOrDefault(ncc => ncc.MaNhaCungCap == item.MaNhaCungCap);
-										if (nhaCungCap != null)
-										{
-											<small>Nhà cung cấp: @nhaCungCap.TenNhaCungCap</small>
-										}
-										else
-										{
-											<small>Nhà cung cấp: Không tìm thấy</small>
-										}
-									}
-									else
-									{
-										<small>Nhà cung cấp: Không có dữ liệu</small>
-									}
-									<p class="book-author mb-1">@item.TacGia</p>
-									<div class="text-warning mb-2">
-										<i class="bi bi-star-fill"></i>
-										<i class="bi bi-star-fill"></i>
-										<i class="bi bi-star-fill"></i>
-										<i class="bi bi-star-fill"></i>
-										<i class="bi bi-star-fill"></i>
-									</div>
-									<p class="book-price">@item.GiaTien ₫</p>
-								</div>
-							</div>
-						}
-					}
-					else
-					{
-						<div class="text-center">Không có dữ liệu.</div>
-					}
-				</div>
-				<button class="carousel-btn right" onclick="moveSlide(1)"><i class="bi bi-chevron-right"></i></button>
-			</div>
+			}
+			else
+			{
+				<div class="col text-center">Không có dữ liệu.</div>
+			}
 		</div>
 	</div>
 </div>
-
 <script>
 	let currentIndex = 0;
 

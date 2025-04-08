@@ -12,74 +12,72 @@ namespace DATN_MVC.Controllers
 			_httpClient = httpClient;
 			_httpClient.BaseAddress = new Uri("https://localhost:7189/api/");
 		}
-		public async Task<IActionResult> LaySach(int id,string tentheloai)
+		public async Task<IActionResult>Laytatcatheloai()
 		{
-			var dangNhapND = new Modeltong();
-
-			// Gửi yêu cầu tới API để lấy danh sách sách theo thể loại
-			var response = await _httpClient.GetAsync("Sachs/Laysach");
-			var response1 = await _httpClient.GetAsync("Sachs/LayTatCaTheLoai");
-			if (response.IsSuccessStatusCode)
+			var modeltong = new Modeltong();
+			// Lấy thể loại
+			var resTheLoai = await _httpClient.GetAsync("Sachs/LayTatCaTheLoai");
+			if (resTheLoai.IsSuccessStatusCode)
 			{
-				// Đọc nội dung phản hồi từ API
-				var sachJson = await response.Content.ReadAsStringAsync();
-				// Chuyển đổi JSON thành danh sách các đối tượng Sach
-				var danhSachSach = JsonConvert.DeserializeObject<List<Sach>>(sachJson);
-				var tentheloaiJson = await response1.Content.ReadAsStringAsync();
-				var danhSachTentheloai = JsonConvert.DeserializeObject<List<TheLoai>>(tentheloaiJson);
-				// Nếu không có sách, trả về danh sách rỗng
-				dangNhapND.Saches = danhSachSach ?? new List<Sach>();
-				dangNhapND.TheLoais = danhSachTentheloai ?? new List<TheLoai>();
+				var theLoaiJson = await resTheLoai.Content.ReadAsStringAsync();
+				modeltong.TheLoais = JsonConvert.DeserializeObject<List<TheLoai>>(theLoaiJson) ?? new List<TheLoai>();
+			}
+			return View(modeltong);
+		}
+		public async Task<IActionResult> LaySach(List<string> theloai)
+		{
+			var modeltong = new Modeltong();
+			// Lấy thể loại
+			var resTheLoai = await _httpClient.GetAsync("Sachs/LayTatCaTheLoai");
+			if (resTheLoai.IsSuccessStatusCode)
+			{
+				var theLoaiJson = await resTheLoai.Content.ReadAsStringAsync();
+				modeltong.TheLoais = JsonConvert.DeserializeObject<List<TheLoai>>(theLoaiJson) ?? new List<TheLoai>();
+			}
 
-				// Kiểm tra nếu có sách trong danh sách
-				if (dangNhapND.Saches != null && dangNhapND.Saches.Any())
+			// Lọc theo thể loại nếu có chọn
+			if (theloai != null && theloai.Any())
+			{
+				// Gộp các thể loại lại thành query string kiểu: ?dstheloai=1&dstheloai=2
+				var queryString = string.Join("&", theloai.Select(t => $"dstheloai={Uri.EscapeDataString(t)}"));
+				ViewBag.TheLoaiDaChon = theloai;
+				var resSach = await _httpClient.GetAsync($"Sachs/Laysachtheo1trong2theloai?{queryString}");
+				if (resSach.IsSuccessStatusCode)
 				{
-					// Nếu có sách, trả về View với dữ liệu
-					return View(dangNhapND);
-				}
-				else
-				{
-					// Nếu không có sách, thông báo người dùng
-					ViewBag.Message = "Không có dữ liệu sách!";
-					return View(dangNhapND);
+					var sachJson = await resSach.Content.ReadAsStringAsync();
+					modeltong.sachDTOs = JsonConvert.DeserializeObject<List<SachDTO>>(sachJson) ?? new List<SachDTO>();
 				}
 			}
 			else
 			{
-				// Nếu API trả về lỗi, hiển thị thông báo lỗi
-				var errorContent = await response.Content.ReadAsStringAsync();
-				ViewBag.Message = "Lỗi khi lấy dữ liệu sách: " + errorContent;
-				return View(dangNhapND); // Trả về View với thông báo lỗi
+				// Mặc định: lấy tất cả sách
+				var resAllSach = await _httpClient.GetAsync("Sachs/Laysach");
+				if (resAllSach.IsSuccessStatusCode)
+				{
+					var sachJson = await resAllSach.Content.ReadAsStringAsync();
+					modeltong.sachDTOs = JsonConvert.DeserializeObject<List<SachDTO>>(sachJson) ?? new List<SachDTO>();
+				}
 			}
+			return View(modeltong);
 		}
-		public async Task<IActionResult>Laysachtheotheloai(string tentheloai)
+		public async Task<IActionResult> Laysachtheloai(string tentheloai)
 		{
-			var dangNhapND = new Modeltong();
-			var response = await _httpClient.GetAsync($"Sachs/Laysachtheotheloai/{tentheloai}");
-			if (response.IsSuccessStatusCode)
+			var modeltong = new Modeltong();
+			var resSach = await _httpClient.GetAsync($"Sachs/Laysachtheotheloai?tentheloai={Uri.EscapeDataString(tentheloai)}");
+          
+            // Lấy thể loại
+            var resTheLoai = await _httpClient.GetAsync("Sachs/LayTatCaTheLoai");
+            if (resTheLoai.IsSuccessStatusCode)
+            {
+                var theLoaiJson = await resTheLoai.Content.ReadAsStringAsync();
+                modeltong.TheLoais = JsonConvert.DeserializeObject<List<TheLoai>>(theLoaiJson) ?? new List<TheLoai>();
+            }
+            if (resSach.IsSuccessStatusCode)
 			{
-				var sachJson = await response.Content.ReadAsStringAsync();
-				var danhSachSach = JsonConvert.DeserializeObject<List<Sach>>(sachJson);
-				dangNhapND.Saches = danhSachSach ?? new List<Sach>();
-				if (dangNhapND.Saches != null && dangNhapND.Saches.Any())
-				{
-					return RedirectToAction("LaySach", "Sach");
-				}
-				else
-				{
-					ViewBag.Message = "Không có dữ liệu sách!";
-					return RedirectToAction("LaySach", "Sach");
-				}
+				var sachJson = await resSach.Content.ReadAsStringAsync();
+				modeltong.sachDTOs = JsonConvert.DeserializeObject<List<SachDTO>>(sachJson) ?? new List<SachDTO>();
 			}
-			else
-			{
-				var errorContent = await response.Content.ReadAsStringAsync();
-				ViewBag.Message = "Lỗi khi lấy dữ liệu sách: " + errorContent;
-				return View(dangNhapND); // Trả về view với thông báo lỗi
-			}
+			return View("LaySach", modeltong);
 		}
-
-
-
 	}
 }
