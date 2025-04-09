@@ -64,7 +64,7 @@ namespace DATN_API.Controllers
         public IActionResult DangKy(NguoiDung nguoiDung)
         {
 
-            var ramdomsatf = _dangNhapService.Ramdom(nguoiDung.Saft);
+            var ramdomsatf = _dangNhapService.Ramdom();
             if (ramdomsatf != null)
             {
                 nguoiDung.Saft = ramdomsatf;
@@ -94,7 +94,7 @@ namespace DATN_API.Controllers
                         {
                             dangky.Email,
                             dangky.TenNguoiDung,
-                         
+                           
                             dangky.NgaySinh,
                             dangky.SoDienThoai,
                             dangky.VaiTro
@@ -161,14 +161,15 @@ namespace DATN_API.Controllers
 
         public IActionResult NguoiDung(int id, NguoiDung nguoiDung)
         {
-            var saft = _dangNhapService.Ramdom(nguoiDung.Saft);
+            var saft = _dangNhapService.Ramdom();
+            nguoiDung.Saft = saft;
             var newuser = new NguoiDung
             {
                 TenNguoiDung = nguoiDung.TenNguoiDung,
                 
                 NgaySinh = nguoiDung.NgaySinh,
                 DiaChi = nguoiDung.DiaChi,
-                Saft = saft,
+                Saft = nguoiDung.Saft,
                 MatKhau = nguoiDung.MatKhau,
                 Email = nguoiDung.Email,
             };

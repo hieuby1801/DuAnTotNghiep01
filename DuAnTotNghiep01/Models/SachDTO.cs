@@ -8,7 +8,8 @@
 		public int? GiaTien { get; set; }
 		public int? NamXuatBan { get; set; }
 		public int? SoLuongTon { get; set; }
-		public int? MaNhaCungCap { get; set; }
+        public int? SoLuongNhap { get; set; }
+        public int? MaNhaCungCap { get; set; }
 		public string? HinhAnh { get; set; }
 		public string? TenNhaCungCap { get; set; }
 
