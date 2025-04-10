@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DATN_MVC.Models;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace DATN_MVC.Controllers
 {
@@ -10,11 +12,20 @@ namespace DATN_MVC.Controllers
             _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri("https://localhost:7189/api/");
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
-        public IActionResult QuenMatKhau()
+		public async Task<IActionResult> Index()
+		{
+			var response = await _httpClient.GetAsync("Sachs/Laysach");
+			var sach = new Modeltong();
+
+			if (response.IsSuccessStatusCode)
+			{
+				var jsonString = await response.Content.ReadAsStringAsync();
+				sach.sachDTOs = JsonConvert.DeserializeObject<List<SachDTO>>(jsonString);
+			}
+
+			return View(sach); // ✅ Trả về model tổng
+		}
+		public IActionResult QuenMatKhau()
         {
             return View();
         }

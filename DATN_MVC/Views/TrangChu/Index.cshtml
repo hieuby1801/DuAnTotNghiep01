@@ -240,95 +240,98 @@
             </div>
             <div class="swiper product-swiper">
                 <div class="swiper-wrapper">
-                  
-                    <div class="swiper-slide">
-                        <div class="card position-relative p-4 border rounded-3">
-                            <img src="~/images/product-item2.png" class="img-fluid shadow-sm" alt="product item">
-                            <h6 class="mt-4 mb-0 fw-bold"><a href="index.html">Heartland Stars</a></h6>
-                            <div class="review-content d-flex">
-                                <p class="my-2 me-2 fs-6 text-black-50">Lauren Asher</p>
+                    @foreach(var item in Model.sachDTOs)
+                    {
+                        <div class="swiper-slide">
+                            <div class="card position-relative p-4 border rounded-3">
+                                <img src="@Url." class="img-fluid shadow-sm" alt="product item">
+                                <h6 class="mt-4 mb-0 fw-bold"><a href="index.html">Heartland Stars</a></h6>
+                                <div class="review-content d-flex">
+                                    <p class="my-2 me-2 fs-6 text-black-50">Lauren Asher</p>
 
-                                <div class="rating text-warning d-flex align-items-center">
-                                    <svg class="star star-fill">
-                                        <use xlink:href="#star-fill"></use>
-                                    </svg>
-                                    <svg class="star star-fill">
-                                        <use xlink:href="#star-fill"></use>
-                                    </svg>
-                                    <svg class="star star-fill">
-                                        <use xlink:href="#star-fill"></use>
-                                    </svg>
-                                    <svg class="star star-fill">
-                                        <use xlink:href="#star-fill"></use>
-                                    </svg>
-                                    <svg class="star star-fill">
-                                        <use xlink:href="#star-fill"></use>
-                                    </svg>
+                                    <div class="rating text-warning d-flex align-items-center">
+                                        <svg class="star star-fill">
+                                            <use xlink:href="#star-fill"></use>
+                                        </svg>
+                                        <svg class="star star-fill">
+                                            <use xlink:href="#star-fill"></use>
+                                        </svg>
+                                        <svg class="star star-fill">
+                                            <use xlink:href="#star-fill"></use>
+                                        </svg>
+                                        <svg class="star star-fill">
+                                            <use xlink:href="#star-fill"></use>
+                                        </svg>
+                                        <svg class="star star-fill">
+                                            <use xlink:href="#star-fill"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <span class="price text-primary fw-bold mb-2 fs-5">$870</span>
+                                <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
+                                    <button type="button" href="#" class="btn btn-dark" data-bs-toggle="tooltip" data-bs-placement="top"
+                                            data-bs-title="Tooltip on top">
+                                        <svg class="cart">
+                                            <use xlink:href="#cart"></use>
+                                        </svg>
+                                    </button>
+                                    <a href="#" class="btn btn-dark">
+                                        <span>
+                                            <svg class="wishlist">
+                                                <use xlink:href="#heart"></use>
+                                            </svg>
+                                        </span>
+                                    </a>
                                 </div>
                             </div>
-
-                            <span class="price text-primary fw-bold mb-2 fs-5">$870</span>
-                            <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
-                                <button type="button" href="#" class="btn btn-dark" data-bs-toggle="tooltip" data-bs-placement="top"
-                                        data-bs-title="Tooltip on top">
-                                    <svg class="cart">
-                                        <use xlink:href="#cart"></use>
-                                    </svg>
-                                </button>
-                                <a href="#" class="btn btn-dark">
-                                    <span>
-                                        <svg class="wishlist">
-                                            <use xlink:href="#heart"></use>
-                                        </svg>
-                                    </span>
-                                </a>
-                            </div>
                         </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="card position-relative p-4 border rounded-3">
-                            <img src="images/product-item3.png" class="img-fluid shadow-sm" alt="product item">
-                            <h6 class="mt-4 mb-0 fw-bold"><a href="index.html">Heavenly Bodies</a></h6>
-                            <div class="review-content d-flex">
-                                <p class="my-2 me-2 fs-6 text-black-50">Lauren Asher</p>
+                        <div class="swiper-slide">
+                            <div class="card position-relative p-4 border rounded-3">
+                                <img src="images/product-item3.png" class="img-fluid shadow-sm" alt="product item">
+                                <h6 class="mt-4 mb-0 fw-bold"><a href="index.html">Heavenly Bodies</a></h6>
+                                <div class="review-content d-flex">
+                                    <p class="my-2 me-2 fs-6 text-black-50">Lauren Asher</p>
 
-                                <div class="rating text-warning d-flex align-items-center">
-                                    <svg class="star star-fill">
-                                        <use xlink:href="#star-fill"></use>
-                                    </svg>
-                                    <svg class="star star-fill">
-                                        <use xlink:href="#star-fill"></use>
-                                    </svg>
-                                    <svg class="star star-fill">
-                                        <use xlink:href="#star-fill"></use>
-                                    </svg>
-                                    <svg class="star star-fill">
-                                        <use xlink:href="#star-fill"></use>
-                                    </svg>
-                                    <svg class="star star-fill">
-                                        <use xlink:href="#star-fill"></use>
-                                    </svg>
+                                    <div class="rating text-warning d-flex align-items-center">
+                                        <svg class="star star-fill">
+                                            <use xlink:href="#star-fill"></use>
+                                        </svg>
+                                        <svg class="star star-fill">
+                                            <use xlink:href="#star-fill"></use>
+                                        </svg>
+                                        <svg class="star star-fill">
+                                            <use xlink:href="#star-fill"></use>
+                                        </svg>
+                                        <svg class="star star-fill">
+                                            <use xlink:href="#star-fill"></use>
+                                        </svg>
+                                        <svg class="star star-fill">
+                                            <use xlink:href="#star-fill"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <span class="price text-primary fw-bold mb-2 fs-5">$870</span>
+                                <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
+                                    <button type="button" href="#" class="btn btn-dark" data-bs-toggle="tooltip" data-bs-placement="top"
+                                            data-bs-title="Tooltip on top">
+                                        <svg class="cart">
+                                            <use xlink:href="#cart"></use>
+                                        </svg>
+                                    </button>
+                                    <a href="#" class="btn btn-dark">
+                                        <span>
+                                            <svg class="wishlist">
+                                                <use xlink:href="#heart"></use>
+                                            </svg>
+                                        </span>
+                                    </a>
                                 </div>
                             </div>
-
-                            <span class="price text-primary fw-bold mb-2 fs-5">$870</span>
-                            <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
-                                <button type="button" href="#" class="btn btn-dark" data-bs-toggle="tooltip" data-bs-placement="top"
-                                        data-bs-title="Tooltip on top">
-                                    <svg class="cart">
-                                        <use xlink:href="#cart"></use>
-                                    </svg>
-                                </button>
-                                <a href="#" class="btn btn-dark">
-                                    <span>
-                                        <svg class="wishlist">
-                                            <use xlink:href="#heart"></use>
-                                        </svg>
-                                    </span>
-                                </a>
-                            </div>
                         </div>
-                    </div>
+                    }
+                    
                     <div class="swiper-slide">
                         <div class="card position-relative p-4 border rounded-3">
                             <div class="position-absolute">

@@ -34,6 +34,7 @@ namespace DATN_API.Service
 
 			return sachs;
 		}
+		//
 		public List<NhaCungCap> Tencungcap(int macungcap)
 		{
 			return _Context.NhaCungCap
