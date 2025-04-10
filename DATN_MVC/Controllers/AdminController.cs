@@ -37,6 +37,11 @@ namespace DATN_MVC.Controllers
         {
             return View();
         }
+		public async Task<IActionResult> CapNhatSach(Modeltong modeltong)
+		{
+			return View();
+		}
+
 
 
 	}
