@@ -6,7 +6,7 @@ namespace DATN_API.Service
     public interface IDangNhapService
     {
         //ramdom
-        public string Ramdom(string saft);
+        public string Ramdom();
         //dang nhap
         public string XacNhanEmail(string email);
         public string LaySaft(string email);

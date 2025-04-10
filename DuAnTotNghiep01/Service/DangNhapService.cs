@@ -21,11 +21,10 @@ namespace DATN_API.Service
             _httpContextAccessor = httpContextAccessor;
         }
         //ramdom
-        public string Ramdom(string saft)
+        public string Ramdom()
         {
             Random random = new Random();
-            saft = random.Next(1, 100000).ToString();
-            return saft;
+            return random.Next(1,100000).ToString();
         }
         // đăng nhập
         public string XacNhanEmail(string email)
@@ -82,10 +81,9 @@ namespace DATN_API.Service
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                        new Claim("VaiTro", user.VaiTro),
-
-                        new Claim("Sdt", user.SoDienThoai),
-                        new Claim("Email",user.Email),
+                        new Claim("VaiTro", user.VaiTro ?? ""),
+                        new Claim("Sdt", user.SoDienThoai?? ""),
+                        new Claim("Email",user.Email ?? ""),
                         new Claim("Id", user.MaNguoiDung.ToString())
 
                     }),
@@ -193,6 +191,8 @@ namespace DATN_API.Service
             var user = _Context.NguoiDung.FirstOrDefault(x => x.Email == email);
             if (user != null)
             {
+                user.Saft = Ramdom(); // sửa hàm thành không có tham số
+
 
                 string mahoa = HashPassword(user.Saft, matkhau);
 
@@ -201,6 +201,7 @@ namespace DATN_API.Service
                     return null;
                 }
                 user.MatKhau = HashPassword(user.Saft, matkhau);
+              
                 _Context.NguoiDung.Update(user);
                 _Context.SaveChanges();
                 return user;
@@ -228,7 +229,7 @@ namespace DATN_API.Service
                   
                     NgaySinh = user.NgaySinh,
                     DiaChi = user.DiaChi,
-                   SoDienThoai = user.SoDienThoai,
+                    SoDienThoai = user.SoDienThoai,
                     Email = user.Email,
                     Saft = user.Saft,
                     MatKhau = HashPassword(user.Saft, user.MatKhau),

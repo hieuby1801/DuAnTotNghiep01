@@ -1,4 +1,5 @@
-﻿@{
+﻿@model DATN_MVC.Models.Modeltong
+@{
     Layout = null;
 }
 
@@ -209,6 +210,7 @@
     </style>
 </head>
 <body>
+
     <div class="admin-container">
         <aside class="sidebar">
             <div class="logo">
@@ -254,31 +256,44 @@
                     <h2>📘 Danh sách Sách</h2>
                     <button class="add-button"><i class="bi bi-plus-circle"></i> Thêm sách</button>
                 </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Tên sách</th>
-                            <th>Tác giả</th>
-                            <th>Giá</th>
-                            <th>Kho</th>
-                            <th>Thao tác</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Lập trình Web</td>
-                            <td>Nguyễn Văn A</td>
-                            <td>150.000đ</td>
-                            <td>35</td>
-                            <td>
-                                <button class="edit-btn">Sửa</button>
-                                <button class="delete-btn">Xóa</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                @if (Model.Saches != null && Model.Saches.Count > 0)
+                {
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mã sách</th>
+                                <th>Tên sách</th>
+                                <th>Tác giả</th>
+                                <th>Giá</th>
+                                <th>Kho</th>
+                                <th>Nhập</th>
+                                <th>Hình ảnh</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var sach in Model.Saches)
+                            {
+                                <tr>
+                                    <td>@sach.MaSach</td>
+                                    <td>@sach.TenSach</td>
+                                    <td>@sach.TacGia</td>
+                                    <td>@sach.GiaTien</td>
+                                    <td>@sach.SoLuongTon</td>
+                                    <td>@sach.SoLuongNhap</td>
+                                    <td>
+                                        <img src="@Url.Content(sach.HinhAnh)" alt="Ảnh sách" width="100" height="150" />
+                                    </td>
+                                    <td>
+                                        <button class="edit-btn">Sửa</button>
+                                        <button class="delete-btn">Xóa</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+
             </section>
         </main>
     </div>

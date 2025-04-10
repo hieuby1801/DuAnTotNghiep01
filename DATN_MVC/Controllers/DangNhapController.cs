@@ -65,17 +65,17 @@ namespace DATN_MVC.Controllers
                         return vaitro switch
                         {
                             "User" => RedirectToAction("index", "TrangChu"),//mấy azai tự phân quyền ở đây nha
-                            "Admin" => RedirectToAction("Admin", "Admin"),
+                            "Admin" => RedirectToAction("Admin", "NguoiDung"),
                             _ => RedirectToAction("DefaultPage")
                         };
                     }
                     TempData["ErrorMessage"] = errorMessage.ToString();
-                    RedirectToAction("index", "TrangChu");
+                    RedirectToAction("iindex", "TrangChu");
 
                 }
             }
             TempData["ErrorMessage"] = errorMessage.ToString();
-          return RedirectToAction("index", "TrangChu");
+          return RedirectToAction("iiindex", "TrangChu");
         }
 
      
@@ -120,7 +120,7 @@ namespace DATN_MVC.Controllers
                     TempData["ErrorMessage1"] = "Đăng ký thất bại. Vui lòng thử lại1.";
                 }
 
-                return RedirectToAction("index", "TrangChu");
+                return RedirectToAction("Index", "TrangChu");
             }
         }
 
@@ -156,14 +156,13 @@ namespace DATN_MVC.Controllers
         {
             // Lấy email từ Session để tránh mất giá trị
             dangNhap.Email = HttpContext.Session.GetString("Email1");
-
             // Gửi OTP đến API để kiểm tra
             var response = await _httpClient.PutAsJsonAsync($"DangNhaps/doimatkhau/{Otp}", dangNhap);
 
             if (response.IsSuccessStatusCode)
             {
                 TempData["SuccessMessage"] = "Đổi mật khẩu thành công. Vui lòng đăng nhập lại!";
-                return RedirectToAction("DangNhap");
+                return RedirectToAction("Index", "TrangChu");
             }
             else
             {

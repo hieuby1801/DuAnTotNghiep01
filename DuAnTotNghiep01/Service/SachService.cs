@@ -25,6 +25,7 @@ namespace DATN_API.Service
 			GiaTien = s.GiaTien,
 			NamXuatBan = s.NamXuatBan,
 			SoLuongTon = s.SoLuongTon,
+			SoLuongNhap = s.SoLuongNhap,
 			MaNhaCungCap = s.MaNhaCungCap,
 			HinhAnh = s.HinhAnh,
 			TheLoais = s.SachTheLoais.Select(stl => stl.TheLoai.TenTheLoai).ToList()
