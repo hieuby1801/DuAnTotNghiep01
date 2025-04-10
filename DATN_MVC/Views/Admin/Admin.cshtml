@@ -254,7 +254,24 @@
             <section class="table-section">
                 <div class="section-header">
                     <h2>📘 Danh sách Sách</h2>
-                    <button class="add-button"><i class="bi bi-plus-circle"></i> Thêm sách</button>
+                    <!-- Nút Thêm Sách -->
+                    <button class="btn btn-primary mb-3" onclick="toggleForm()">
+                        <i class="bi bi-plus-circle"></i> Thêm sách
+                    </button>
+
+                    <!-- Khu vực chứa Form Thêm Sách và Nút Quay Lại -->
+                    
+
+
+                </div>
+                <div id="themSachContainer" class="d-none">
+
+                    <!-- Nút Quay Lại bên trên form -->
+                    <button id="btnQuayLai" class="btn btn-secondary mb-3" onclick="toggleForm()" type="button">
+                        <i class="bi bi-arrow-left-circle"></i> Quay lại
+                    </button>
+
+                    @Html.Partial("ThemSach") <!-- Form thêm sách -->
                 </div>
                 @if (Model.Saches != null && Model.Saches.Count > 0)
                 {
@@ -298,4 +315,11 @@
         </main>
     </div>
 </body>
+
 </html>
+<script>
+    function toggleForm() {
+        const container = document.getElementById("themSachContainer");
+        container.classList.toggle("d-none");
+    }
+</script>

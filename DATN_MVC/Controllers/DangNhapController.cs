@@ -65,7 +65,7 @@ namespace DATN_MVC.Controllers
                         return vaitro switch
                         {
                             "User" => RedirectToAction("index", "TrangChu"),//mấy azai tự phân quyền ở đây nha
-                            "Admin" => RedirectToAction("Admin", "NguoiDung"),
+                            "admin" => RedirectToAction("Admin", "Admin"),
                             _ => RedirectToAction("DefaultPage")
                         };
                     }

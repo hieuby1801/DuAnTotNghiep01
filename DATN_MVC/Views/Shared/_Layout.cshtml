@@ -29,6 +29,61 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<style>
+		/* Viền cho toàn bộ navbar */
+		#header-nav {
+			border-bottom: 1px solid #ddd;
+			box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+		}
+
+		/* Viền bo nhẹ cho dropdown menu */
+		.dropdown-menu {
+			border: 1px solid #ccc;
+			border-radius: 10px;
+		}
+
+		/* Modal đăng nhập/đăng ký */
+		.modal-content {
+			border: 1px solid #ddd;
+			border-radius: 15px;
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+		}
+
+		/* Form input bo tròn và có viền */
+		form .form-control {
+			border: 1px solid #ccc;
+			border-radius: 8px;
+			transition: border-color 0.3s ease;
+		}
+
+			form .form-control:focus {
+				border-color: #007bff;
+				box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+			}
+
+		/* Viền cho checkbox và label */
+		.label-body {
+			border-left: 3px solid #007bff;
+			padding-left: 8px;
+		}
+
+		/* Viền cho wishlist và cart dropdown */
+		.wishlist-dropdown .dropdown-menu,
+		.cart-dropdown .dropdown-menu {
+			border: 1px solid #bbb;
+			border-radius: 12px;
+			background-color: #fff;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		}
+
+		/* Viền cho các mục trong danh sách */
+		.list-group-item {
+			border: 1px solid #e0e0e0;
+			border-radius: 8px;
+			margin-bottom: 8px;
+		}
+
+	</style>
+	<style>
 		body {
 			font-family: Arial, sans-serif;
 			margin: 0;
@@ -376,19 +431,12 @@
 																		<label asp-for="NguoiDungss.MatKhau" class="mb-2" for="sign-in">Mật khẩu *</label>
 																		<input asp-for="NguoiDungss.MatKhau" type="password" minlength="2" placeholder="Mật khẩu" class="form-control w-100 rounded-3 p-3" required>
 																	</div>
-																	<div class="form-group pb-3">
-																		<label asp-for="NguoiDungss.DiaChi" class="mb-2" for="sign-in">DiaChi</label>
-																		<input asp-for="NguoiDungss.DiaChi" placeholder="DiaChi" class="form-control w-100 rounded-3 p-3" required>
-																	</div>
+																	
 																	<div class="form-group pb-3">
 																		<label asp-for="NguoiDungss.SoDienThoai" class="mb-2" for="sign-in">số điện thoại</label>
 																		<input asp-for="NguoiDungss.SoDienThoai" minlength="10" maxlength="10" placeholder="số điện thoại" class="form-control w-100 rounded-3 p-3" required>
 																	</div>
-																	<div class="form-group pb-3">
-																		<label asp-for="NguoiDungss.NgaySinh" class="mb-2">NgaySinh</label>
-																		<input asp-for="NguoiDungss.NgaySinh" type="datetime-local" placeholder="NgaySinh"
-																			   class="form-control w-100 rounded-3 p-3" required>
-																	</div>
+																	
 																	<div class="py-3">
 																		<input type="checkbox" required class="me-2">
 																		<span class="label-body">Tôi đồng ý với <a href="#" class="fw-bold text-decoration-none">Bảo mật</a></span>

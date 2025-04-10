@@ -1,0 +1,120 @@
+﻿@{
+    ViewData["Title"] = "LaySach";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chi tiết sản phẩm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .product-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .price {
+            font-size: 1.4rem;
+            color: red;
+            font-weight: bold;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: gray;
+        }
+
+        .badge-trend {
+            background-color: orange;
+            color: white;
+        }
+
+        .product-details-table td {
+            padding: 6px 12px;
+        }
+
+        .product-image {
+            max-width: 100%;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background: #fff;
+            border-radius: 0.5rem;
+        }
+
+        /* Bo góc toàn bộ thành phần */
+        .bg-white,
+        .table,
+        .img-thumbnail,
+        .btn {
+            border-radius: 0.5rem !important;
+        }
+
+        /* Tùy chỉnh hình thumbnail */
+        .img-thumbnail {
+            padding: 2px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container py-4">
+        <div class="row g-4">
+            <!-- Hình ảnh sản phẩm -->
+            <div class="col-md-4">
+                <img src="~/images/category1.jpg" alt="Sách Ngữ Văn" class="product-image img-fluid">
+                <div class="mt-3 d-flex gap-2">
+                    <img src="~/images/category1.jpg" class="img-thumbnail" width="60">
+                    <img src="~/images/category1.jpg" class="img-thumbnail" width="60">
+                </div>
+                <button class="btn btn-danger w-100 mt-3">Mua ngay</button>
+                <button class="btn btn-outline-secondary w-100 mt-2">Thêm vào giỏ hàng</button>
+            </div>
+
+            <!-- Thông tin sản phẩm -->
+            <div class="col-md-8">
+                <span class="badge badge-trend p-2 rounded">Xu hướng</span>
+                <h2 class="product-title mt-2">Bộ Đề Ôn Thi Tuyển Sinh Lớp 10 - Môn Ngữ Văn</h2>
+                <p>(Theo Cấu Trúc Đề Thi Của Thành Phố Hồ Chí Minh)</p>
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <span class="price">82.500 đ</span>
+                    <span class="old-price">110.000 đ</span>
+                    <span class="text-danger">-25%</span>
+                </div>
+
+                <!-- Vận chuyển -->
+                <div class="border p-3 bg-white mb-3">
+                    <h6>Thông tin vận chuyển</h6>
+                    <p>Giao hàng đến <strong>Phường Bến Nghé, Quận 1, Hồ Chí Minh</strong></p>
+                    <p>Dự kiến giao <strong>Thứ sáu - 11/04</strong></p>
+                </div>
+
+                <!-- Ưu đãi -->
+                <div class="bg-white p-3 border mb-3">
+                    <h6>Ưu đãi liên quan</h6>
+                    <span class="badge bg-warning text-dark me-2 rounded">Mã giảm 50k</span>
+                    <span class="badge bg-warning text-dark me-2 rounded">Mã giảm 100k</span>
+                    <span class="badge bg-info text-white rounded">ShopeePay giảm thêm</span>
+                </div>
+
+                <!-- Thông tin chi tiết -->
+                <div class="bg-white p-3 border">
+                    <h5>Thông tin chi tiết</h5>
+                    <table class="table table-borderless product-details-table">
+                        <tr><td>Mã hàng</td><td>9786043673500</td></tr>
+                        <tr><td>Nhà cung cấp</td><td>Cty Đầu Tư & PT Giáo Dục Sài Gòn</td></tr>
+                        <tr><td>Tác giả</td><td>Nguyễn Phước Bảo Khôi</td></tr>
+                        <tr><td>NXB</td><td>Đại Học Sư Phạm TP HCM</td></tr>
+                        <tr><td>Năm XB</td><td>2024</td></tr>
+                        <tr><td>Trọng lượng</td><td>235g</td></tr>
+                        <tr><td>Kích thước</td><td>24 x 17 x 0.8 cm</td></tr>
+                        <tr><td>Số trang</td><td>195</td></tr>
+                        <tr><td>Hình thức</td><td>Bìa mềm</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

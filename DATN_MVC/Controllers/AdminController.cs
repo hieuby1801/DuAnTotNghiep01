@@ -33,6 +33,11 @@ namespace DATN_MVC.Controllers
 
             return View(model);
         }
+		public async Task<IActionResult> ThemSach(Modeltong modeltong)
+        {
+            return View();
+        }
 
-    }
+
+	}
 }
