@@ -33,6 +33,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=TrangChu}/{action=Index}/{id?}");
+    pattern: "{controller=GioHang}/{action=GioHang}/{id?}");
 
 app.Run();
