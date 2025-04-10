@@ -21,6 +21,12 @@ namespace DATN_API.Service
             _httpContextAccessor = httpContextAccessor;
         }
         //ramdom
+        public List<NguoiDung> LayDanhSachNguoiDung()
+        {
+            return _Context.NguoiDung
+        .Where(x => x.VaiTro == "User")
+        .ToList();
+        }
         public string Ramdom()
         {
             Random random = new Random();

@@ -5,6 +5,8 @@ namespace DATN_API.Service
 {
     public interface IDangNhapService
     {
+        //lay danh sach nguoi dung
+        public List<NguoiDung> LayDanhSachNguoiDung();
         //ramdom
         public string Ramdom();
         //dang nhap

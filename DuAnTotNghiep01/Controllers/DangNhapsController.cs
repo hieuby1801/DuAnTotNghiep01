@@ -191,5 +191,16 @@ namespace DATN_API.Controllers
             }
             return null;
         }
+        // lay nguoi dung 
+        [HttpGet("LayNguoiDung")]
+        public IActionResult LayNguoiDung()
+        {
+            var nguoidung = _dangNhapService.LayDanhSachNguoiDung();
+            if (nguoidung != null)
+            {
+                return Ok(nguoidung);
+            }
+            return BadRequest(new { message = "Không có người dùng nào trong hệ thống." });
+        }
     }
 }
