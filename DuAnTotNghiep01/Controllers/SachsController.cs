@@ -115,5 +115,46 @@ namespace DATN_API.Controllers
             }
             return BadRequest(new { Message = "Dữ liệu không hợp lệ." });
         }
+
+        // cap nhap sach
+        [HttpGet("Timsach/{masach}")]
+        public IActionResult Timsach(int masach)
+        {
+            var sach = _IsachService.Timsach(masach);
+            if (sach != null)
+            {
+                return Ok(sach);
+            }
+            else
+            {
+                return NotFound(new { Message = "Không tìm thấy sách nào." });
+            }
+        }
+        [HttpPut("CapNhatSach")]
+        public IActionResult CapNhatSach([FromBody] SachDTO sach)
+        {
+            if (ModelState.IsValid)
+            {
+                var timsach = _IsachService.Timsach(sach.MaSach);
+                if (timsach != null)
+                {
+                    var updatedSach = _IsachService.CapNhatSach(sach);
+                    if (updatedSach != null)
+                    {
+                        return Ok(new { Message = "Cập nhật sách thành công." });
+                    }
+                    else
+                    {
+                        return BadRequest(new { Message = "Cập nhật sách không thành công." });
+                    }
+                }
+                else
+                {
+                    return NotFound(new { Message = "Không tìm thấy sách nào." });
+                }
+
+            }
+            return BadRequest(new { Message = "Dữ liệu không hợp lệ." });
+        }
     }
 }

@@ -109,14 +109,35 @@ namespace DATN_MVC.Controllers
                 return View("Admin", modeltong); // Truyền model đầy đủ vào view
             }
         }
+        [HttpGet("CapNhatSach/{masach}")]
+        public async Task<IActionResult> CapNhatSach(int masach)
+        {
+            var response = await _httpClient.GetAsync($"Sachs/Timsach/{masach}");
+            var moedl = new Modeltong();
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+               moedl.sachDTOss = JsonConvert.DeserializeObject<SachDTO>(json); // Dùng đúng kiểu DTO
+                return View(moedl); // Truyền sang View
+            }
 
+            // Nếu không thành công thì trả về trang NotFound hoặc trang lỗi
+            return NotFound("Không tìm thấy sách có mã: " + masach);
+        }
 
+        [HttpPost("CapNhatSach")]
         public async Task<IActionResult> CapNhatSach(Modeltong modeltong)
-		{
-			return View();
-		}
+        {
+            var response = await _httpClient.PutAsJsonAsync("Sachs/CapNhatSach", modeltong.sachDTOss);
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Admin");
+            }
+            TempData["Message"] = "Cập nhật sách thất bại!";
+            return View(modeltong); // Trả lại view có dữ liệu để hiển thị lỗi
+        }
 
 
 
-	}
+    }
 }

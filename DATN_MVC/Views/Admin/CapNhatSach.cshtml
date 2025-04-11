@@ -1,118 +1,61 @@
-﻿<!DOCTYPE html>
+﻿@model DATN_MVC.Models.Modeltong
+
+@{
+    var sach = Model.sachDTOss;
+}
+
+<!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Cập Nhật Sản Phẩm Sách</title>
+    <meta charset="UTF-8" />
+    <title>Cập Nhật Sách</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: #f8f9fa;
-        }
-
-        .form-container {
-            max-width: 900px;
-            margin: auto;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-
-        .form-title {
-            font-weight: bold;
-            color: #0d6efd;
-            margin-bottom: 30px;
-        }
-
-        .form-label {
-            font-weight: 500;
-        }
-
-        .checkbox-group > div {
-            min-width: 120px;
-        }
-    </style>
 </head>
 <body>
     <div class="container mt-5">
-        <div class="form-container">
-            <h2 class="form-title text-center">📘 Cập Nhật Sản Phẩm Sách</h2>
-            <form>
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label for="maSach" class="form-label">Mã Sách</label>
-                        <input type="text" class="form-control" id="maSach" value="109" readonly>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="tenSach" class="form-label">Tên Sách</label>
-                        <input type="text" class="form-control" id="tenSach" value="Đắc Nhân Tâm">
-                    </div>
-                </div>
+        <div class="bg-white p-4 rounded shadow">
+            <h2 class="text-center text-primary mb-4">📘 Cập Nhật Sách</h2>
 
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label for="tacGia" class="form-label">Tác Giả</label>
-                        <input type="text" class="form-control" id="tacGia" value="Dale Carnegie">
-                    </div>
-                    <div class="col-md-6">
-                        <label for="giaTien" class="form-label">Giá Tiền (VNĐ)</label>
-                        <input type="number" class="form-control" id="giaTien" value="95000">
-                    </div>
+            <form asp-action="CapNhatSach" asp-controller="Admin" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="sachDTOss.MaSach" value="@sach.MaSach" />
+
+                <div class="mb-3">
+                    <label class="form-label">Tên Sách</label>
+                    <input type="text" class="form-control" name="sachDTOss.TenSach" value="@sach.TenSach" />
                 </div>
 
                 <div class="mb-3">
-                    <label for="hinhAnh" class="form-label">Hình Ảnh</label>
-                    <input class="form-control" type="file" id="hinhAnh">
+                    <label class="form-label">Tác Giả</label>
+                    <input type="text" class="form-control" name="sachDTOss.TacGia" value="@sach.TacGia" />
                 </div>
 
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label for="namXuatBan" class="form-label">Năm Xuất Bản</label>
-                        <input type="number" class="form-control" id="namXuatBan" value="2002">
-                    </div>
-                    <div class="col-md-6">
-                        <label for="soLuongTon" class="form-label">Số Lượng Tồn</label>
-                        <input type="number" class="form-control" id="soLuongTon" value="25">
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label">Giá Tiền (VNĐ)</label>
+                    <input type="number" class="form-control" name="sachDTOss.GiaTien" value="@sach.GiaTien" />
                 </div>
 
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label for="soLuongNhap" class="form-label">Số Lượng Nhập</label>
-                        <input type="number" class="form-control" id="soLuongNhap" value="30">
-                    </div>
-                    <div class="col-md-6">
-                        <label for="nhaCungCap" class="form-label">Tên Nhà Cung Cấp</label>
-                        <select class="form-select" id="nhaCungCap">
-                            <option selected>Nhà Sách Fahasa</option>
-                            <option>Nhà Sách Phương Nam</option>
-                            <option>NXB Trẻ</option>
-                        </select>
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label">Hình Ảnh</label>
+                    <input type="file" name="HinhAnhFile" class="form-control" />
+                    @if (!string.IsNullOrEmpty(sach.HinhAnh))
+                    {
+                        <img src="@Url.Content(sach.HinhAnh)" alt="Ảnh sách" class="mt-2" width="100" />
+                    }
                 </div>
 
                 <div class="mb-4">
-                    <label class="form-label">Danh Sách Thể Loại</label>
-                    <div class="d-flex flex-wrap gap-3 checkbox-group">
-                        <div><input class="form-check-input me-1" type="checkbox" checked> CNTT</div>
-                        <div><input class="form-check-input me-1" type="checkbox" checked> Văn học</div>
-                        <div><input class="form-check-input me-1" type="checkbox" checked> Tiểu thuyết</div>
-                        <div><input class="form-check-input me-1" type="checkbox"> Lịch sử</div>
-                        <div><input class="form-check-input me-1" type="checkbox"> Khoa học</div>
-                        <div><input class="form-check-input me-1" type="checkbox"> Tâm lý học</div>
-                        <div><input class="form-check-input me-1" type="checkbox"> Trẻ em</div>
-                        <div><input class="form-check-input me-1" type="checkbox"> Trinh thám</div>
-                        <div><input class="form-check-input me-1" type="checkbox"> Tôn giáo</div>
-                        <div><input class="form-check-input me-1" type="checkbox"> Truyện tranh</div>
+                    <label class="form-label">Thể Loại</label>
+                    <div class="d-flex flex-wrap gap-3">
+                       @*  @foreach (var theloai in Model.TheLoais)
+                        {
+                            var isChecked = sach.DanhSachMaTheLoai?.Split(',').Contains(theloai.MaTheLoai.ToString()) == true;
+                            <div>
+                                <input type="checkbox" name="DanhSachTheLoai" value="@theloai.MaTheLoai"
+                                       class="form-check-input me-1" @(isChecked ? "checked" : "") />
+                                @theloai.TenTheLoai
+                            </div>
+                        } *@
                     </div>
-                </div>
-
-                <div class="mb-4">
-                    <label for="trangThai" class="form-label">Trạng Thái</label>
-                    <select class="form-select" id="trangThai">
-                        <option selected>On</option>
-                        <option>Off</option>
-                    </select>
                 </div>
 
                 <div class="text-center">

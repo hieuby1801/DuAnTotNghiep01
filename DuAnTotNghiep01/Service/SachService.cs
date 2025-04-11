@@ -264,30 +264,89 @@ namespace DATN_API.Service
             }
         }
 
-		// cap nhap sach
-		public Sach CapNhatSach(int Masach)
-		{
-			var sacht = _Context.Sach.Find(Masach);
-			return sacht;
+        // cap nhap sach
+        public SachDTO Timsach(int Masach)
+        {
+            using (var connection = new SqlConnection(_Context.Database.GetConnectionString()))
+            {
+                connection.Open();
+                using (var command = new SqlCommand("sp_ThongTinSachTheoMa", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@MaSach", Masach);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            var dto = new SachDTO
+                            {
+                                MaSach = reader.GetInt32(reader.GetOrdinal("MaSach")),
+                                TenSach = reader["TenSach"]?.ToString(),
+                                TacGia = reader["TacGia"]?.ToString(),
+                                GiaTien = reader["GiaTien"] != DBNull.Value ? Convert.ToInt32(reader["GiaTien"]) : null,
+                                NamXuatBan = reader["NamXuatBan"] != DBNull.Value ? Convert.ToInt32(reader["NamXuatBan"]) : null,
+                                SoLuongTon = reader["SoLuongTon"] != DBNull.Value ? Convert.ToInt32(reader["SoLuongTon"]) : null,
+                                SoLuongNhap = reader["SoLuongNhap"] != DBNull.Value ? Convert.ToInt32(reader["SoLuongNhap"]) : null,
+                                TrangThai = reader["TrangThai"]?.ToString(),
+                                HinhAnh = reader["HinhAnh"]?.ToString(),
+                                TenNhaCungCap = reader["TenNhaCungCap"]?.ToString(),
+                                TheLoais = reader["TheLoai"]?.ToString()?.Split(", ").ToList() // tách chuỗi thành list
+                            };
+
+                            return dto;
+                        }
+                    }
+                }
+            }
+            return null;
         }
-		/*public void CapNhatSach(Sach sach)
-		{
-			var sachToUpdate = _Context.Sach.Find(sach.MaSach);
-			if (sachToUpdate != null)
-			{
-				sachToUpdate.TenSach = sach.TenSach;
-				sachToUpdate.TacGia = sach.TacGia;
-				sachToUpdate.GiaTien = sach.GiaTien;
-				sachToUpdate.NamXuatBan = sach.NamXuatBan;
-				sachToUpdate.SoLuongTon = sach.SoLuongTon;
-				sachToUpdate.MaNhaCungCap = sach.MaNhaCungCap;
-				sachToUpdate.HinhAnh = sach.HinhAnh;
+        public SachDTO CapNhatSach(SachDTO sach)
+        {
+            using (var connection = new SqlConnection(_Context.Database.GetConnectionString()))
+            {
+                connection.Open();
 
-				_Context.SaveChanges();
-				return
+                using (var command = new SqlCommand("sp_CapNhatThongTinSach", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
 
-			}
-		}*/
+                    command.Parameters.AddWithValue("@MaSach", sach.MaSach);
+                    command.Parameters.AddWithValue("@TenSach", sach.TenSach ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@TacGia", sach.TacGia ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@GiaTien", sach.GiaTien ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@HinhAnh", sach.HinhAnh ?? (object)DBNull.Value);
+
+                    string danhSachTheLoai = sach.DanhSachMaTheLoai != null
+                        ? string.Join(",", sach.DanhSachMaTheLoai)
+                        : "";
+
+                    command.Parameters.AddWithValue("@DanhSachTheLoai", danhSachTheLoai);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+
+            // Sau khi cập nhật xong, lấy lại thông tin sách từ database
+            var sachMoi = _Context.Sach.FirstOrDefault(s => s.MaSach == sach.MaSach);
+            if (sachMoi == null) return null;
+
+            return new SachDTO
+            {
+                MaSach = sachMoi.MaSach,
+                TenSach = sachMoi.TenSach,
+                TacGia = sachMoi.TacGia,
+                GiaTien = sachMoi.GiaTien,
+                NamXuatBan = sachMoi.NamXuatBan,
+                SoLuongTon = sachMoi.SoLuongTon,
+                SoLuongNhap = sachMoi.SoLuongNhap,
+                HinhAnh = sachMoi.HinhAnh,
+                TrangThai = sachMoi.TrangThai,
+                MaNhaCungCap = sachMoi.MaNhaCungCap,
+                // nếu cần thêm TenNhaCungCap hoặc thể loại thì truy vấn thêm
+            };
+        }
     }
 }
+
 
