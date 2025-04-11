@@ -34,6 +34,10 @@ namespace DATN_API.Service
 
 			return sachs;
 		}
+		public List<NhaCungCap> Laynhacung()
+		{
+			return _Context.NhaCungCap.ToList();
+		}
 		//
 		public List<NhaCungCap> Tencungcap(int macungcap)
 		{
@@ -259,6 +263,31 @@ namespace DATN_API.Service
                 }
             }
         }
+
+		// cap nhap sach
+		public Sach CapNhatSach(int Masach)
+		{
+			var sacht = _Context.Sach.Find(Masach);
+			return sacht;
+        }
+		/*public void CapNhatSach(Sach sach)
+		{
+			var sachToUpdate = _Context.Sach.Find(sach.MaSach);
+			if (sachToUpdate != null)
+			{
+				sachToUpdate.TenSach = sach.TenSach;
+				sachToUpdate.TacGia = sach.TacGia;
+				sachToUpdate.GiaTien = sach.GiaTien;
+				sachToUpdate.NamXuatBan = sach.NamXuatBan;
+				sachToUpdate.SoLuongTon = sach.SoLuongTon;
+				sachToUpdate.MaNhaCungCap = sach.MaNhaCungCap;
+				sachToUpdate.HinhAnh = sach.HinhAnh;
+
+				_Context.SaveChanges();
+				return
+
+			}
+		}*/
     }
 }
 

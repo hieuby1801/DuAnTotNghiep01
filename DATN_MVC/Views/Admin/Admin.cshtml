@@ -250,7 +250,12 @@
                     <p>25,000,000đ</p>
                 </div>
             </section>
-
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-success" id="thongBao">
+                    @TempData["Message"]
+                </div>
+            }
             <section class="table-section">
                 <div class="section-header">
                     <h2>📘 Danh sách Sách</h2>
@@ -259,19 +264,19 @@
                         <i class="bi bi-plus-circle"></i> Thêm sách
                     </button>
 
-                    <!-- Khu vực chứa Form Thêm Sách và Nút Quay Lại -->
-                    
-
-
                 </div>
                 <div id="themSachContainer" class="d-none">
+                  
+                    <form asp-action="ThemSach" method="post" enctype="multipart/form-data">
+                        <!-- Nút Quay Lại -->
+                        
 
-                    <!-- Nút Quay Lại bên trên form -->
-                    <button id="btnQuayLai" class="btn btn-secondary mb-3" onclick="toggleForm()" type="button">
-                        <i class="bi bi-arrow-left-circle"></i> Quay lại
-                    </button>
+                        <!-- Hiển thị thông báo nếu có -->
+                       
 
-                    @Html.Partial("ThemSach") <!-- Form thêm sách -->
+                        @Html.Partial("ThemSach", Model)
+                    </form>
+
                 </div>
                 @if (Model.Saches != null && Model.Saches.Count > 0)
                 {
@@ -321,5 +326,17 @@
     function toggleForm() {
         const container = document.getElementById("themSachContainer");
         container.classList.toggle("d-none");
+    }
+</script>
+<script>
+    function toggleForm() {
+        const container = document.getElementById("themSachContainer");
+        container.classList.toggle("d-none");
+
+        // Nếu có thông báo thì ẩn nó đi khi bật lại form
+        const thongBao = document.getElementById("thongBao");
+        if (thongBao) {
+            thongBao.style.display = "none";
+        }
     }
 </script>

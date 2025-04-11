@@ -5,7 +5,7 @@ namespace DATN_API.Service
     public interface ISachService
     {
         public List<SachDTO> Laysach();
-
+        public List<NhaCungCap> Laynhacung();
 		public List<NhaCungCap> Tencungcap(int macungcap);
 		public List<TheLoai> LayTatCaTheLoai();
         public List<SachDTO> Laysachtheotheloai(string tenTheLoai);

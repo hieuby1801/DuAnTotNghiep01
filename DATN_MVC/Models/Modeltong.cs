@@ -7,6 +7,7 @@
         public string MatKhau { get; set; }
         public NguoiDung NguoiDungss { get; set; }
         public Sach Sachs { get; set; }
+        public SachDTO sachDTOss { get; set; }
         public List<TheLoai> TheLoais { get; set; } = new List<TheLoai>();
 		public List<SachDTO> sachDTOs { get; set; } = new List<SachDTO>();
         public List<NguoiDung> NguoiDungs { get; set; } = new List<NguoiDung>();

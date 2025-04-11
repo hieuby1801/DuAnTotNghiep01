@@ -12,8 +12,9 @@
         public int? MaNhaCungCap { get; set; }
 		public string? HinhAnh { get; set; }
 		public string? TenNhaCungCap { get; set; }
+        public string? TrangThai { get; set; }
 
-		public List<string>? TheLoais { get; set; } = new();
-        public List<int>? DanhSachMaTheLoai { get; internal set; }
+        public List<string>? TheLoais { get; set; } = new();
+        public List<int>? DanhSachMaTheLoai { get;  set; }
     }
 }

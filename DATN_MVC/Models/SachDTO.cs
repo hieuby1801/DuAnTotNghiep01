@@ -8,10 +8,13 @@
 		public int? GiaTien { get; set; }
 		public int? NamXuatBan { get; set; }
 		public int? SoLuongTon { get; set; }
-		public int? MaNhaCungCap { get; set; }
+        public int? SoLuongNhap { get; set; }
+        public int? MaNhaCungCap { get; set; }
 		public string? HinhAnh { get; set; }
-		public string? TenNhaCungCap { get; set; }
+        public string? TrangThai { get; set; }
 
-		public List<string>? TheLoais { get; set; } = new();
+        public string? TenNhaCungCap { get; set; }
+        public List<int>? DanhSachMaTheLoai { get; set; }
+        public List<string>? TheLoais { get; set; } = new();
 	}
 }
