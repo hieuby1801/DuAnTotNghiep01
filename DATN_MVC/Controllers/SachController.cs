@@ -79,5 +79,9 @@ namespace DATN_MVC.Controllers
 			}
 			return View("LaySach", modeltong);
 		}
+		public IActionResult ChiTietSach()
+		{
+			return View();
+		}
 	}
 }
