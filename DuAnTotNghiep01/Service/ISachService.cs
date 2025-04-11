@@ -11,6 +11,8 @@ namespace DATN_API.Service
         public List<SachDTO> Laysachtheotheloai(string tenTheLoai);
         public List<Sach> Laysachtu2theloaitrolen(List<string> dstheloai);
         public List<SachDTO> Laysachtheo1trong2theloai(List<string> dstheloai);
+        // Thêm sách
+        public SachDTO ThemSach(SachDTO TTSach);
 
-	}
+    }
 }

@@ -42,7 +42,8 @@ namespace DATN_API.Service
 						   .ToList();
 
 		}
-		public List<TheLoai> LayTatCaTheLoai()
+        // lấy thể loại
+        public List<TheLoai> LayTatCaTheLoai()
 		{
 			// Lấy tất cả tên thể loại từ bảng TheLoai
 			var theLoais = _Context.TheLoai
@@ -51,6 +52,7 @@ namespace DATN_API.Service
 			// Trả về danh sách các thể loại
 			return theLoais;
 		}
+        // tìm sách theo thể loại trên menu
         public List<SachDTO> Laysachtheotheloai(string tenTheLoai)
         {
             var result = new List<SachDTO>();
@@ -100,6 +102,7 @@ namespace DATN_API.Service
 
             return result;
         }
+       
         public List<Sach> Laysachtu2theloaitrolen(List<string> dstheloai)
 		{
 			var result = new List<Sach>();
@@ -152,7 +155,8 @@ namespace DATN_API.Service
 
 			return result;
 		}
-		public List<SachDTO> Laysachtheo1trong2theloai(List<string> dstheloai)
+        // tìm sách theo thể loại
+        public List<SachDTO> Laysachtheo1trong2theloai(List<string> dstheloai)
 		{
 			var result = new List<SachDTO>();
 
@@ -210,6 +214,51 @@ namespace DATN_API.Service
 			}
 			return result;
 		}
-	}
+        //Thêm sách
+        public SachDTO ThemSach(SachDTO TTSach)
+        {
+            using (var connection = new SqlConnection(_Context.Database.GetConnectionString()))
+            {
+                connection.Open();
+                using (var command = new SqlCommand("sp_ThemSachVaTheLoai", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Truyền tham số
+                    command.Parameters.AddWithValue("@MaSach", TTSach.MaSach);
+                    command.Parameters.AddWithValue("@TenSach", TTSach.TenSach ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@TacGia", TTSach.TacGia ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@GiaTien", TTSach.GiaTien ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@HinhAnh", TTSach.HinhAnh ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@NamXuatBan", TTSach.NamXuatBan ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@SoLuongTon", TTSach.SoLuongTon ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@MaNhaCungCap", TTSach.MaNhaCungCap ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@TrangThai", "on");
+                    command.Parameters.AddWithValue("@SoLuongNhap", TTSach.SoLuongNhap ?? (object)DBNull.Value);
+
+                    // Chuyển List<int> thành chuỗi '1,2,3'
+                    string danhSachTheLoai = string.Join(",", TTSach.DanhSachMaTheLoai ?? new List<int>());
+                    command.Parameters.AddWithValue("@DanhSachMaTheLoai", danhSachTheLoai);
+
+                    command.ExecuteNonQuery();
+
+                    // Sau khi thêm xong, trả lại DTO vừa thêm
+                    return new SachDTO
+                    {
+                        MaSach = TTSach.MaSach,
+                        TenSach = TTSach.TenSach,
+                        TacGia = TTSach.TacGia,
+                        GiaTien = TTSach.GiaTien,
+                        HinhAnh = TTSach.HinhAnh,
+                        NamXuatBan = TTSach.NamXuatBan,
+                        SoLuongTon = TTSach.SoLuongTon,
+                        MaNhaCungCap = TTSach.MaNhaCungCap,
+                        SoLuongNhap = TTSach.SoLuongNhap,
+                        DanhSachMaTheLoai = TTSach.DanhSachMaTheLoai
+                    };
+                }
+            }
+        }
+    }
 }
 
