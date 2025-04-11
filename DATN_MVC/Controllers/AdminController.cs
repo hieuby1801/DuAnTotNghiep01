@@ -109,35 +109,63 @@ namespace DATN_MVC.Controllers
                 return View("Admin", modeltong); // Truyền model đầy đủ vào view
             }
         }
-        [HttpGet("CapNhatSach/{masach}")]
+        [HttpGet]
         public async Task<IActionResult> CapNhatSach(int masach)
         {
+            var model = new Modeltong();
+
             var response = await _httpClient.GetAsync($"Sachs/Timsach/{masach}");
-            var moedl = new Modeltong();
+            var respone2 = await _httpClient.GetAsync("Sachs/LayTatCaTheLoai");
+            if(respone2.IsSuccessStatusCode)
+            {
+                var json2 = await respone2.Content.ReadAsStringAsync();
+                model.TheLoais = JsonConvert.DeserializeObject<List<TheLoai>>(json2) ?? new List<TheLoai>();
+               
+            }
+           
             if (response.IsSuccessStatusCode)
             {
                 var json = await response.Content.ReadAsStringAsync();
-               moedl.sachDTOss = JsonConvert.DeserializeObject<SachDTO>(json); // Dùng đúng kiểu DTO
-                return View(moedl); // Truyền sang View
+                model.sachDTOss = JsonConvert.DeserializeObject<SachDTO>(json); // Dùng đúng kiểu DTO
+                return View(model); // Truyền sang View
             }
 
             // Nếu không thành công thì trả về trang NotFound hoặc trang lỗi
             return NotFound("Không tìm thấy sách có mã: " + masach);
         }
 
-        [HttpPost("CapNhatSach")]
-        public async Task<IActionResult> CapNhatSach(Modeltong modeltong)
+        [HttpPost]
+        public async Task<IActionResult> CapNhatSach(Modeltong modeltong, IFormFile imageFile, string? existingImagePath)
         {
+            if (modeltong.sachDTOss == null)
+            {
+                modeltong.sachDTOss = new SachDTO();
+            }
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                var fileName = Path.GetFileName(imageFile.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
+
+                // Đường dẫn web
+                modeltong.sachDTOss.HinhAnh = "~/images/" + fileName;
+            }
+            else
+            {
+                // Gán lại hình ảnh cũ nếu không upload ảnh mới
+                modeltong.sachDTOss.HinhAnh = existingImagePath;
+            }
+
             var response = await _httpClient.PutAsJsonAsync("Sachs/CapNhatSach", modeltong.sachDTOss);
             if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction("Admin");
             }
-            TempData["Message"] = "Cập nhật sách thất bại!";
-            return View(modeltong); // Trả lại view có dữ liệu để hiển thị lỗi
+            return View(modeltong);
         }
-
-
-
     }
 }

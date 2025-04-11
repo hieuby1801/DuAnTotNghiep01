@@ -15,6 +15,7 @@
 
         public string? TenNhaCungCap { get; set; }
         public List<int>? DanhSachMaTheLoai { get; set; }
-        public List<string>? TheLoais { get; set; } = new();
-	}
+        public List<string> TheLoais { get; set; }
+
+    }
 }

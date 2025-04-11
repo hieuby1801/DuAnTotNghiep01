@@ -1,0 +1,26 @@
+﻿@model DATN_MVC.Models.Modeltong
+@for (int i = 0; i < Model.TheLoais.Count; i += 2)
+{
+    <div class="row mb-2">
+        <div class="col-md-6">
+            @if (i < Model.TheLoais.Count)
+            {
+                var item1 = Model.TheLoais[i];
+                <div class="form-check d-flex align-items-center">
+                    <input class="form-check-input me-2" type="checkbox" name="sachDTOss.DanhSachMaTheLoai" value="@item1.MaTheLoai" id="tl-@item1.MaTheLoai" />
+                    <label class="form-check-label" for="tl-@item1.MaTheLoai">@item1.TenTheLoai</label>
+                </div>
+            }
+        </div>
+        <div class="col-md-6">
+            @if (i + 1 < Model.TheLoais.Count)
+            {
+                var item2 = Model.TheLoais[i + 1];
+                <div class="form-check d-flex align-items-center">
+                    <input class="form-check-input me-2" type="checkbox" name="sachDTOss.DanhSachMaTheLoai" value="@item2.MaTheLoai" id="tl-@item2.MaTheLoai" />
+                    <label class="form-check-label" for="tl-@item2.MaTheLoai">@item2.TenTheLoai</label>
+                </div>
+            }
+        </div>
+    </div>
+}

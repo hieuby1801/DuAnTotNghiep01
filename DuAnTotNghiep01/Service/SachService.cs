@@ -321,7 +321,7 @@ namespace DATN_API.Service
                         ? string.Join(",", sach.DanhSachMaTheLoai)
                         : "";
 
-                    command.Parameters.AddWithValue("@DanhSachTheLoai", danhSachTheLoai);
+                    command.Parameters.AddWithValue("@DanhSachTheLoai", danhSachTheLoai ?? (object)DBNull.Value);
 
                     command.ExecuteNonQuery();
                 }
