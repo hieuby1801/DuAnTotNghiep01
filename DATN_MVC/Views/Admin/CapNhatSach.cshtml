@@ -95,7 +95,8 @@
                                             <input class="form-check-input me-2" type="checkbox"
                                                    name="sachDTOss.DanhSachMaTheLoai"
                                                    value="@item1.MaTheLoai"
-                                                   id="tl-@item1.MaTheLoai" />
+                                                   id="tl-@item1.MaTheLoai"
+                                            @(Model.sachDTOss.TheLoais.Contains(item1.TenTheLoai) ? "checked" : "") />
                                             @item1.TenTheLoai
                                         </label>
                                     </div>
@@ -110,7 +111,8 @@
                                             <input class="form-check-input me-2" type="checkbox"
                                                    name="sachDTOss.DanhSachMaTheLoai"
                                                    value="@item2.MaTheLoai"
-                                                   id="tl-@item2.MaTheLoai" />
+                                                   id="tl-@item2.MaTheLoai"
+                                            @(Model.sachDTOss.TheLoais.Contains(item2.TenTheLoai) ? "checked" : "") />
                                             @item2.TenTheLoai
                                         </label>
                                     </div>
