@@ -6,115 +6,96 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Chi tiết sản phẩm</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Sản Phẩm - Trường Ca Achilles</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        .product-img-thumb:hover {
+            border: 2px solid #007bff;
+        }
+
         .product-title {
-            font-size: 1.5rem;
+            font-size: 24px;
             font-weight: bold;
         }
 
-        .price {
-            font-size: 1.4rem;
-            color: red;
-            font-weight: bold;
-        }
-
-        .old-price {
+        .price-old {
             text-decoration: line-through;
             color: gray;
         }
 
-        .badge-trend {
-            background-color: orange;
+        .discount-badge {
             color: white;
-        }
-
-        .product-details-table td {
-            padding: 6px 12px;
-        }
-
-        .product-image {
-            max-width: 100%;
-            border: 1px solid #ccc;
-            padding: 10px;
-            background: #fff;
-            border-radius: 0.5rem;
-        }
-
-        /* Bo góc toàn bộ thành phần */
-        .bg-white,
-        .table,
-        .img-thumbnail,
-        .btn {
-            border-radius: 0.5rem !important;
-        }
-
-        /* Tùy chỉnh hình thumbnail */
-        .img-thumbnail {
-            padding: 2px;
-            border: 1px solid #ddd;
+            background-color: red;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 14px;
         }
     </style>
 </head>
 <body class="bg-light">
     <div class="container py-4">
-        <div class="row g-4">
+        <div class="row">
             <!-- Hình ảnh sản phẩm -->
             <div class="col-md-4">
-                <img src="~/images/category1.jpg" alt="Sách Ngữ Văn" class="product-image img-fluid">
-                <div class="mt-3 d-flex gap-2">
-                    <img src="~/images/category1.jpg" class="img-thumbnail" width="60">
-                    <img src="~/images/category1.jpg" class="img-thumbnail" width="60">
+                <img src="~/images//Đacnhantam.jpg" alt="Trường Ca Achilles" class="img-fluid border mb-2">
+                <div class="d-flex gap-2">
+                    <img src="https://cdn0.fahasa.com/media/catalog/product/t/r/truong_ca_achilles_1_2022_bia_1.jpg" class="img-thumbnail product-img-thumb" style="width: 60px;">
+                    <img src="https://cdn0.fahasa.com/media/catalog/product/t/r/truong_ca_achilles_1_2022_bia_1.jpg" class="img-thumbnail product-img-thumb" style="width: 60px;">
+                    <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 60px; height: 80px;">+1</div>
                 </div>
-                <button class="btn btn-danger w-100 mt-3">Mua ngay</button>
-                <button class="btn btn-outline-secondary w-100 mt-2">Thêm vào giỏ hàng</button>
+                <div class="mt-3 d-flex gap-2">
+                    <button class="btn btn-outline-danger flex-fill">Thêm vào giỏ hàng</button>
+                    <button class="btn btn-danger flex-fill">Mua ngay</button>
+                </div>
             </div>
 
             <!-- Thông tin sản phẩm -->
             <div class="col-md-8">
-                <span class="badge badge-trend p-2 rounded">Xu hướng</span>
-                <h2 class="product-title mt-2">Bộ Đề Ôn Thi Tuyển Sinh Lớp 10 - Môn Ngữ Văn</h2>
-                <p>(Theo Cấu Trúc Đề Thi Của Thành Phố Hồ Chí Minh)</p>
-                <div class="d-flex align-items-center gap-3 mb-2">
-                    <span class="price">82.500 đ</span>
-                    <span class="old-price">110.000 đ</span>
-                    <span class="text-danger">-25%</span>
+                <span class="text-danger">Xu hướng</span>
+                <h2 class="product-title">Trường Ca Achilles</h2>
+                <p class="mb-1">Nhà cung cấp: <a href="#">Nhà Xuất Bản Kim Đồng</a></p>
+                <p class="mb-1">Tác giả: Madeline Miller</p>
+                <p class="mb-1">Nhà xuất bản: NXB Kim Đồng</p>
+                <p class="mb-1">Hình thức bìa: Bìa Mềm</p>
+                <div class="d-flex align-items-center mb-2">
+                    <span class="text-danger fs-4 fw-bold me-2">124.800 ₫</span>
+                    <span class="price-old me-2">156.000 ₫</span>
+                    <span class="discount-badge">-20%</span>
                 </div>
 
-                <!-- Vận chuyển -->
-                <div class="border p-3 bg-white mb-3">
-                    <h6>Thông tin vận chuyển</h6>
-                    <p>Giao hàng đến <strong>Phường Bến Nghé, Quận 1, Hồ Chí Minh</strong></p>
-                    <p>Dự kiến giao <strong>Thứ sáu - 11/04</strong></p>
+                <div class="bg-white p-3 rounded shadow-sm mb-3">
+                    <h5>Thông tin vận chuyển</h5>
+                    <p class="mb-0">Giao hàng đến: <strong>Phường Bến Nghé, Quận 1, Hồ Chí Minh</strong> <a href="#">Thay đổi</a></p>
+                    <p class="mb-0">Giao hàng tiêu chuẩn - Dự kiến giao <strong>Thứ bảy - 12/04</strong></p>
                 </div>
 
-                <!-- Ưu đãi -->
-                <div class="bg-white p-3 border mb-3">
-                    <h6>Ưu đãi liên quan</h6>
-                    <span class="badge bg-warning text-dark me-2 rounded">Mã giảm 50k</span>
-                    <span class="badge bg-warning text-dark me-2 rounded">Mã giảm 100k</span>
-                    <span class="badge bg-info text-white rounded">ShopeePay giảm thêm</span>
-                </div>
-
-                <!-- Thông tin chi tiết -->
-                <div class="bg-white p-3 border">
+                <div class="bg-white p-3 rounded shadow-sm mb-3">
                     <h5>Thông tin chi tiết</h5>
-                    <table class="table table-borderless product-details-table">
-                        <tr><td>Mã hàng</td><td>9786043673500</td></tr>
-                        <tr><td>Nhà cung cấp</td><td>Cty Đầu Tư & PT Giáo Dục Sài Gòn</td></tr>
-                        <tr><td>Tác giả</td><td>Nguyễn Phước Bảo Khôi</td></tr>
-                        <tr><td>NXB</td><td>Đại Học Sư Phạm TP HCM</td></tr>
-                        <tr><td>Năm XB</td><td>2024</td></tr>
-                        <tr><td>Trọng lượng</td><td>235g</td></tr>
-                        <tr><td>Kích thước</td><td>24 x 17 x 0.8 cm</td></tr>
-                        <tr><td>Số trang</td><td>195</td></tr>
-                        <tr><td>Hình thức</td><td>Bìa mềm</td></tr>
+                    <table class="table table-sm">
+                        <tr><th>Mã hàng</th><td>8935244843545</td></tr>
+                        <tr><th>Nhà Cung Cấp</th><td>Nhà Xuất Bản Kim Đồng</td></tr>
+                        <tr><th>Tác giả</th><td>Madeline Miller</td></tr>
+                        <tr><th>NXB</th><td>NXB Kim Đồng</td></tr>
+                        <tr><th>Năm XB</th><td>2020</td></tr>
+                        <tr><th>Trọng lượng (gr)</th><td>450</td></tr>
+                        <tr><th>Kích Thước Bao Bì</th><td>22.5 x 14 cm</td></tr>
+                        <tr><th>Số trang</th><td>444</td></tr>
+                        <tr><th>Hình thức</th><td>Bìa Mềm</td></tr>
                     </table>
+                </div>
+
+                <div class="text-muted small">
+                    <p><strong>Chính sách:</strong></p>
+                    <ul>
+                        <li>Thời gian giao hàng: Giao nhanh và uy tín</li>
+                        <li>Chính sách đổi trả: Đổi trả miễn phí toàn quốc</li>
+                        <li>Ưu đãi khi mua số lượng lớn</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 </body>
 </html>
+

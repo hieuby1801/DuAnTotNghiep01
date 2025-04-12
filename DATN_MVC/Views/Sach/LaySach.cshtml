@@ -274,35 +274,36 @@
 				foreach (var item in Model.sachDTOs)
 				{
 					<div class="col">
-						<div class="book-card-inner">
-							<img src="@Url.Content(item.HinhAnh)" class="book-image" alt="@item.TenSach" />
-							<a href="#" class="book-title">@item.TenSach</a>
-							@if (Model.nhaCungCaps != null && Model.nhaCungCaps.Any())
-							{
-								var nhaCungCap = Model.nhaCungCaps.FirstOrDefault(ncc => ncc.MaNhaCungCap == item.MaNhaCungCap);
-								<small>Nhà cung cấp: @(nhaCungCap?.TenNhaCungCap ?? "Không tìm thấy")</small>
-							}
-							else
-							{
-								<small>Nhà cung cấp: Không có dữ liệu</small>
-							}
-							<p class="book-author mb-1">@item.TacGia</p>
-							<div class="text-warning mb-2">
-								<i class="bi bi-star-fill"></i>
-								<i class="bi bi-star-fill"></i>
-								<i class="bi bi-star-fill"></i>
-								<i class="bi bi-star-fill"></i>
-								<i class="bi bi-star-fill"></i>
+						<a href="@Url.Action("ChiTietSach", "Sach", new { id = item.MaSach })" style="text-decoration: none; color: inherit;">
+							<div class="book-card-inner" style="cursor: pointer;">
+								<img src="@Url.Content(item.HinhAnh)" class="book-image" alt="@item.TenSach" />
+								<div class="book-title">@item.TenSach</div>
+								@if (Model.nhaCungCaps != null && Model.nhaCungCaps.Any())
+								{
+									var nhaCungCap = Model.nhaCungCaps.FirstOrDefault(ncc => ncc.MaNhaCungCap == item.MaNhaCungCap);
+									<small>Nhà cung cấp: @(nhaCungCap?.TenNhaCungCap ?? "Không tìm thấy")</small>
+								}
+								else
+								{
+									<small>Nhà cung cấp: Không có dữ liệu</small>
+								}
+								<p class="book-author mb-1">@item.TacGia</p>
+								<div class="text-warning mb-2">
+									<i class="bi bi-star-fill"></i>
+									<i class="bi bi-star-fill"></i>
+									<i class="bi bi-star-fill"></i>
+									<i class="bi bi-star-fill"></i>
+									<i class="bi bi-star-fill"></i>
+								</div>
+								<p class="book-price">@item.GiaTien ₫</p>
+								<p class="book-price" style="font-size: 12px; color: #000; margin: 4px 0;">
+									thể loại: @string.Join(", ", item.TheLoais)
+								</p>
 							</div>
-							<p class="book-price">@item.GiaTien ₫</p>
-							<p class="book-price" style="font-size: 12px; color: #000; margin: 4px 0;">
-								thể loại :@string.Join(", ", item.TheLoais)
-							</p>
-							
-							
-						</div>
+						</a>
 					</div>
 				}
+
 			}
 			else
 			{
