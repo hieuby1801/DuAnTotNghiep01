@@ -291,7 +291,10 @@ namespace DATN_API.Service
                                 TrangThai = reader["TrangThai"]?.ToString(),
                                 HinhAnh = reader["HinhAnh"]?.ToString(),
                                 TenNhaCungCap = reader["TenNhaCungCap"]?.ToString(),
-                                TheLoais = reader["TheLoai"]?.ToString()?.Split(", ").ToList() // tách chuỗi thành list
+                                TheLoais = reader["TheLoai"]?.ToString()?.Split(", ").ToList(), // tách chuỗi thành list
+                                DanhSachMaTheLoai = reader["DanhSachMaTheLoai"] != DBNull.Value
+                                    ? reader["DanhSachMaTheLoai"].ToString().Split(", ").Select(int.Parse).ToList()
+                                    : new List<int>()
                             };
 
                             return dto;
