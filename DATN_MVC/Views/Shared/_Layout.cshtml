@@ -182,6 +182,15 @@
 				color: #007bff;
 			}
 	</style>
+	<style>
+		.footer-custom {
+			border-radius: 20px;
+			box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+			margin: 40px auto 0 auto;
+			width: 95%;
+		}
+
+	</style>
 
 </head>
 
@@ -554,148 +563,64 @@
 	<main class="container">
 		@RenderBody() 
 	</main>
-	<footer id="footer" class="padding-large">
-		<div class="container">
-			<div class="row">
-				<div class="footer-top-area">
-					<div class="row d-flex flex-wrap justify-content-between">
-						<div class="col-lg-3 col-sm-6 pb-3">
-							<div class="footer-menu">
-								<img src="~/images/main-logo.png" alt="logo" class="img-fluid mb-2">
-								<p>
-									Nisi, purus vitae, ultrices nunc. Sit ac sit suscipit hendrerit. Gravida massa volutpat aenean odio
-									erat nullam fringilla.
-								</p>
-								<div class="social-links">
-									<ul class="d-flex list-unstyled">
-										<li>
-											<a href="#">
-												<svg class="facebook">
-													<use xlink:href="#facebook" />
-												</svg>
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												<svg class="instagram">
-													<use xlink:href="#instagram" />
-												</svg>
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												<svg class="twitter">
-													<use xlink:href="#twitter" />
-												</svg>
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												<svg class="linkedin">
-													<use xlink:href="#linkedin" />
-												</svg>
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												<svg class="youtube">
-													<use xlink:href="#youtube" />
-												</svg>
-											</a>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-2 col-sm-6 pb-3">
-							<div class="footer-menu text-capitalize">
-								<h5 class="widget-title pb-2">Quick Links</h5>
-								<ul class="menu-list list-unstyled text-capitalize">
-									<li class="menu-item mb-1">
-										<a href="#">Home</a>
-									</li>
-									<li class="menu-item mb-1">
-										<a href="#">About</a>
-									</li>
-									<li class="menu-item mb-1">
-										<a href="#">Shop</a>
-									</li>
-									<li class="menu-item mb-1">
-										<a href="#">Blogs</a>
-									</li>
-									<li class="menu-item mb-1">
-										<a href="#">Contact</a>
-									</li>
-								</ul>
-							</div>
-						</div>
-						<div class="col-lg-3 col-sm-6 pb-3">
-							<div class="footer-menu text-capitalize">
-								<h5 class="widget-title pb-2">Help & Info Help</h5>
-								<ul class="menu-list list-unstyled">
-									<li class="menu-item mb-1">
-										<a href="#">Track Your Order</a>
-									</li>
-									<li class="menu-item mb-1">
-										<a href="#">Returns Policies</a>
-									</li>
-									<li class="menu-item mb-1">
-										<a href="#">Shipping + Delivery</a>
-									</li>
-									<li class="menu-item mb-1">
-										<a href="#">Contact Us</a>
-									</li>
-									<li class="menu-item mb-1">
-										<a href="#">Faqs</a>
-									</li>
-								</ul>
-							</div>
-						</div>
-						<div class="col-lg-3 col-sm-6 pb-3">
-							<div class="footer-menu contact-item">
-								<h5 class="widget-title text-capitalize pb-2">Contact Us</h5>
-								<p>
-									Do you have any queries or suggestions? <a href="mailto:"
-													class="text-decoration-underline">yourinfo@gmail.com</a>
-								</p>
-								<p>
-									If you need support? Just give us a call. <a href="#" class="text-decoration-underline">
-										+55 111 222
-										333 44
-									</a>
-								</p>
-							</div>
-						</div>
+	<footer id="footer" class="footer-custom bg-white text-dark pt-5 pb-4 shadow-sm">
+		<div class="container-fluid">
+			<div class="row gy-4">
+				<!-- Logo & mô tả -->
+				<div class="col-lg-3 col-md-6 text-center text-md-start">
+					<img src="~/images/main-logo.png" alt="logo" class="img-fluid mb-3">
+					<p class="small text-muted">
+						Nisi, purus vitae, ultrices nunc. Sit ac sit suscipit hendrerit. Gravida massa volutpat aenean odio erat nullam fringilla.
+					</p>
+					<div class="d-flex justify-content-center justify-content-md-start gap-3">
+						<a href="#" class="text-dark fs-5"><i class="fab fa-facebook-f"></i></a>
+						<a href="#" class="text-dark fs-5"><i class="fab fa-instagram"></i></a>
+						<a href="#" class="text-dark fs-5"><i class="fab fa-twitter"></i></a>
+						<a href="#" class="text-dark fs-5"><i class="fab fa-linkedin-in"></i></a>
+						<a href="#" class="text-dark fs-5"><i class="fab fa-youtube"></i></a>
 					</div>
+				</div>
+
+				<!-- Liên kết nhanh -->
+				<div class="col-lg-2 col-md-4 text-center text-md-start">
+					<strong class="text-uppercase mb-3">Liên kết nhanh</strong>
+					<ul class="list-unstyled small">
+						<li class="mb-2"><a href="#" class="text-dark text-decoration-none">Trang chủ</a></li>
+						<li class="mb-2"><a href="#" class="text-dark text-decoration-none">Giới thiệu</a></li>
+						<li class="mb-2"><a href="#" class="text-dark text-decoration-none">Cửa hàng</a></li>
+						<li class="mb-2"><a href="#" class="text-dark text-decoration-none">Tin tức</a></li>
+						<li class="mb-2"><a href="#" class="text-dark text-decoration-none">Liên hệ</a></li>
+					</ul>
+				</div>
+
+				<!-- Hỗ trợ -->
+				<div class="col-lg-2 col-md-4 text-center text-md-start">
+					<strong class="text-uppercase mb-3">Hỗ trợ & Thông tin</strong>
+					<ul class="list-unstyled small">
+						<li class="mb-2"><a href="#" class="text-dark text-decoration-none">Theo dõi đơn hàng</a></li>
+						<li class="mb-2"><a href="#" class="text-dark text-decoration-none">Chính sách đổi trả</a></li>
+						<li class="mb-2"><a href="#" class="text-dark text-decoration-none">Giao hàng & vận chuyển</a></li>
+						<li class="mb-2"><a href="#" class="text-dark text-decoration-none">Liên hệ hỗ trợ</a></li>
+						<li class="mb-2"><a href="#" class="text-dark text-decoration-none">Câu hỏi thường gặp</a></li>
+					</ul>
+				</div>
+
+				<!-- Điều Khoản sử dụng -->
+				<div class="col-lg-2 col-md-4 text-center text-md-start">
+					<strong class="text-uppercase mb-3">Điều Khoản sử dụng</strong>
+					<ul class="list-unstyled small">
+						<li class="mb-2"><a href="#" class="text-dark text-decoration-none">Điều khoản sử dụng</a></li>
+						<li class="mb-2"><a href="#" class="text-dark text-decoration-none">Chính sách bảo mật thông tin</a></li>
+						<li class="mb-2"><a href="#" class="text-dark text-decoration-none">Chính sách bảo mật thanh toán</a></li>
+					</ul>
 				</div>
 			</div>
 		</div>
 	</footer>
-	<hr>
-	<div id="footer-bottom" class="mb-2">
-		<div class="container">
-			<div class="d-flex flex-wrap justify-content-between">
-				<div class="ship-and-payment d-flex gap-md-5 flex-wrap">
-					<div class="shipping d-flex">
-						<p>We ship with:</p>
-						<div class="card-wrap ps-2">
-							<img src="~/images/dhl.png" alt="visa">
-							<img src="~/images/shippingcard.png" alt="mastercard">
-						</div>
-					</div>
-					<div class="payment-method d-flex">
-						<p>Payment options:</p>
-						<div class="card-wrap ps-2">
-							<img src="~/images/visa.jpg" alt="visa">
-							<img src="~/images/mastercard.jpg" alt="mastercard">
-							<img src="~/images/paypal.jpg" alt="paypal">
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 
+
+
+	
 
 	<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>

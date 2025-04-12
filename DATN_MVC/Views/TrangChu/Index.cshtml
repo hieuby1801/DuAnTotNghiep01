@@ -3,8 +3,69 @@
     var token = Context.Session.GetString("JWT_Token");// để lên đầu trang chủ
 }
 <!DOCTYPE html>
+<style>
+     body {
+         margin: 0;
+         font-family: Arial, sans-serif;
+     }
 
+     .newsletter-container {
+         background-color: #a1aab0;
+         padding: 20px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+     }
+
+     .newsletter-form {
+         display: flex;
+         align-items: center;
+         background-color: white;
+         border-radius: 5px;
+         overflow: hidden;
+         max-width: 700px;
+         width: 100%;
+     }
+
+     .icon-text {
+         display: flex;
+         align-items: center;
+         color: white;
+         margin-right: 20px;
+         font-size: 18px;
+     }
+
+         .icon-text i {
+             margin-right: 8px;
+             font-size: 20px;
+         }
+
+     .email-input {
+         flex: 1;
+         border: none;
+         padding: 12px;
+         font-size: 14px;
+         outline: none;
+     }
+
+     .subscribe-button {
+         background-color: #ff9900;
+         color: white;
+         border: none;
+         padding: 12px 20px;
+         font-size: 16px;
+         font-weight: bold;
+         cursor: pointer;
+         border-radius: 5px;
+         margin-left: 10px;
+     }
+
+         .subscribe-button:hover {
+             background-color: #e68a00;
+         }
+</style>
 <html>
+    
 <body>
  
 
@@ -178,8 +239,8 @@
                             </svg>
                         </div>
                         <div class="icon-box-content">
-                            <h4 class="card-title mb-1 text-capitalize text-dark">Quality guarantee</h4>
-                            <p>Dolor sit amet orem ipsu mcons ectetur adipi elit.</p>
+                            <h4 class="card-title mb-1 text-capitalize text-dark">Đảm Bảo Chất Lượng</h4>
+                            <p>Cam kết chất lượng – Chinh phục khách hàng.</p>
                         </div>
                     </div>
                 </div>
@@ -191,8 +252,8 @@
                             </svg>
                         </div>
                         <div class="icon-box-content">
-                            <h4 class="card-title mb-1 text-capitalize text-dark">Daily offers</h4>
-                            <p>Amet consectetur adipi elit loreme ipsum dolor sit.</p>
+                            <h4 class="card-title mb-1 text-capitalize text-dark">Ưu đãi hằng ngày</h4>
+                            <p>Giảm giá liên tục – Nhận quà mỗi ngày!</p>
                         </div>
                     </div>
                 </div>
@@ -204,8 +265,8 @@
                             </svg>
                         </div>
                         <div class="icon-box-content">
-                            <h4 class="card-title mb-1 text-capitalize text-dark">100% secure payment</h4>
-                            <p>Rem Lopsum dolor sit amet, consectetur adipi elit.</p>
+                            <h4 class="card-title mb-1 text-capitalize text-dark">Thanh Toán An Toàn</h4>
+                            <p>Bảo mật tuyệt đối – Giao dịch liền tay.</p>
                         </div>
                     </div>
                 </div>
@@ -530,91 +591,19 @@
                 </div>
             </div>
         </div>
-    </section>
-
-    <section id="instagram">
-        <div class="container">
-            <div class="text-center mb-4">
-                <h3>Instagram</h3>
+    </section>  
+    <section>
+        <div class="newsletter-container">
+            <div class="icon-text">
+                <i class="fas fa-envelope"></i>
+                ĐĂNG KÝ NHẬN BẢN TIN
             </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <figure class="instagram-item position-relative rounded-3">
-                        <a href="https://templatesjungle.com/" class="image-link position-relative">
-                            <div class="icon-overlay position-absolute d-flex justify-content-center">
-                                <svg class="instagram">
-                                    <use xlink:href="#instagram"></use>
-                                </svg>
-                            </div>
-                            <img src="images/insta-item1.jpg" alt="instagram" class="img-fluid rounded-3 insta-image">
-                        </a>
-                    </figure>
-                </div>
-                <div class="col-md-2">
-                    <figure class="instagram-item position-relative rounded-3">
-                        <a href="https://templatesjungle.com/" class="image-link position-relative">
-                            <div class="icon-overlay position-absolute d-flex justify-content-center">
-                                <svg class="instagram">
-                                    <use xlink:href="#instagram"></use>
-                                </svg>
-                            </div>
-                            <img src="images/insta-item2.jpg" alt="instagram" class="img-fluid rounded-3 insta-image">
-                        </a>
-                    </figure>
-                </div>
-                <div class="col-md-2">
-                    <figure class="instagram-item position-relative rounded-3">
-                        <a href="https://templatesjungle.com/" class="image-link position-relative">
-                            <div class="icon-overlay position-absolute d-flex justify-content-center">
-                                <svg class="instagram">
-                                    <use xlink:href="#instagram"></use>
-                                </svg>
-                            </div>
-                            <img src="images/insta-item3.jpg" alt="instagram" class="img-fluid rounded-3 insta-image">
-                        </a>
-                    </figure>
-                </div>
-                <div class="col-md-2">
-                    <figure class="instagram-item position-relative rounded-3">
-                        <a href="https://templatesjungle.com/" class="image-link position-relative">
-                            <div class="icon-overlay position-absolute d-flex justify-content-center">
-                                <svg class="instagram">
-                                    <use xlink:href="#instagram"></use>
-                                </svg>
-                            </div>
-                            <img src="images/insta-item4.jpg" alt="instagram" class="img-fluid rounded-3 insta-image">
-                        </a>
-                    </figure>
-                </div>
-                <div class="col-md-2">
-                    <figure class="instagram-item position-relative rounded-3">
-                        <a href="https://templatesjungle.com/" class="image-link position-relative">
-                            <div class="icon-overlay position-absolute d-flex justify-content-center">
-                                <svg class="instagram">
-                                    <use xlink:href="#instagram"></use>
-                                </svg>
-                            </div>
-                            <img src="images/insta-item5.jpg" alt="instagram" class="img-fluid rounded-3 insta-image">
-                        </a>
-                    </figure>
-                </div>
-                <div class="col-md-2">
-                    <figure class="instagram-item position-relative rounded-3">
-                        <a href="https://templatesjungle.com/" class="image-link position-relative">
-                            <div class="icon-overlay position-absolute d-flex justify-content-center">
-                                <svg class="instagram">
-                                    <use xlink:href="#instagram"></use>
-                                </svg>
-                            </div>
-                            <img src="images/insta-item6.jpg" alt="instagram" class="img-fluid rounded-3 insta-image">
-                        </a>
-                    </figure>
-                </div>
-            </div>
+            <form class="newsletter-form">
+                <input type="email" class="email-input" placeholder="Nhập địa chỉ email của bạn" required />
+                <button type="submit" class="subscribe-button">Đăng ký</button>
+            </form>
         </div>
     </section>
-
-  
    
 </body>
 </html>
