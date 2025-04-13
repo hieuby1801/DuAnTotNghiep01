@@ -8,5 +8,6 @@
 		public int? SoLuongNhap { get; set; }
 		public int? GiaNhap { get; set; }
 		public string? NhaXuatBan { get; set; }
+
 	}
 }

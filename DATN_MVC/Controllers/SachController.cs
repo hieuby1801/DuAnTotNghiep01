@@ -1,4 +1,4 @@
-﻿using DATN_MVC.Models;
+﻿/*using DATN_MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -85,3 +85,4 @@ namespace DATN_MVC.Controllers
 		}
 	}
 }
+*/

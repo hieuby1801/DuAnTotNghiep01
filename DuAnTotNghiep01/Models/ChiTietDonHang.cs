@@ -2,6 +2,7 @@
 {
     public class ChiTietDonHang
     {
+
 		public int MaDonHang { get; set; }
 		public int? MaSach { get; set; }
 		public int? SoLuong { get; set; }

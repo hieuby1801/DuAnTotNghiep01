@@ -2,6 +2,7 @@
 {
     public class Sach
     {
+
 		public int? MaSach { get; set; }
 		public string? TenSach { get; set; }
 		public string? TacGia { get; set; }

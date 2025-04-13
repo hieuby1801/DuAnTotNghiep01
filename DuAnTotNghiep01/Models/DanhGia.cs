@@ -2,6 +2,7 @@
 {
     public class DanhGia
     {
+
 		public int MaDanhGia { get; set; }
 		public int? MaNguoiDung { get; set; }
 		public int? MaSach { get; set; }

@@ -17,11 +17,7 @@ namespace DATN_MVC.Controllers
 			var response = await _httpClient.GetAsync("Sachs/Laysach");
 			var sach = new Modeltong();
 
-			if (response.IsSuccessStatusCode)
-			{
-				var jsonString = await response.Content.ReadAsStringAsync();
-				sach.sachDTOs = JsonConvert.DeserializeObject<List<SachDTO>>(jsonString);
-			}
+			
 
 			return View(sach); // ✅ Trả về model tổng
 		}

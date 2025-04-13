@@ -9,4 +9,5 @@
 		public string? TrangThai { get; set; }
 		public string? DiaChiGiao { get; set; }
 	}
+
 }

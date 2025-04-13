@@ -2,6 +2,7 @@
 {
     public class DonHang
     {
+
 		public int MaDonHang { get; set; }
 		public int? MaNguoiDung { get; set; }
 		public DateTime NgayDatHang { get; set; }
