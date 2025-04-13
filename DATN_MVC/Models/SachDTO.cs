@@ -13,7 +13,8 @@
             public string? HinhThuc { get; set; }
             public string? MoTa { get; set; }
             public string? TheLoai { get; set; }
-            public int? GiaBan { get; set; }
+		public int? TongSoLuongDaBan { get; set; }
+		public int? GiaBan { get; set; }
     }
     }
 
