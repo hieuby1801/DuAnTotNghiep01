@@ -1,4 +1,5 @@
-﻿using DATN_API.Service;
+﻿using DATN_API.Models;
+using DATN_API.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,7 +44,36 @@ namespace DATN_API.Controllers
 			}
             return BadRequest(new { Message = "Không có sách nào" });
         }
+		[HttpGet("Laysachtheotentheloai")]
+		public IActionResult Timsach(string theloai )
+		{
+			var sach = _sachservice.Timsachtheotheloai(theloai);
+            if (sach != null)
+			{
+				return Ok(sach);
+            }
+            return BadRequest(new { Message = "Không có sách nào" });
+        }
+		[HttpGet("Laysachtheothongtinnhap")]
+
+		[HttpGet]
+		public ActionResult<List<SachDTO>> Timsachtheothongtinnhap(
+	[FromQuery] string? tenSach = null,
+	[FromQuery] int? khoangGia = null,
+	[FromQuery] string? doTuoi = null,
+	[FromQuery] string? tacGia = null,
+	[FromQuery] List<string>? theLoai = null)
+		{
+			var sach = _sachservice.Timsachtheothongtinnhap(tenSach, khoangGia, doTuoi, tacGia, theLoai);
+
+			if (sach != null && sach.Any())
+			{
+				return Ok(sach);
+			}
+
+			return BadRequest(new { Message = "Không có sách nào" });
+		}
 
 
-    }
+	}
 }

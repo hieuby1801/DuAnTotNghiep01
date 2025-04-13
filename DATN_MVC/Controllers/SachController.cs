@@ -24,74 +24,112 @@ namespace DATN_MVC.Controllers
 			}
 			return View(modeltong);
 		}
-		
-        public async Task<IActionResult> ChiTietSach(int masach)
-        {
 
-            var sach = new Modeltong();
-            var response = await _httpClient.GetAsync($"Sachs/Laysach{masach}");
-            if (response.IsSuccessStatusCode)
-            {
-                var jsonsach = await response.Content.ReadAsStringAsync();
-                sach.sachDTOs = JsonConvert.DeserializeObject<SachDTO>(jsonsach);
-            }
-            return View(sach);
-        }
-        /*public async Task<IActionResult> LaySach(List<string> theloai)
+		public async Task<IActionResult> ChiTietSach(int masach)
+		{
+
+			var sach = new Modeltong();
+			var response = await _httpClient.GetAsync($"Sachs/Laysach{masach}");
+			if (response.IsSuccessStatusCode)
+			{
+				var jsonsach = await response.Content.ReadAsStringAsync();
+				sach.sachDTOs = JsonConvert.DeserializeObject<SachDTO>(jsonsach);
+			}
+			return View(sach);
+		}
+
+		public async Task<IActionResult> LaySach(List<string> tentheloai, List<string> theLoai, string tacGia, string doTuoi, int khoangGia, string tenSach)
 		{
 			var modeltong = new Modeltong();
-			// Lấy thể loại
-			var resTheLoai = await _httpClient.GetAsync("Sachs/LayTatCaTheLoai");
+			var queryParams = new List<string>();
+
+			// Lấy tất cả thể loại
+			var resTheLoai = await _httpClient.GetAsync("Sachs/Laytatcatheloai");
 			if (resTheLoai.IsSuccessStatusCode)
 			{
-				var theLoaiJson = await resTheLoai.Content.ReadAsStringAsync();
-				modeltong.TheLoais = JsonConvert.DeserializeObject<List<TheLoai>>(theLoaiJson) ?? new List<TheLoai>();
+				var theloaiJson = await resTheLoai.Content.ReadAsStringAsync();
+				modeltong.TheLoais = JsonConvert.DeserializeObject<List<TheLoai>>(theloaiJson) ?? new List<TheLoai>();
 			}
 
-			// Lọc theo thể loại nếu có chọn
-			if (theloai != null && theloai.Any())
+			// Kiểm tra nếu có các tham số lọc
+			if (theLoai != null && theLoai.Any())
 			{
-				// Gộp các thể loại lại thành query string kiểu: ?dstheloai=1&dstheloai=2
-				var queryString = string.Join("&", theloai.Select(t => $"dstheloai={Uri.EscapeDataString(t)}"));
-				ViewBag.TheLoaiDaChon = theloai;
-				var resSach = await _httpClient.GetAsync($"Sachs/Laysachtheo1trong2theloai?{queryString}");
+				foreach (var item in theLoai)
+				{
+					queryParams.Add($"theLoai={Uri.EscapeDataString(item)}");
+				}
+			}
+
+			if (!string.IsNullOrEmpty(tacGia))
+			{
+				queryParams.Add($"tacGia={Uri.EscapeDataString(tacGia)}");
+			}
+
+			if (!string.IsNullOrEmpty(doTuoi))
+			{
+				queryParams.Add($"tuoi={Uri.EscapeDataString(doTuoi)}");
+			}
+
+			if (khoangGia > 0)
+			{
+				queryParams.Add($"khoangGia={khoangGia}");
+			}
+
+			if (!string.IsNullOrEmpty(tenSach))
+			{
+				queryParams.Add($"tenSach={Uri.EscapeDataString(tenSach)}");
+			}
+
+			if (queryParams.Any())
+			{
+				// Xây dựng URL đầy đủ với query string
+				var queryString = string.Join("&", queryParams);
+				var url = $"Sachs/Laysachtheothongtinnhap?{queryString}";
+
+				// Gọi API với URL đã tạo
+				var resSach = await _httpClient.GetAsync(url);
 				if (resSach.IsSuccessStatusCode)
 				{
 					var sachJson = await resSach.Content.ReadAsStringAsync();
-					modeltong.sachDTOs = JsonConvert.DeserializeObject<List<SachDTO>>(sachJson) ?? new List<SachDTO>();
+					modeltong.sachDTOss = JsonConvert.DeserializeObject<List<SachDTO>>(sachJson) ?? new List<SachDTO>();
 				}
 			}
 			else
 			{
-				// Mặc định: lấy tất cả sách
+				// Nếu không có tham số lọc nào, lấy tất cả sách
 				var resAllSach = await _httpClient.GetAsync("Sachs/Laysach");
 				if (resAllSach.IsSuccessStatusCode)
 				{
 					var sachJson = await resAllSach.Content.ReadAsStringAsync();
-					modeltong.sachDTOs = JsonConvert.DeserializeObject<List<SachDTO>>(sachJson) ?? new List<SachDTO>();
+					modeltong.sachDTOss = JsonConvert.DeserializeObject<List<SachDTO>>(sachJson) ?? new List<SachDTO>();
 				}
 			}
+
 			return View(modeltong);
 		}
-		public async Task<IActionResult> Laysachtheloai(string tentheloai)
+
+		public async Task<IActionResult> TimSach(string Tentheloai)
 		{
 			var modeltong = new Modeltong();
-			var resSach = await _httpClient.GetAsync($"Sachs/Laysachtheotheloai?tentheloai={Uri.EscapeDataString(tentheloai)}");
-
 			// Lấy thể loại
 			var resTheLoai = await _httpClient.GetAsync("Sachs/LayTatCaTheLoai");
+			var resSach = await _httpClient.GetAsync($"Sachs/Laysachtheotentheloai?theloai={Uri.EscapeDataString(Tentheloai)}");
 			if (resTheLoai.IsSuccessStatusCode)
 			{
 				var theLoaiJson = await resTheLoai.Content.ReadAsStringAsync();
 				modeltong.TheLoais = JsonConvert.DeserializeObject<List<TheLoai>>(theLoaiJson) ?? new List<TheLoai>();
 			}
+			// Lấy sách
+			
 			if (resSach.IsSuccessStatusCode)
 			{
 				var sachJson = await resSach.Content.ReadAsStringAsync();
-				modeltong.sachDTOs = JsonConvert.DeserializeObject<List<SachDTO>>(sachJson) ?? new List<SachDTO>();
+				modeltong.sachDTOss = JsonConvert.DeserializeObject<List<SachDTO>>(sachJson) ?? new List<SachDTO>();
 			}
-			return View("LaySach", modeltong);
-		}*/
+			return View("Laysach",modeltong);
+		}
 
-    }
+
+
+	}
 }

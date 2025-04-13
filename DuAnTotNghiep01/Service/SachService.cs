@@ -93,7 +93,93 @@ namespace DATN_API.Service
 
             return result; // Trả về danh sách các sách
         }
+        public List<SachDTO> Timsachtheotheloai(string TenTheLoai)
+        {
+            List<SachDTO> list = new List<SachDTO>();
+            var connectionString = _configuration.GetConnectionString("con");
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("GetSachTheoTheLoai", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@TenTheLoai", TenTheLoai);
+
+                    conn.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            SachDTO sach = new SachDTO
+                            {
+                                MaSach = Convert.ToInt32(reader["MaSach"]),
+                                TenSach = reader["TenSach"].ToString(),
+                                GiaBan = reader["GiaBan"] != DBNull.Value ? (int?)reader["GiaBan"] : null,
+                                HinhAnh = reader["HinhAnh"].ToString()
+                            };
+                            list.Add(sach);
+                        }
+                    }
+                }
+            }
+
+            return list;
+        }
+		public List<SachDTO> Timsachtheothongtinnhap(string tenSach = null, int? khoangGia = null, string doTuoi = null, string tacGia = null, List<string> theLoai = null)
+		{
+			List<SachDTO> danhSachSach = new List<SachDTO>();
+			var connectionString = _configuration.GetConnectionString("con");
+
+			using (SqlConnection conn = new SqlConnection(connectionString))
+			{
+				using (SqlCommand cmd = new SqlCommand("TimKiemSach", conn))
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
+
+					// Truyền tham số
+					cmd.Parameters.AddWithValue("@TenSach", (object)tenSach ?? DBNull.Value);
+					cmd.Parameters.AddWithValue("@KhoangGia", (object)khoangGia ?? DBNull.Value);
+					cmd.Parameters.AddWithValue("@DoTuoi", (object)doTuoi ?? DBNull.Value);
+					cmd.Parameters.AddWithValue("@TacGia", (object)tacGia ?? DBNull.Value);
+
+					// Chuyển List<string> thể loại thành chuỗi
+					var theLoaiString = theLoai != null && theLoai.Any() ? string.Join(",", theLoai) : null;
+					cmd.Parameters.AddWithValue("@TheLoai", (object)theLoaiString ?? DBNull.Value);
+
+					conn.Open();
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							string? theLoaiChuoi = reader.IsDBNull(reader.GetOrdinal("TheLoai"))
+								? null
+								: reader.GetString(reader.GetOrdinal("TheLoai"));
+
+							var sach = new SachDTO
+							{
+								MaSach = reader.IsDBNull(reader.GetOrdinal("MaSach")) ? 0 : reader.GetInt32(reader.GetOrdinal("MaSach")),
+								TenSach = reader.IsDBNull(reader.GetOrdinal("TenSach")) ? null : reader.GetString(reader.GetOrdinal("TenSach")),
+								TacGia = reader.IsDBNull(reader.GetOrdinal("TacGia")) ? null : reader.GetString(reader.GetOrdinal("TacGia")),
+								HinhAnh = reader.IsDBNull(reader.GetOrdinal("HinhAnh")) ? null : reader.GetString(reader.GetOrdinal("HinhAnh")),
+								GiaBan = reader.IsDBNull(reader.GetOrdinal("GiaBan")) ? 0 : reader.GetInt32(reader.GetOrdinal("GiaBan")),
+								DoTuoi = reader.IsDBNull(reader.GetOrdinal("DoTuoi")) ? null : reader.GetString(reader.GetOrdinal("DoTuoi")),
+								TheLoais = string.IsNullOrWhiteSpace(theLoaiChuoi)
+									? new List<string>()
+									: theLoaiChuoi.Split(',').Select(t => t.Trim()).ToList()
+							};
+
+							danhSachSach.Add(sach);
+						}
+					}
+				}
+			}
+
+			return danhSachSach;
+		}
 
 
-    }
+
+
+
+	}
 }

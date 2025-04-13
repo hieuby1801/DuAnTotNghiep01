@@ -192,51 +192,43 @@
 <div class="row">
 	<!-- Sidebar bọc trong form -->
 	<div class="col-md-3">
-		<form action="#" method="get">
+		<form asp-action="LaySach" asp-controller="Sach" method="post">
 			<div class="sidebar">
 				<h5><i class="bi bi-book-half me-2"></i>Nhóm Sản Phẩm</h5>
 				<ul class="nav flex-column mb-4">
-					<li class="nav-item mb-2">
-						<div class="form-check">
-							<input class="form-check-input" type="checkbox" name="theloai" value="Tiểu thuyết" id="Tiểu thuyết" />
-							<label class="form-check-label" for="Tiểu thuyết">Tiểu thuyết</label>
-						</div>
-					</li>
-					<li class="nav-item mb-2">
-						<div class="form-check">
-							<input class="form-check-input" type="checkbox" name="theloai" value="Khoa học" id="Khoa học" />
-							<label class="form-check-label" for="Khoa học">Khoa học</label>
-						</div>
-					</li>
-					<li class="nav-item mb-2">
-						<div class="form-check">
-							<input class="form-check-input" type="checkbox" name="theloai" value="Truyện tranh" id="Truyện tranh" />
-							<label class="form-check-label" for="Truyện tranh">Truyện tranh</label>
-						</div>
-					</li>
+					@foreach (var item in Model.TheLoais)
+					{
+						<li class="nav-item mb-2">
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" name="theloai" value="@item.TenTheLoai" />
+								<label class="form-check-label" for="Truyện tranh">@item.TenTheLoai</label>
+							</div>
+						</li>
+					}
 				</ul>
 
 				<hr />
 				<!-- Lọc theo giá -->
 				<h6 class="mt-3">Lọc theo giá</h6>
+				
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" name="gia" value="0-50000" id="gia1">
-					<label class="form-check-label" for="gia1">0đ - 50,000đ</label>
+					<input class="form-check-input" type="radio" name="khoangGia" value="1" id="tuoi1">
+					<label class="form-check-label" for="tuoi1">0 - 30k</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" name="gia" value="50000-100000" id="gia2">
-					<label class="form-check-label" for="gia2">50,000đ - 100,000đ</label>
+					<input class="form-check-input" type="radio" name="khoangGia" value="2" id="tuoi2">
+					<label class="form-check-label" for="tuoi2">30k - 50k</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" name="gia" value="100000-200000" id="gia3">
-					<label class="form-check-label" for="gia3">100,000đ - 200,000đ</label>
+					<input class="form-check-input" type="radio" name="khoangGia" value="3" id="tuoi3">
+					<label class="form-check-label" for="tuoi3">50k - 100k</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" name="gia" value="200000+" id="gia4">
-					<label class="form-check-label" for="gia4">200,000đ trở lên</label>
+					<input class="form-check-input" type="radio" name="khoangGia" value="4" id="tuoi3">
+					<label class="form-check-label" for="tuoi3">100k</label>
 				</div>
 
-				<!-- Lọc theo tuổi -->
+				<!-- Lọc theo độ tuổi -->
 				<h6 class="mt-4">Độ tuổi</h6>
 				<div class="form-check">
 					<input class="form-check-input" type="radio" name="tuoi" value="duoi6" id="tuoi1">
@@ -262,40 +254,33 @@
 			</div>
 		</form>
 
+
+
+
 	</div>
 	
 	<!-- Phần hiển thị sách -->
 	<div class="col-md-9">
 		<!-- Hiển thị thể loại đã chọn -->
-		<div class="text-sm text-gray-700 bg-gray-100 px-3 py-2 rounded shadow-sm inline-block mb-3">
-			<span class="font-semibold">Thể loại tìm:</span> Tiểu thuyết, Khoa học
-		</div>
+	
 
 		<!-- Danh sách sách -->
+		<!-- Danh sách sách -->
 		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mt-2">
-			<div class="col">
-				<a href="#" style="text-decoration: none; color: inherit;">
-					<div class="book-card-inner" style="cursor: pointer;">
-						<img src="~/images/sach1.jpg" class="book-image" alt="Tên sách" />
-						<div class="book-title">Tên sách mẫu</div>
-						<small>Nhà cung cấp: Nhà sách ABC</small>
-						<p class="book-author mb-1">Tác giả A</p>
-						<div class="text-warning mb-2">
-							<i class="bi bi-star-fill"></i>
-							<i class="bi bi-star-fill"></i>
-							<i class="bi bi-star-fill"></i>
-							<i class="bi bi-star-fill"></i>
-							<i class="bi bi-star-fill"></i>
+			@foreach (var sach in Model.sachDTOss)
+			{
+				<div class="col">
+					<a href="#" style="text-decoration: none; color: inherit;">
+						<div class="book-card-inner" style="cursor: pointer;">
+							<img src="@Url.Content(sach.HinhAnh)" class="book-image" alt="@sach.TenSach" />
+							<div class="book-title">@sach.TenSach</div>
+							<small>Đã bán: @sach.TongSoLuongDaBan</small>
+							<p class="book-price">@sach.GiaBan ₫</p>
 						</div>
-						<p class="book-price">100.000 ₫</p>
-						<p class="book-price" style="font-size: 12px; color: #000; margin: 4px 0;">
-							thể loại: Tiểu thuyết, Phiêu lưu
-						</p>
-					</div>
-				</a>
-			</div>
-
-			<!-- Thêm nhiều sách mẫu tại đây nếu cần -->
+					</a>
+				</div>
+			}
+		</div>	
 		</div>
 	</div>
 
