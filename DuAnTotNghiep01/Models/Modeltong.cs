@@ -12,10 +12,6 @@
      
         public List<TheLoai> TheLoais { get; set; } = new List<TheLoai>();
 	
-
-    
-	
-
         public List<NguoiDung> NguoiDungs { get; set; } = new List<NguoiDung>();
         public List<Sach> Saches { get; set; } = new List<Sach>();
     

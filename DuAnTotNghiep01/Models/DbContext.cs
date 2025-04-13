@@ -8,7 +8,7 @@ namespace DATN_API.Models
 		{
 
 		}
-		public DbSet<Sach> saches { get; set; }
+		public DbSet<Sach> Sach { get; set; }
 		public DbSet <ChiTietDonHang> chiTietDonHangs { get; set; }
 		public DbSet<ChiTietLoHang> chiTietLoHangs { get; set; }
 		public DbSet <DanhGia> danhGias { get; set; }

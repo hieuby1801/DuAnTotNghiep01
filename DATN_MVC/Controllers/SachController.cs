@@ -1,4 +1,4 @@
-﻿/*using DATN_MVC.Models;
+﻿using DATN_MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -12,7 +12,7 @@ namespace DATN_MVC.Controllers
 			_httpClient = httpClient;
 			_httpClient.BaseAddress = new Uri("https://localhost:7189/api/");
 		}
-		public async Task<IActionResult>Laytatcatheloai()
+		public async Task<IActionResult> Laytatcatheloai()
 		{
 			var modeltong = new Modeltong();
 			// Lấy thể loại
@@ -24,7 +24,20 @@ namespace DATN_MVC.Controllers
 			}
 			return View(modeltong);
 		}
-		public async Task<IActionResult> LaySach(List<string> theloai)
+		
+        public async Task<IActionResult> ChiTietSach(int masach)
+        {
+
+            var sach = new Modeltong();
+            var response = await _httpClient.GetAsync($"Sachs/Laysach{masach}");
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonsach = await response.Content.ReadAsStringAsync();
+                sach.sachDTOs = JsonConvert.DeserializeObject<SachDTO>(jsonsach);
+            }
+            return View(sach);
+        }
+        /*public async Task<IActionResult> LaySach(List<string> theloai)
 		{
 			var modeltong = new Modeltong();
 			// Lấy thể loại
@@ -64,25 +77,21 @@ namespace DATN_MVC.Controllers
 		{
 			var modeltong = new Modeltong();
 			var resSach = await _httpClient.GetAsync($"Sachs/Laysachtheotheloai?tentheloai={Uri.EscapeDataString(tentheloai)}");
-          
-            // Lấy thể loại
-            var resTheLoai = await _httpClient.GetAsync("Sachs/LayTatCaTheLoai");
-            if (resTheLoai.IsSuccessStatusCode)
-            {
-                var theLoaiJson = await resTheLoai.Content.ReadAsStringAsync();
-                modeltong.TheLoais = JsonConvert.DeserializeObject<List<TheLoai>>(theLoaiJson) ?? new List<TheLoai>();
-            }
-            if (resSach.IsSuccessStatusCode)
+
+			// Lấy thể loại
+			var resTheLoai = await _httpClient.GetAsync("Sachs/LayTatCaTheLoai");
+			if (resTheLoai.IsSuccessStatusCode)
+			{
+				var theLoaiJson = await resTheLoai.Content.ReadAsStringAsync();
+				modeltong.TheLoais = JsonConvert.DeserializeObject<List<TheLoai>>(theLoaiJson) ?? new List<TheLoai>();
+			}
+			if (resSach.IsSuccessStatusCode)
 			{
 				var sachJson = await resSach.Content.ReadAsStringAsync();
 				modeltong.sachDTOs = JsonConvert.DeserializeObject<List<SachDTO>>(sachJson) ?? new List<SachDTO>();
 			}
 			return View("LaySach", modeltong);
-		}
-		public IActionResult ChiTietSach()
-		{
-			return View();
-		}
-	}
+		}*/
+
+    }
 }
-*/

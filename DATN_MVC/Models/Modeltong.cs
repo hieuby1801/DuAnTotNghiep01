@@ -8,8 +8,9 @@
 		public string MatKhau { get; set; }
 		public NguoiDung NguoiDungss { get; set; }
 		public Sach Sachs { get; set; }
-
-		public List<TheLoai> TheLoais { get; set; } = new List<TheLoai>();
+		public SachDTO sachDTOs { get; set; }
+        public List<SachDTO> sachDTOss { get; set; } = new List<SachDTO>();
+        public List<TheLoai> TheLoais { get; set; } = new List<TheLoai>();
 
 		public List<NguoiDung> NguoiDungs { get; set; } = new List<NguoiDung>();
 		public List<Sach> Saches { get; set; } = new List<Sach>();

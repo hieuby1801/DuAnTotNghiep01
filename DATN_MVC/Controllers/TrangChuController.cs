@@ -12,16 +12,20 @@ namespace DATN_MVC.Controllers
             _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri("https://localhost:7189/api/");
         }
-		public async Task<IActionResult> Index()
+		public async Task<IActionResult> Index(int masach)
 		{
-			var response = await _httpClient.GetAsync("Sachs/Laysach");
-			var sach = new Modeltong();
-
 			
-
-			return View(sach); // ✅ Trả về model tổng
+			var sach = new Modeltong();
+            var response = await _httpClient.GetAsync("Sachs/Laysach");
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonsach = await response.Content.ReadAsStringAsync();
+                sach.sachDTOss = JsonConvert.DeserializeObject<List<SachDTO>>(jsonsach);
+            }
+            return View(sach);
 		}
-		public IActionResult QuenMatKhau()
+       
+        public IActionResult QuenMatKhau()
         {
             return View();
         }
