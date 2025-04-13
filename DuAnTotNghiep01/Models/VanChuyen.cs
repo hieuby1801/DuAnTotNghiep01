@@ -1,8 +1,10 @@
-﻿namespace DATN_API.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DATN_API.Models
 {
     public class VanChuyen
     {
-
+		[Key]
 		public int MaVanChuyen { get; set; }
 		public int? MaDonHang { get; set; }
 		public DateTime NgayGiaoHang { get; set; }

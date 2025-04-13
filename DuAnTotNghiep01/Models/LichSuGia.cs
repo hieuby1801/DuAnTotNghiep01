@@ -1,9 +1,11 @@
-﻿namespace DATN_API.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DATN_API.Models
 {
 	public class LichSuGia
 	{
 
-
+		[Key]
 		public int MaLichSuGia { get; set; }
 		public DateTime NgayCapNhat { get; set; }
 		public int? MaSach { get; set; }

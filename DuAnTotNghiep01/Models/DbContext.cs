@@ -14,7 +14,7 @@ namespace DATN_API.Models
 		public DbSet <DanhGia> danhGias { get; set; }
 		public DbSet<LichSuGia> lichSuGias { get;set; }
 		public DbSet<LoHang> loHang { get; set; }
-		public DbSet<NguoiDung> nguoiDung { get; set; }
+		public DbSet<NguoiDung> NguoiDung { get; set; }
 		public DbSet<NhaCungCap> nhaCungCaps { get; set; }
 		public DbSet<PhieuTraHang> phieuTraHangs { get; set; }
 		public DbSet<PhuongThucThanhToan> phuongThucThanhToans { get; set; }

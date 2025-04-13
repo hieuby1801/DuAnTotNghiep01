@@ -74,7 +74,7 @@ namespace DATN_API.Service
             }
         }
 
-        public IActionResult DangNhap(DangNhapND dangNhap)
+        public IActionResult DangNhap(DangnhapND dangNhap)
         {
 
             var user = _Context.NguoiDung.FirstOrDefault(x => x.Email == dangNhap.Email && x.MatKhau == dangNhap.MatKhau);

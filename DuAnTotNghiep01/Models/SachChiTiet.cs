@@ -1,8 +1,10 @@
-﻿namespace DATN_API.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DATN_API.Models
 {
 	public class SachChiTiet
 	{
-
+		[Key]
 		public int MaSachChiTiet { get; set; }
 		public int? MaSach { get; set; }
 		public string? NgonNgu { get; set; }

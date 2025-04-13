@@ -1,9 +1,11 @@
-﻿namespace DATN_API.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DATN_API.Models
 {
 	public class PhieuTraHang
 	{
 
-
+		[Key]
 		public int MaTraHang { get; set; }
 		public int? MaSach { get; set; }
 		public int? MaLo { get; set; }

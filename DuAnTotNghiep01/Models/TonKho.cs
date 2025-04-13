@@ -1,8 +1,10 @@
-﻿namespace DATN_API.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DATN_API.Models
 {
 	public class TonKho
 	{
-
+		[Key]
 		public int MaTonKho { get; set; }
 		public int? MaSach { get; set; }
 		public int? MaLo { get; set; }
