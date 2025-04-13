@@ -25,7 +25,6 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true; // Đảm bảo cookie cần thiết cho ứng dụng
 });
 builder.Services.AddScoped<IDangNhapService, DangNhapService>();
-builder.Services.AddScoped<ISachService, SachService>();
 var jwtKey = builder.Configuration["Jwt:Key"];
 if (string.IsNullOrEmpty(jwtKey))
 {
