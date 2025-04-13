@@ -24,6 +24,7 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true; // Giới hạn truy cập cookie chỉ qua HTTP
     options.Cookie.IsEssential = true; // Đảm bảo cookie cần thiết cho ứng dụng
 });
+builder.Services.AddScoped<ISachservice , SachService>();
 builder.Services.AddScoped<IDangNhapService, DangNhapService>();
 var jwtKey = builder.Configuration["Jwt:Key"];
 if (string.IsNullOrEmpty(jwtKey))

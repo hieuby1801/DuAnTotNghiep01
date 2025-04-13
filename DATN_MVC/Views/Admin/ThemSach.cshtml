@@ -30,58 +30,57 @@
 <body>
     <div class="form-container">
         <h2>Thêm Sản Phẩm Sách</h2>
-        <form asp-action="ThemSach" asp-controller="Admin" method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data">
             <div class="row mb-3">
                 <div class="col">
-                    <label asp-for="sachDTOss.MaSach" class="form-label"></label>
-                    <input asp-for="sachDTOss.MaSach" class="form-control" />
+                    <label class="form-label">Mã Sách</label>
+                    <input class="form-control" name="MaSach" />
                 </div>
                 <div class="col">
-                    <label asp-for="sachDTOss.TenSach" class="form-label"></label>
-                    <input asp-for="sachDTOss.TenSach" class="form-control" />
+                    <label class="form-label">Tên Sách</label>
+                    <input class="form-control" name="TenSach" />
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col">
-                    <label asp-for="sachDTOss.TacGia" class="form-label"></label>
-                    <input asp-for="sachDTOss.TacGia" class="form-control" />
+                    <label class="form-label">Tác Giả</label>
+                    <input class="form-control" name="TacGia" />
                 </div>
                 <div class="col">
-                    <label asp-for="sachDTOss.GiaTien" class="form-label"></label>
-                    <input asp-for="sachDTOss.GiaTien" type="number" class="form-control" />
+                    <label class="form-label">Giá Tiền</label>
+                    <input type="number" class="form-control" name="GiaTien" />
                 </div>
             </div>
 
             <div class="mb-3">
-                <label asp-for="sachDTOss.HinhAnh" class="form-label"></label>
-                <input asp-for="sachDTOss.HinhAnh" type="file" name="imageFile" class="form-control" />
+                <label class="form-label">Hình Ảnh</label>
+                <input type="file" name="imageFile" class="form-control" />
             </div>
 
             <div class="row mb-3">
                 <div class="col">
-                    <label asp-for="sachDTOss.NamXuatBan" class="form-label"></label>
-                    <input asp-for="sachDTOss.NamXuatBan" class="form-control" />
+                    <label class="form-label">Năm Xuất Bản</label>
+                    <input class="form-control" name="NamXuatBan" />
                 </div>
                 <div class="col">
-                    <label asp-for="sachDTOss.SoLuongTon" class="form-label"></label>
-                    <input asp-for="sachDTOss.SoLuongTon" class="form-control" min="0" />
+                    <label class="form-label">Số Lượng Tồn</label>
+                    <input class="form-control" name="SoLuongTon" min="0" />
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col">
-                    <label asp-for="sachDTOss.SoLuongNhap" class="form-label">Số Lượng Nhập</label>
-                    <input asp-for="sachDTOss.SoLuongNhap" class="form-control" />
+                    <label class="form-label">Số Lượng Nhập</label>
+                    <input class="form-control" name="SoLuongNhap" />
                 </div>
                 <div class="col">
                     <label class="form-label">Tên Nhà Cung Cấp</label>
-                    <select asp-for="sachDTOss.MaNhaCungCap" class="form-select" required>
+                    <select class="form-select" name="MaNhaCungCap" required>
                         <option value="">-- Chọn nhà cung cấp --</option>
-                        @foreach (var item in Model.nhaCungCaps)
-                        {
-                            <option value="@item.MaNhaCungCap">@item.TenNhaCungCap</option>
-                        }
+                        <!-- Thêm nhà cung cấp thủ công nếu cần -->
+                        <option value="1">Nhà Cung Cấp A</option>
+                        <option value="2">Nhà Cung Cấp B</option>
                     </select>
                 </div>
             </div>
@@ -89,37 +88,27 @@
             <div class="mb-3">
                 <label class="form-label d-block">Danh Sách Thể Loại</label>
                 <div class="row">
-                    @for (int i = 0; i < Model.TheLoais.Count; i += 2)
-                    {
-                        <div class="row mb-2">
-                            <div class="col-md-6">
-                                @if (i < Model.TheLoais.Count)
-                                {
-                                    var item1 = Model.TheLoais[i];
-                                    <div class="form-check d-flex align-items-center">
-                                        <input class="form-check-input me-2" type="checkbox" name="sachDTOss.DanhSachMaTheLoai" value="@item1.MaTheLoai" id="tl-@item1.MaTheLoai" />
-                                        <label class="form-check-label" for="tl-@item1.MaTheLoai">@item1.TenTheLoai</label>
-                                    </div>
-                                }
-                            </div>
-                            <div class="col-md-6">
-                                @if (i + 1 < Model.TheLoais.Count)
-                                {
-                                    var item2 = Model.TheLoais[i + 1];
-                                    <div class="form-check d-flex align-items-center">
-                                        <input class="form-check-input me-2" type="checkbox" name="sachDTOss.DanhSachMaTheLoai" value="@item2.MaTheLoai" id="tl-@item2.MaTheLoai" />
-                                        <label class="form-check-label" for="tl-@item2.MaTheLoai">@item2.TenTheLoai</label>
-                                    </div>
-                                }
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <div class="form-check d-flex align-items-center">
+                                <input class="form-check-input me-2" type="checkbox" name="DanhSachMaTheLoai" value="1" id="tl-1" />
+                                <label class="form-check-label" for="tl-1">Văn Học</label>
                             </div>
                         </div>
-                    }
+                        <div class="col-md-6">
+                            <div class="form-check d-flex align-items-center">
+                                <input class="form-check-input me-2" type="checkbox" name="DanhSachMaTheLoai" value="2" id="tl-2" />
+                                <label class="form-check-label" for="tl-2">Kinh Tế</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Thêm các thể loại khác tương tự -->
                 </div>
             </div>
 
             <div class="mb-3">
-                <label asp-for="sachDTOss.TrangThai" class="form-label">Trạng Thái</label>
-                <select asp-for="sachDTOss.TrangThai" class="form-select">
+                <label class="form-label">Trạng Thái</label>
+                <select class="form-select" name="TrangThai">
                     <option value="on">On</option>
                     <option value="off">Off</option>
                 </select>
@@ -131,4 +120,5 @@
         </form>
     </div>
 </body>
+
 </html>

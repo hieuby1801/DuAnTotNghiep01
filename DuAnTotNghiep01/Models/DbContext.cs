@@ -21,7 +21,7 @@ namespace DATN_API.Models
 		public DbSet<SachChiTiet> sachChiTiets { get; set; }
 		public DbSet<SachTheLoai> sachTheLoais { get; set; }
 		public DbSet<ThanhToan> thanhToans { get; set; }
-		public  DbSet<TheLoai> theLoais { get; set;}
+		public  DbSet<TheLoai> TheLoai { get; set;}
 		public DbSet<TonKho> tonKhos { get; set; }
 		public DbSet<VanChuyen>	vanChuyens { get; set; }
 	}
