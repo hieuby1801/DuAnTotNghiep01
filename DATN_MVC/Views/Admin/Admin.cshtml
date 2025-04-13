@@ -210,7 +210,6 @@
     </style>
 </head>
 <body>
-
     <div class="admin-container">
         <aside class="sidebar">
             <div class="logo">
@@ -234,12 +233,12 @@
 
             <section class="stats">
                 <div class="stat-card">
-                    <h3>📚 Tổng số sách</h3>             
-                        <p> @Model.Saches.Count()</p>
+                    <h3>📚 Tổng số sách</h3>
+                    <p>0</p>
                 </div>
                 <div class="stat-card">
                     <h3>👥 Người dùng</h3>
-                    <p>@Model.NguoiDungs.Count()</p>
+                    <p>0</p>
                 </div>
                 <div class="stat-card">
                     <h3>🛒 Đơn hàng</h3>
@@ -250,88 +249,68 @@
                     <p>25,000,000đ</p>
                 </div>
             </section>
-            @if (TempData["Message"] != null)
-            {
-                <div class="alert alert-success" id="thongBao">
-                    @TempData["Message"]
-                </div>
-            }
+
             <section class="table-section">
                 <div class="section-header">
                     <h2>📘 Danh sách Sách</h2>
-                    <!-- Nút Thêm Sách -->
                     <button class="btn btn-primary mb-3" onclick="toggleForm()">
                         <i class="bi bi-plus-circle"></i> Thêm sách
                     </button>
-
                 </div>
+
                 <div id="themSachContainer" class="d-none">
-                  
-                    <form asp-action="ThemSach" method="post" enctype="multipart/form-data">
-
-                        @Html.Partial("ThemSach", Model)
+                    <form method="post" enctype="multipart/form-data">
+                        <!-- Form thêm sách nằm ở đây -->
+                        <!-- Bỏ Razor PartialView -->
                     </form>
-
                 </div>
-                @if (Model.Saches != null && Model.Saches.Count > 0)
-                {
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Mã sách</th>
-                                <th>Tên sách</th>
-                                <th>Tác giả</th>
-                                <th>Giá</th>
-                                <th>Kho</th>
-                                <th>Nhập</th>
-                                <th>Hình ảnh</th>
-                                <th>Hành động</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var sach in Model.Saches)
-                            {
-                                <tr>
-                                    <td>@sach.MaSach</td>
-                                    <td>@sach.TenSach</td>
-                                    <td>@sach.TacGia</td>
-                                    <td>@sach.GiaTien</td>
-                                    <td>@sach.SoLuongTon</td>
-                                    <td>@sach.SoLuongNhap</td>
-                                    <td>
-                                        <img src="@Url.Content(sach.HinhAnh)" alt="Ảnh sách" width="100" height="150" />
-                                    </td>
-                                    <td>
-                                        <a asp-action="CapNhatSach" asp-route-masach="@sach.MaSach" class="btn btn-sm btn-warning">Sửa</a>
-                                        <button class="delete-btn">Xóa</button>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                }
 
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mã sách</th>
+                            <th>Tên sách</th>
+                            <th>Tác giả</th>
+                            <th>Giá</th>
+                            <th>Kho</th>
+                            <th>Nhập</th>
+                            <th>Hình ảnh</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dữ liệu sách mẫu -->
+                        <tr>
+                            <td>MS001</td>
+                            <td>Sách Mẫu</td>
+                            <td>Nguyễn Văn A</td>
+                            <td>100,000</td>
+                            <td>20</td>
+                            <td>50</td>
+                            <td>
+                                <img src="~/images/sample.jpg" alt="Ảnh sách" width="100" height="150" />
+                            </td>
+                            <td>
+                                <a href="#" class="btn btn-sm btn-warning">Sửa</a>
+                                <button class="delete-btn">Xóa</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </section>
         </main>
     </div>
 </body>
 
-</html>
-<script>
-    function toggleForm() {
-        const container = document.getElementById("themSachContainer");
-        container.classList.toggle("d-none");
-    }
-</script>
 <script>
     function toggleForm() {
         const container = document.getElementById("themSachContainer");
         container.classList.toggle("d-none");
 
-        // Nếu có thông báo thì ẩn nó đi khi bật lại form
         const thongBao = document.getElementById("thongBao");
         if (thongBao) {
             thongBao.style.display = "none";
         }
     }
 </script>
+

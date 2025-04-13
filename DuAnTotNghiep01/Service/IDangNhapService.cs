@@ -14,7 +14,7 @@ namespace DATN_API.Service
         public string LaySaft(string email);
         public NguoiDung XacNhanMatKhau(string Pass);
         public string HashPassword(string salt, string password);
-        public IActionResult DangNhap(DangNhapND dangNhap);
+        public IActionResult DangNhap(DangnhapND dangNhap);
         //dang ky
         public NguoiDung DangKy(NguoiDung nguoiDung);
         public string SendOtpEmailAsync(string email);

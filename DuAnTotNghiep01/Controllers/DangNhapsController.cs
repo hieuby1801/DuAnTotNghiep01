@@ -17,7 +17,7 @@ namespace DATN_API.Controllers
             _dangNhapService = dangNhapService;
         }
         [HttpPost("DangNhap")]
-        public IActionResult DangNhap([FromBody] DangNhapND dangNhap)
+        public IActionResult DangNhap([FromBody] DangnhapND dangNhap)
         {
             var checkemail = _dangNhapService.XacNhanEmail(dangNhap.Email);
             if (checkemail != null)
@@ -139,7 +139,7 @@ namespace DATN_API.Controllers
         }
 
         [HttpPut("doimatkhau/{otp}")]
-        public IActionResult DoiMatKhau(string Otp, DangNhapND nguoidung)
+        public IActionResult DoiMatKhau(string Otp, DangnhapND nguoidung)
         {
             var checkOtp = _dangNhapService.KiemTraOtp(nguoidung.Email, Otp);
             if (!checkOtp)
