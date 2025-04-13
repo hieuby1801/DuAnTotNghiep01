@@ -192,24 +192,30 @@
 <div class="row">
 	<!-- Sidebar bọc trong form -->
 	<div class="col-md-3">
-		<form asp-action="LaySach" method="get">
+		<form action="#" method="get">
 			<div class="sidebar">
 				<h5><i class="bi bi-book-half me-2"></i>Nhóm Sản Phẩm</h5>
 				<ul class="nav flex-column mb-4">
-					@if (Model.TheLoais != null && Model.TheLoais.Any())
-					{
-						foreach (var theLoai in Model.TheLoais)
-						{
-							<li class="nav-item mb-2">
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" name="theloai" value="@theLoai.TenTheLoai" id="@theLoai.TenTheLoai" />
-									<label class="form-check-label" for="@theLoai.TenTheLoai">@theLoai.TenTheLoai</label>
-								</div>
-							</li>
-						}
-					}
+					<li class="nav-item mb-2">
+						<div class="form-check">
+							<input class="form-check-input" type="checkbox" name="theloai" value="Tiểu thuyết" id="Tiểu thuyết" />
+							<label class="form-check-label" for="Tiểu thuyết">Tiểu thuyết</label>
+						</div>
+					</li>
+					<li class="nav-item mb-2">
+						<div class="form-check">
+							<input class="form-check-input" type="checkbox" name="theloai" value="Khoa học" id="Khoa học" />
+							<label class="form-check-label" for="Khoa học">Khoa học</label>
+						</div>
+					</li>
+					<li class="nav-item mb-2">
+						<div class="form-check">
+							<input class="form-check-input" type="checkbox" name="theloai" value="Truyện tranh" id="Truyện tranh" />
+							<label class="form-check-label" for="Truyện tranh">Truyện tranh</label>
+						</div>
+					</li>
 				</ul>
-				
+
 				<hr />
 				<!-- Lọc theo giá -->
 				<h6 class="mt-3">Lọc theo giá</h6>
@@ -255,63 +261,44 @@
 				</button>
 			</div>
 		</form>
+
 	</div>
 	
 	<!-- Phần hiển thị sách -->
 	<div class="col-md-9">
-		@{
-			var theLoaiDaChon = ViewBag.TheLoaiDaChon as List<string>;
-		}
-		@if (theLoaiDaChon != null && theLoaiDaChon.Any())
-		{
-			<div class="text-sm text-gray-700 bg-gray-100 px-3 py-2 rounded shadow-sm inline-block mb-3">
-				<span class="font-semibold">Thể loại tìm:</span> @string.Join(", ", theLoaiDaChon)
-			</div>
-		}
-		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mt-2">
-			@if (Model.sachDTOs != null && Model.sachDTOs.Any())
-			{
-				foreach (var item in Model.sachDTOs)
-				{
-					<div class="col">
-						<a href="@Url.Action("ChiTietSach", "Sach", new { id = item.MaSach })" style="text-decoration: none; color: inherit;">
-							<div class="book-card-inner" style="cursor: pointer;">
-								<img src="@Url.Content(item.HinhAnh)" class="book-image" alt="@item.TenSach" />
-								<div class="book-title">@item.TenSach</div>
-								@if (Model.nhaCungCaps != null && Model.nhaCungCaps.Any())
-								{
-									var nhaCungCap = Model.nhaCungCaps.FirstOrDefault(ncc => ncc.MaNhaCungCap == item.MaNhaCungCap);
-									<small>Nhà cung cấp: @(nhaCungCap?.TenNhaCungCap ?? "Không tìm thấy")</small>
-								}
-								else
-								{
-									<small>Nhà cung cấp: Không có dữ liệu</small>
-								}
-								<p class="book-author mb-1">@item.TacGia</p>
-								<div class="text-warning mb-2">
-									<i class="bi bi-star-fill"></i>
-									<i class="bi bi-star-fill"></i>
-									<i class="bi bi-star-fill"></i>
-									<i class="bi bi-star-fill"></i>
-									<i class="bi bi-star-fill"></i>
-								</div>
-								<p class="book-price">@item.GiaTien ₫</p>
-								<p class="book-price" style="font-size: 12px; color: #000; margin: 4px 0;">
-									thể loại: @string.Join(", ", item.TheLoais)
-								</p>
-							</div>
-						</a>
-					</div>
-				}
+		<!-- Hiển thị thể loại đã chọn -->
+		<div class="text-sm text-gray-700 bg-gray-100 px-3 py-2 rounded shadow-sm inline-block mb-3">
+			<span class="font-semibold">Thể loại tìm:</span> Tiểu thuyết, Khoa học
+		</div>
 
-			}
-			else
-			{
-				<div class="col text-center">Không có dữ liệu.</div>
-			}
+		<!-- Danh sách sách -->
+		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mt-2">
+			<div class="col">
+				<a href="#" style="text-decoration: none; color: inherit;">
+					<div class="book-card-inner" style="cursor: pointer;">
+						<img src="~/images/sach1.jpg" class="book-image" alt="Tên sách" />
+						<div class="book-title">Tên sách mẫu</div>
+						<small>Nhà cung cấp: Nhà sách ABC</small>
+						<p class="book-author mb-1">Tác giả A</p>
+						<div class="text-warning mb-2">
+							<i class="bi bi-star-fill"></i>
+							<i class="bi bi-star-fill"></i>
+							<i class="bi bi-star-fill"></i>
+							<i class="bi bi-star-fill"></i>
+							<i class="bi bi-star-fill"></i>
+						</div>
+						<p class="book-price">100.000 ₫</p>
+						<p class="book-price" style="font-size: 12px; color: #000; margin: 4px 0;">
+							thể loại: Tiểu thuyết, Phiêu lưu
+						</p>
+					</div>
+				</a>
+			</div>
+
+			<!-- Thêm nhiều sách mẫu tại đây nếu cần -->
 		</div>
 	</div>
-</div>
+
 
 <script>
 	let currentIndex = 0;

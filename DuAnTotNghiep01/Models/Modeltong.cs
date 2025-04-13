@@ -1,4 +1,4 @@
-﻿namespace DATN_MVC.Models
+﻿namespace DATN_API.Models
 {
     public class Modeltong
     {

@@ -1,4 +1,4 @@
-﻿namespace DATN_API.Models
+﻿namespace DATN_MVC.Models
 {
     public class DanhGia
     {

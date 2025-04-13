@@ -1,0 +1,100 @@
+﻿@{
+    ViewData["Title"] = "LaySach";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang Khiếu Nại</title>
+    <style>
+        .khieu-nai-container {
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 30px;
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+            .khieu-nai-container h2 {
+                text-align: center;
+                margin-bottom: 20px;
+                color: #333;
+                font-size: 28px;
+            }
+
+            .khieu-nai-container label {
+                display: block;
+                margin: 15px 0 5px;
+                font-weight: 600;
+                color: #444;
+            }
+
+            .khieu-nai-container input,
+            .khieu-nai-container textarea,
+            .khieu-nai-container select {
+                width: 100%;
+                padding: 12px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                font-size: 15px;
+                transition: border-color 0.3s ease;
+            }
+
+                .khieu-nai-container input:focus,
+                .khieu-nai-container textarea:focus,
+                .khieu-nai-container select:focus {
+                    outline: none;
+                    border-color: #007bff;
+                }
+
+            .khieu-nai-container button {
+                margin-top: 25px;
+                width: 100%;
+                padding: 12px;
+                background-color: #007bff;
+                color: #fff;
+                font-size: 16px;
+                font-weight: bold;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+                .khieu-nai-container button:hover {
+                    background-color: #0056b3;
+                }
+    </style>
+</head>
+<body>
+    <div class="khieu-nai-container">
+        <h2>Form Khiếu Nại</h2>
+        <form action="#" method="post">
+            <label for="hoten">Họ và tên:</label>
+            <input type="text" id="hoten" name="hoten" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="sdt">Số điện thoại:</label>
+            <input type="tel" id="sdt" name="sdt" required>
+
+            <label for="loai">Loại khiếu nại:</label>
+            <select id="loai" name="loai">
+                <option value="don-hang">Về đơn hàng</option>
+                <option value="san-pham">Về sản phẩm</option>
+                <option value="dich-vu">Về dịch vụ</option>
+                <option value="khac">Khác</option>
+            </select>
+
+            <label for="noidung">Nội dung khiếu nại:</label>
+            <textarea id="noidung" name="noidung" rows="6" required></textarea>
+
+            <button type="submit">Gửi Khiếu Nại</button>
+        </form>
+    </div>
+</body>
+</html>
