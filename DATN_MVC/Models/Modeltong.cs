@@ -2,6 +2,7 @@
 {
     public class Modeltong
     {
+<<<<<<< HEAD
 		public string? Email { get; set; }
 		public string? Saft { get; set; }
 		public string MatKhau { get; set; }
@@ -15,4 +16,8 @@
 
 		public List<NhaCungCap> nhaCungCaps { get; set; } = new List<NhaCungCap>();
 	}
+=======
+       
+    }
+>>>>>>> f61a8d38d73929f12c078539cd2e10562b25c593
 }

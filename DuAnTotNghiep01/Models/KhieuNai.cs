@@ -2,6 +2,7 @@
 {
 	public class KhieuNai
 	{
+<<<<<<< HEAD
 
 		public int MaKhieuNai { get; set; }
 		public int? MaNguoiDung { get; set; }
@@ -12,5 +13,7 @@
 		public int? MaCSKH { get; set; }
 		public string? KetQua { get; set; }
 
+=======
+>>>>>>> f61a8d38d73929f12c078539cd2e10562b25c593
 	}
 }
