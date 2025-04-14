@@ -48,7 +48,10 @@ namespace DATN_API.Service
                                 SoTrang = reader.GetInt32(reader.GetOrdinal("SoTrang")),
                                 HinhThuc = reader.GetString(reader.GetOrdinal("HinhThuc")),
                                 MoTa = reader.GetString(reader.GetOrdinal("MoTa")),
-                                TheLoai = reader.GetString(reader.GetOrdinal("TheLoai"))
+                                TheLoai = reader.GetString(reader.GetOrdinal("TheLoai")),
+                                TenNhaCungCap = reader.GetString(reader.GetOrdinal("TenNhaCungCap")),
+                                NhaXuatBan = reader.GetString(reader.GetOrdinal("NhaXuatBan")),
+                                GiaBan = reader.GetInt32(reader.GetOrdinal("GiaBan")),
                             };
                         }
                     }

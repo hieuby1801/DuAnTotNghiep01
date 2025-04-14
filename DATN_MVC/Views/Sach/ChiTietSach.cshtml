@@ -1,13 +1,10 @@
-<<<<<<< HEAD
-﻿<!DOCTYPE html>
-=======
-﻿@model DATN_MVC.Models.Modeltong
+@model DATN_MVC.Models.Modeltong
 @{
     ViewData["Title"] = "LaySach";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <!DOCTYPE html>
->>>>>>> 2a4d85f893dd552e35f76e925671baea347af4a5
+
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
@@ -50,7 +47,8 @@
         <div class="row">
             <!-- Hình ảnh sản phẩm -->
             <div class="col-md-4">
-
+            
+                   
                 <img src="https://cdn0.fahasa.com/media/catalog/product/t/r/truong_ca_achilles_1_2022_bia_1.jpg" alt="Trường Ca Achilles" class="img-fluid border mb-2">
 
                 <img src="@Url.Content(Model.sachDTOs.HinhAnh)" alt="Trường Ca Achilles" class="img-fluid border mb-2">
@@ -69,29 +67,16 @@
             <!-- Thông tin sản phẩm -->
             <div class="col-md-8">
 
-                <div class="product-info-box">
-                    <span class="text-danger">Xu hướng</span>
-                    <h2 class="product-title">Trường Ca Achilles</h2>
-                    <p class="mb-1">Nhà cung cấp: <a href="#">Nhà Xuất Bản Kim Đồng</a></p>
-                    <p class="mb-1">Tác giả: Madeline Miller</p>
-                    <p class="mb-1">Nhà xuất bản: NXB Kim Đồng</p>
-                    <p class="mb-1">Hình thức bìa: Bìa Mềm</p>
-                    <div class="d-flex align-items-center mb-2">
-                        <span class="text-danger fs-4 fw-bold me-2">124.800 ₫</span>
-                        <span class="price-old me-2">156.000 ₫</span>
-                        <span class="discount-badge">-20%</span>
-                    </div>
-
+                <div class="product-info-box">  
                 <span class="text-danger">Xu hướng</span>
                 <h2 class="product-title">@Model.sachDTOs.TenSach</h2>
-                <p class="mb-1">Nhà cung cấp: <a href="#">Nhà Xuất Bản Kim Đồng</a></p>
-                <p class="mb-1">Tác giả: Madeline Miller</p>
-                <p class="mb-1">Nhà xuất bản: NXB Kim Đồng</p>
-                <p class="mb-1">Hình thức bìa: Bìa Mềm</p>
-                <div class="d-flex align-items-center mb-2">
-                    <span class="text-danger fs-4 fw-bold me-2">124.800 ₫</span>
-                    <span class="price-old me-2">156.000 ₫</span>
-                    <span class="discount-badge">-20%</span>
+                    <p class="mb-1">Nhà cung cấp:@Model.sachDTOs.TenNhaCungCap <a href="#">Nhà Xuất Bản: @Model.sachDTOs.NhaXuatBan</a></p>
+                <p class="mb-1">Tác giả:@Model.sachDTOs.TacGia</p>
+                <p class="mb-1">Nhà xuất bản:@Model.sachDTOs.NhaXuatBan</p>
+                <p class="mb-1">Hình thức bìa: @Model.sachDTOs.HinhThuc</p>
+                <div class="d-flex align-items-center mb-2">    
+                    <span class="price-old me-2">@Model.sachDTOs.GiaBan ₫</span>
+
 
                 </div>
 
@@ -104,20 +89,20 @@
                 <div class="bg-white p-3 rounded shadow-sm mb-3">
                     <h5>Thông tin chi tiết</h5>
                     <table class="table table-sm">
-                        <tr><th>Mã hàng</th><td>8935244843545</td></tr>
-                        <tr><th>Nhà Cung Cấp</th><td>Nhà Xuất Bản Kim Đồng</td></tr>
-                        <tr><th>Tác giả</th><td>Madeline Miller</td></tr>
-                        <tr><th>NXB</th><td>NXB Kim Đồng</td></tr>
+                        <tr><th>Mã hàng</th><td>@Model.sachDTOs.MaSach</td></tr>
+                        <tr><th>Nhà Cung Cấp</th><td>@Model.sachDTOs.TenNhaCungCap </td></tr>
+                        <tr><th>Tác giả</th><td>@Model.sachDTOs.TacGia</td></tr>
+                        <tr><th>NXB</th><td>NXB: @Model.sachDTOs.NhaXuatBan</td></tr>
                         <tr><th>Năm XB</th><td>2020</td></tr>
-                        <tr><th>Trọng lượng (g)</th><td>450</td></tr>
+                        <tr><th>Trọng lượng (g)</th><td>@Model.sachDTOs.TrongLuong</td></tr>
                         <tr><th>Kích Thước Bao Bì</th><td>22.5 x 14 cm</td></tr>
-                        <tr><th>Số trang</th><td>444</td></tr>
-                        <tr><th>Hình thức</th><td>Bìa Mềm</td></tr>
+                        <tr><th>Số trang</th><td>@Model.sachDTOs.SoTrang</td></tr>
+                        <tr><th>Hình thức</th><td>@Model.sachDTOs.HinhThuc</td></tr>
                     </table>
                 </div>
                 <div class="bg-white p-3 rounded shadow-sm mb-3 mt-3">
                     <h5>Mô Tả</h5>
-                    <p>Đây là một đoạn văn bản trong HTML.</p>
+                    <p>@Model.sachDTOs.MoTa</p>
                   
                 </div>
 
@@ -131,6 +116,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </body>
 </html>

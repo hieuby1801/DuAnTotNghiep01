@@ -24,8 +24,8 @@ namespace DATN_API.Controllers
 			}
 			return BadRequest(new { Mesgage = "Không có thể  loại nào" });
 		}
-		[HttpGet("Laysachtheoid")]
-		public IActionResult GetSach(int masach)
+        [HttpGet("Laysachtheoid/{masach}")]
+        public IActionResult GetSach(int masach)
 		{
 			var sach = _sachservice.GetSach(masach);
 			if (sach != null)

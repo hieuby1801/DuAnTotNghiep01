@@ -15,7 +15,9 @@
             public string? TheLoai { get; set; }
 		public int? TongSoLuongDaBan { get; set; }
 		public int? GiaBan { get; set; }
-		public List<string>? TheLoais { get; set; } = new List<string>();
+        public string? TenNhaCungCap { get; set; }
+        public string? NhaXuatBan { get; set; }
+        public List<string>? TheLoais { get; set; } = new List<string>();
 	}
     }
 
