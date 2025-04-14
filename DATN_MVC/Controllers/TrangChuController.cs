@@ -25,10 +25,7 @@ namespace DATN_MVC.Controllers
             return View(sach);
 		}
        
-        public IActionResult QuenMatKhau()
-        {
-            return View();
-        }
+       
       
         public IActionResult GioiThieu()
         {

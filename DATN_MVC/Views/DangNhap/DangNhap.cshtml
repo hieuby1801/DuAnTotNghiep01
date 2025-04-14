@@ -1,0 +1,130 @@
+﻿@model DATN_MVC.Models.Modeltong
+@{
+    ViewData["Title"] = "LaySach";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhập / Đăng Ký</title>
+    <style>
+        .nav-pills .nav-link {
+            background-color: transparent; /* Xóa nền xanh */
+            color: #6c757d; /* Màu xám cho tab chưa chọn */
+            border: none;
+            border-radius: 0;
+            font-weight: 500;
+            position: relative;
+        }
+
+            .nav-pills .nav-link.active {
+                color: #d10000; /* Màu đỏ cho tab đang chọn */
+                background-color: transparent; /* Không có nền */
+                font-weight: 600;
+            }
+
+                .nav-pills .nav-link.active::after {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    bottom: -4px;
+                    width: 100%;
+                    height: 2px;
+                    background-color: #d10000; /* Gạch chân đỏ */
+                }
+
+    </style>
+
+</head>
+<body>
+    <div class="container mt-5" style="max-width: 500px;">
+        <div class="tabs-listing">
+
+            <!-- Tabs Đăng Nhập / Đăng Ký -->
+            <ul class="nav nav-pills mb-4 justify-content-center" id="nav-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="nav-sign-in-tab" data-bs-toggle="tab" href="#nav-sign-in" role="tab" aria-selected="true">Đăng Nhập</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="nav-register-tab" data-bs-toggle="tab" href="#nav-register" role="tab" aria-selected="false">Đăng Ký</a>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="nav-tabContent">
+                <!-- Đăng Nhập -->
+                <div class="tab-pane fade show active" id="nav-sign-in" role="tabpanel" aria-labelledby="nav-sign-in-tab">
+                    <form asp-action="DangNhap" asp-controller="DangNhap" method="post">
+                        <div class="form-group py-3">
+                            <label asp-for="Email" class="mb-2">Tên đăng nhập *</label>
+                            <input asp-for="Email" type="text" placeholder="Tên người dùng" class="form-control" required>
+                        </div>
+                        <div class="form-group pb-3">
+                            <label asp-for="MatKhau" class="mb-2">Mật Khẩu *</label>
+                            <input asp-for="MatKhau" type="password" placeholder="Mật khẩu" class="form-control" required>
+                        </div>
+                        @if (TempData["ErrorMessage"] != null)
+                        {
+                            <div class="text-danger">@TempData["ErrorMessage"]</div>
+                        }
+                        <div class="d-flex justify-content-between align-items-center py-3">
+                            <div>
+                                <input type="checkbox" class="me-2"> <span>Ghi nhớ mật khẩu</span>
+                            </div>
+                            <div>
+                                <a href="@Url.Action("QuenMatKhau","DangNhap")" class="fw-bold text-decoration-none">Quên mật khẩu</a>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-dark w-100">Đăng Nhập</button>
+                        @if (ViewBag.ErrorMessage != null)
+                        {
+                            <div class="text-danger">@ViewBag.ErrorMessage</div>
+                        }
+                    </form>
+                </div>
+
+                <!-- Đăng Ký -->
+                <div class="tab-pane fade" id="nav-register" role="tabpanel" aria-labelledby="nav-register-tab">
+                    <form asp-action="DangKy" asp-controller="DangNhap" method="post">
+                        <div class="form-group py-3">
+                            <label asp-for="NguoiDungss.Email" class="mb-2">Email *</label>
+                            <input asp-for="NguoiDungss.Email" type="email" class="form-control" placeholder="Email" required>
+                        </div>
+                        <div class="form-group py-3">
+                            <label asp-for="NguoiDungss.TenNguoiDung" class="mb-2">Tên người dùng *</label>
+                            <input asp-for="NguoiDungss.TenNguoiDung" type="text" class="form-control" placeholder="Tên người dùng" required>
+                        </div>
+                        <div class="form-group pb-3">
+                            <label asp-for="NguoiDungss.MatKhau" class="mb-2">Mật khẩu *</label>
+                            <input asp-for="NguoiDungss.MatKhau" type="password" class="form-control" placeholder="Mật khẩu" required>
+                        </div>
+                        <div class="form-group pb-3">
+                            <label asp-for="NguoiDungss.SoDienThoai" class="mb-2">Số điện thoại *</label>
+                            <input asp-for="NguoiDungss.SoDienThoai" type="text" class="form-control" placeholder="Số điện thoại" minlength="10" maxlength="10" required>
+                        </div>
+                        <div class="form-check py-3">
+                            <input type="checkbox" class="form-check-input" id="agree" required>
+                            <label class="form-check-label" for="agree">
+                                Tôi đồng ý với <a href="#" class="fw-bold text-decoration-none">Chính sách bảo mật</a>
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-dark w-100">Đăng Ký</button>
+                        @if (TempData["ErrorMessage1"] != null)
+                        {
+                            <div class="text-danger">@TempData["ErrorMessage1"]</div>
+                        }
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+  
+</body>
+
+</html>
+
+

@@ -142,7 +142,7 @@ namespace DATN_MVC.Controllers
                 HttpContext.Session.SetString("Email1", Email);
                 TempData["email"] = Email;
                 HttpContext.Session.SetString("OtpSent", "true"); // Đánh dấu đã gửi OTP
-                return RedirectToAction("QuenMatKhau", "TrangChu");
+                return RedirectToAction("QuenMatKhau", "DangNhap");
             }
             else
             {
@@ -152,7 +152,7 @@ namespace DATN_MVC.Controllers
                 string errorMessage = error?.message?.ToString();
                 TempData["ErrorField"] = errorField;
                 TempData["ErrorMessage"] = errorMessage;
-                return RedirectToAction("QuenMatKhau", "TrangChu");
+                return RedirectToAction("QuenMatKhau", "DangNhap");
             }
         }
         [HttpPost]
@@ -187,8 +187,12 @@ namespace DATN_MVC.Controllers
                 TempData.Keep("email");
                 TempData.Keep("SuccessMessage");
 
-                return RedirectToAction("QuenMatKhau", "TrangChu");
+                return RedirectToAction("QuenMatKhau", "DangNhap");
             }
+        }
+        public IActionResult QuenMatKhau()
+        {
+            return View();
         }
 
     }
