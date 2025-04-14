@@ -1,4 +1,5 @@
-﻿@{
+﻿@model DATN_MVC.Models.Modeltong
+@{
     ViewData["Title"] = "LaySach";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -38,7 +39,7 @@
         <div class="row">
             <!-- Hình ảnh sản phẩm -->
             <div class="col-md-4">
-                <img src="~/images//Đacnhantam.jpg" alt="Trường Ca Achilles" class="img-fluid border mb-2">
+                <img src="@Url.Content(Model.sachDTOs.HinhAnh)" alt="Trường Ca Achilles" class="img-fluid border mb-2">
                 <div class="d-flex gap-2">
                     <img src="https://cdn0.fahasa.com/media/catalog/product/t/r/truong_ca_achilles_1_2022_bia_1.jpg" class="img-thumbnail product-img-thumb" style="width: 60px;">
                     <img src="https://cdn0.fahasa.com/media/catalog/product/t/r/truong_ca_achilles_1_2022_bia_1.jpg" class="img-thumbnail product-img-thumb" style="width: 60px;">
@@ -53,7 +54,7 @@
             <!-- Thông tin sản phẩm -->
             <div class="col-md-8">
                 <span class="text-danger">Xu hướng</span>
-                <h2 class="product-title">Trường Ca Achilles</h2>
+                <h2 class="product-title">@Model.sachDTOs.TenSach</h2>
                 <p class="mb-1">Nhà cung cấp: <a href="#">Nhà Xuất Bản Kim Đồng</a></p>
                 <p class="mb-1">Tác giả: Madeline Miller</p>
                 <p class="mb-1">Nhà xuất bản: NXB Kim Đồng</p>

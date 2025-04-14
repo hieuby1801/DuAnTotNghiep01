@@ -25,11 +25,11 @@ namespace DATN_MVC.Controllers
 			return View(modeltong);
 		}
 
-		public async Task<IActionResult> ChiTietSach(int masach)
+		public async Task<IActionResult> ChiTietSach(int id)
 		{
 
 			var sach = new Modeltong();
-			var response = await _httpClient.GetAsync($"Sachs/Laysach{masach}");
+			var response = await _httpClient.GetAsync($"Sachs/Laysachtheoid{id}");
 			if (response.IsSuccessStatusCode)
 			{
 				var jsonsach = await response.Content.ReadAsStringAsync();

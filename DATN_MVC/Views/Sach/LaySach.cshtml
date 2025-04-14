@@ -272,6 +272,7 @@
 				<div class="col">
 					<a href="@Url.Action("ChiTietSach", "Sach", new { id = sach.MaSach })" style="text-decoration: none; color: inherit;">
 						<div class="book-card-inner" style="cursor: pointer;">
+							<p>@sach.MaSach</p>
 							<img src="@Url.Content(sach.HinhAnh)" class="book-image" alt="@sach.TenSach" />
 							<div class="book-title">@sach.TenSach</div>
 							<small>Đã bán: @sach.TongSoLuongDaBan</small>

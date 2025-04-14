@@ -79,7 +79,8 @@ namespace DATN_API.Service
                         {
                             SachDTO sach = new SachDTO
                             {
-                                TenSach = reader.GetString(reader.GetOrdinal("TenSach")),
+                                MaSach = reader.GetInt32(reader.GetOrdinal("MaSach")),
+								TenSach = reader.GetString(reader.GetOrdinal("TenSach")),
                                 HinhAnh = reader.GetString(reader.GetOrdinal("HinhAnh")),
                                 GiaBan = reader.GetInt32(reader.GetOrdinal("GiaBan")),
                                 TongSoLuongDaBan = reader.GetInt32(reader.GetOrdinal("TongSoLuongDaBan"))
