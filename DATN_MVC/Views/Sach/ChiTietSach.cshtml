@@ -1,8 +1,4 @@
-﻿@{
-    ViewData["Title"] = "LaySach";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
@@ -31,6 +27,13 @@
             border-radius: 4px;
             font-size: 14px;
         }
+
+        .product-info-box {
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #fff;
+        }
     </style>
 </head>
 <body class="bg-light">
@@ -38,7 +41,7 @@
         <div class="row">
             <!-- Hình ảnh sản phẩm -->
             <div class="col-md-4">
-                <img src="~/images//Đacnhantam.jpg" alt="Trường Ca Achilles" class="img-fluid border mb-2">
+                <img src="https://cdn0.fahasa.com/media/catalog/product/t/r/truong_ca_achilles_1_2022_bia_1.jpg" alt="Trường Ca Achilles" class="img-fluid border mb-2">
                 <div class="d-flex gap-2">
                     <img src="https://cdn0.fahasa.com/media/catalog/product/t/r/truong_ca_achilles_1_2022_bia_1.jpg" class="img-thumbnail product-img-thumb" style="width: 60px;">
                     <img src="https://cdn0.fahasa.com/media/catalog/product/t/r/truong_ca_achilles_1_2022_bia_1.jpg" class="img-thumbnail product-img-thumb" style="width: 60px;">
@@ -52,19 +55,21 @@
 
             <!-- Thông tin sản phẩm -->
             <div class="col-md-8">
-                <span class="text-danger">Xu hướng</span>
-                <h2 class="product-title">Trường Ca Achilles</h2>
-                <p class="mb-1">Nhà cung cấp: <a href="#">Nhà Xuất Bản Kim Đồng</a></p>
-                <p class="mb-1">Tác giả: Madeline Miller</p>
-                <p class="mb-1">Nhà xuất bản: NXB Kim Đồng</p>
-                <p class="mb-1">Hình thức bìa: Bìa Mềm</p>
-                <div class="d-flex align-items-center mb-2">
-                    <span class="text-danger fs-4 fw-bold me-2">124.800 ₫</span>
-                    <span class="price-old me-2">156.000 ₫</span>
-                    <span class="discount-badge">-20%</span>
+                <div class="product-info-box">
+                    <span class="text-danger">Xu hướng</span>
+                    <h2 class="product-title">Trường Ca Achilles</h2>
+                    <p class="mb-1">Nhà cung cấp: <a href="#">Nhà Xuất Bản Kim Đồng</a></p>
+                    <p class="mb-1">Tác giả: Madeline Miller</p>
+                    <p class="mb-1">Nhà xuất bản: NXB Kim Đồng</p>
+                    <p class="mb-1">Hình thức bìa: Bìa Mềm</p>
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="text-danger fs-4 fw-bold me-2">124.800 ₫</span>
+                        <span class="price-old me-2">156.000 ₫</span>
+                        <span class="discount-badge">-20%</span>
+                    </div>
                 </div>
 
-                <div class="bg-white p-3 rounded shadow-sm mb-3">
+                <div class="bg-white p-3 rounded shadow-sm mb-3 mt-3">
                     <h5>Thông tin vận chuyển</h5>
                     <p class="mb-0">Giao hàng đến: <strong>Phường Bến Nghé, Quận 1, Hồ Chí Minh</strong> <a href="#">Thay đổi</a></p>
                     <p class="mb-0">Giao hàng tiêu chuẩn - Dự kiến giao <strong>Thứ bảy - 12/04</strong></p>
@@ -78,11 +83,16 @@
                         <tr><th>Tác giả</th><td>Madeline Miller</td></tr>
                         <tr><th>NXB</th><td>NXB Kim Đồng</td></tr>
                         <tr><th>Năm XB</th><td>2020</td></tr>
-                        <tr><th>Trọng lượng (gr)</th><td>450</td></tr>
+                        <tr><th>Trọng lượng (g)</th><td>450</td></tr>
                         <tr><th>Kích Thước Bao Bì</th><td>22.5 x 14 cm</td></tr>
                         <tr><th>Số trang</th><td>444</td></tr>
                         <tr><th>Hình thức</th><td>Bìa Mềm</td></tr>
                     </table>
+                </div>
+                <div class="bg-white p-3 rounded shadow-sm mb-3 mt-3">
+                    <h5>Mô Tả</h5>
+                    <p>Đây là một đoạn văn bản trong HTML.</p>
+                  
                 </div>
 
                 <div class="text-muted small">
@@ -98,4 +108,3 @@
     </div>
 </body>
 </html>
-
