@@ -1,4 +1,13 @@
+<<<<<<< HEAD
 ﻿<!DOCTYPE html>
+=======
+﻿@model DATN_MVC.Models.Modeltong
+@{
+    ViewData["Title"] = "LaySach";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+>>>>>>> 2a4d85f893dd552e35f76e925671baea347af4a5
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
@@ -41,7 +50,11 @@
         <div class="row">
             <!-- Hình ảnh sản phẩm -->
             <div class="col-md-4">
+
                 <img src="https://cdn0.fahasa.com/media/catalog/product/t/r/truong_ca_achilles_1_2022_bia_1.jpg" alt="Trường Ca Achilles" class="img-fluid border mb-2">
+
+                <img src="@Url.Content(Model.sachDTOs.HinhAnh)" alt="Trường Ca Achilles" class="img-fluid border mb-2">
+
                 <div class="d-flex gap-2">
                     <img src="https://cdn0.fahasa.com/media/catalog/product/t/r/truong_ca_achilles_1_2022_bia_1.jpg" class="img-thumbnail product-img-thumb" style="width: 60px;">
                     <img src="https://cdn0.fahasa.com/media/catalog/product/t/r/truong_ca_achilles_1_2022_bia_1.jpg" class="img-thumbnail product-img-thumb" style="width: 60px;">
@@ -55,6 +68,7 @@
 
             <!-- Thông tin sản phẩm -->
             <div class="col-md-8">
+
                 <div class="product-info-box">
                     <span class="text-danger">Xu hướng</span>
                     <h2 class="product-title">Trường Ca Achilles</h2>
@@ -67,6 +81,18 @@
                         <span class="price-old me-2">156.000 ₫</span>
                         <span class="discount-badge">-20%</span>
                     </div>
+
+                <span class="text-danger">Xu hướng</span>
+                <h2 class="product-title">@Model.sachDTOs.TenSach</h2>
+                <p class="mb-1">Nhà cung cấp: <a href="#">Nhà Xuất Bản Kim Đồng</a></p>
+                <p class="mb-1">Tác giả: Madeline Miller</p>
+                <p class="mb-1">Nhà xuất bản: NXB Kim Đồng</p>
+                <p class="mb-1">Hình thức bìa: Bìa Mềm</p>
+                <div class="d-flex align-items-center mb-2">
+                    <span class="text-danger fs-4 fw-bold me-2">124.800 ₫</span>
+                    <span class="price-old me-2">156.000 ₫</span>
+                    <span class="discount-badge">-20%</span>
+
                 </div>
 
                 <div class="bg-white p-3 rounded shadow-sm mb-3 mt-3">
