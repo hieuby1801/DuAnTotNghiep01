@@ -41,6 +41,103 @@
         }
     </style>
     <style>
+        /*Css Hiển thi tên sản phẩm*/
+        .custom-button {
+            color: #090909;
+            padding: 0.7em 1.7em;
+            font-size: 18px;
+            border-radius: 0.5em;
+            background: #e8e8e8;
+            cursor: pointer;
+            border: 1px solid #e8e8e8;
+            transition: all 0.3s;
+            box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+            .custom-button:hover {
+                border: 1px solid white;
+            }
+
+            .custom-button:active {
+                box-shadow: 4px 4px 12px #c5c5c5, -4px -4px 12px #ffffff;
+            }
+
+        /* Nút Mua ngay màu đỏ */
+        .btn-buy {
+            background: #ff4d4f;
+            border: 1px solid #ff4d4f;
+            color: white;
+        }
+
+            .btn-buy:hover {
+                background: #ff6666;
+                border: 1px solid #ffffff;
+            }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+
+
+    </style>
+
+   <style>
+       /*bản trắng sản phẩm */
+        .product-info-box {
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #fafafa;
+            max-width: 850px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .trend-label {
+            display: inline-block;
+            background-color: #e53935;
+            color: white;
+            padding: 4px 10px;
+            font-size: 12px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .product-title {
+            font-size: 24px;
+            color: #2c3e50;
+            margin: 10px 0 15px 0;
+        }
+
+        .info-line {
+            margin: 6px 0;
+            font-size: 15px;
+            color: #555;
+        }
+
+            .info-line strong {
+                color: #333;
+            }
+
+        .price-box {
+            margin-top: 15px;
+        }
+
+        .price-old {
+            color: #999;
+            text-decoration: line-through;
+            font-size: 18px;
+        }
+
+   </style>
+
+    <style>
         .transition-all {
             transition: all 0.3s ease;
         }
@@ -53,51 +150,46 @@
             <!-- Hình ảnh sản phẩm -->
             <div class="col-md-4">
                  <img src="https://cdn0.fahasa.com/media/catalog/product/t/r/truong_ca_achilles_1_2022_bia_1.jpg" alt="Trường Ca Achilles" class="img-fluid border mb-2">
-
-                <img src="@Url.Content(Model.sachDTOs.HinhAnh)" alt="Trường Ca Achilles" class="img-fluid border mb-2">
-
-                <div class="d-flex gap-2">
-                    <img src="https://cdn0.fahasa.com/media/catalog/product/t/r/truong_ca_achilles_1_2022_bia_1.jpg" class="img-thumbnail product-img-thumb" style="width: 60px;">
-                    <img src="https://cdn0.fahasa.com/media/catalog/product/t/r/truong_ca_achilles_1_2022_bia_1.jpg" class="img-thumbnail product-img-thumb" style="width: 60px;">
-                    <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 60px; height: 80px;">+1</div>
-                </div>
-                <div class="mt-4 d-flex gap-3">
-                    <a href="@Url.Action("GioHang","GioHang")" class="btn btn-outline-danger flex-fill fw-semibold shadow-sm transition-all"
-                       style="border-radius: 12px;">
-                        <i class="bi bi-cart-plus me-2"></i>Thêm vào giỏ hàng
+                <img src="@Url.Content(Model.sachDTOs.HinhAnh)" alt="Trường Ca Achilles" class="img-fluid border mb-2">           
+                <div class="button-group">
+                    <a href="@Url.Action("GioHang","GioHang")" class="custom-button btn-cart">
+                        Thêm vào giỏ hàng
                     </a>
-                    <button class="btn btn-danger flex-fill fw-semibold shadow-sm"
-                            style="border-radius: 12px;">
-                        <i class="bi bi-lightning-fill me-2"></i>Mua ngay
+                    <button class="custom-button btn-buy">
+                        Mua ngay
                     </button>
                 </div>
+
+
 
             </div>
 
             <!-- Thông tin sản phẩm -->
             <div class="col-md-8">
+                <div class="product-info-box">
+                    <span class="trend-label">Xu hướng</span>
 
-                <div class="product-info-box">  
-                <span class="text-danger">Xu hướng</span>
-                <h2 class="product-title">@Model.sachDTOs.TenSach</h2>
-                    <p class="mb-1">Nhà cung cấp:@Model.sachDTOs.TenNhaCungCap <a href="#">Nhà Xuất Bản: @Model.sachDTOs.NhaXuatBan</a></p>
-                <p class="mb-1">Tác giả:@Model.sachDTOs.TacGia</p>
-                <p class="mb-1">Nhà xuất bản:@Model.sachDTOs.NhaXuatBan</p>
-                <p class="mb-1">Hình thức bìa: @Model.sachDTOs.HinhThuc</p>
-                <div class="d-flex align-items-center mb-2">    
-                    <span class="price-old me-2">@Model.sachDTOs.GiaBan ₫</span>
+                    <h2 class="product-title">@Model.sachDTOs.TenSach</h2>
 
+                    <p class="info-line" style="font-size: 15px"><strong>Nhà cung cấp:</strong> @Model.sachDTOs.TenNhaCungCap</p>
+                    <p class="info-line" style="font-size: 15px"><strong>Nhà xuất bản:</strong> @Model.sachDTOs.NhaXuatBan</p>
+                    <p class="info-line" style="font-size: 15px"><strong>Tác giả:</strong> @Model.sachDTOs.TacGia</p>
+                    <div class="price-box">
+                        <h4 class="price-new">@Model.sachDTOs.GiaBan ₫</h4>
+                    </div>
 
                 </div>
 
-                <div class="bg-white p-3 rounded shadow-sm mb-3 mt-3">
-                    <h5>Thông tin vận chuyển</h5>
+                <div class="bg-white p-3 rounded shadow-sm mb-3 mt-3" style="font-size: 15px">
+                     <h4>Thông tin vận chuyển</h4>
                     <p class="mb-0">Giao hàng đến: <strong>Phường Bến Nghé, Quận 1, Hồ Chí Minh</strong> <a href="#">Thay đổi</a></p>
                     <p class="mb-0">Giao hàng tiêu chuẩn - Dự kiến giao <strong>Thứ bảy - 12/04</strong></p>
-                </div>
+               </div>
+                
+               
 
-                <div class="bg-white p-3 rounded shadow-sm mb-3">
-                    <h5>Thông tin chi tiết</h5>
+                <div class="bg-white p-3 rounded shadow-sm mb-3" style="font-size: 15px;">
+                    <h4>Thông tin chi tiết</h4>
                     <table class="table table-sm">
                         <tr><th>Mã hàng</th><td>@Model.sachDTOs.MaSach</td></tr>
                         <tr><th>Nhà Cung Cấp</th><td>@Model.sachDTOs.TenNhaCungCap </td></tr>
