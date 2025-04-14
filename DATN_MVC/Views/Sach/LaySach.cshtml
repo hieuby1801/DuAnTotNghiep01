@@ -270,7 +270,7 @@
 			@foreach (var sach in Model.sachDTOss)
 			{
 				<div class="col">
-					<a href="#" style="text-decoration: none; color: inherit;">
+					<a href="@Url.Action("ChiTietSach", "Sach", new { id = sach.MaSach })" style="text-decoration: none; color: inherit;">
 						<div class="book-card-inner" style="cursor: pointer;">
 							<img src="@Url.Content(sach.HinhAnh)" class="book-image" alt="@sach.TenSach" />
 							<div class="book-title">@sach.TenSach</div>
@@ -280,7 +280,8 @@
 					</a>
 				</div>
 			}
-		</div>	
+		</div>
+
 		</div>
 	</div>
 
