@@ -114,7 +114,7 @@
 							<div class="d-flex align-items-start border-top pt-3">
 								<!-- Checkbox để chọn sản phẩm -->
 								<input class="form-check-input mt-2 me-3 item-checkbox product-checkbox" id="checkbox-@item.MaSach" data-masach="@item.MaSach" type="checkbox" checked>
-								<img src="@item.HinhAnh" class="me-3 rounded-3" width="80" alt="@item.TenSach">
+								<img src="@Url.Content(item.HinhAnh)" class="me-3 rounded-3" width="80" alt="@item.TenSach" />
 								<div class="flex-grow-1">
 									<h6 class="mb-1 fw-medium">@item.TenSach</h6>
 									<div class="d-flex align-items-center mt-2">
