@@ -1,4 +1,5 @@
-﻿using DATN_API.Models;
+﻿using Azure.Messaging;
+using DATN_API.Models;
 using DATN_API.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,8 +25,8 @@ namespace DATN_API.Controllers
 			}
 			return BadRequest(new { Mesgage = "Không có thể  loại nào" });
 		}
-        [HttpGet("Laysachtheoid/{masach}")]
-        public IActionResult GetSach(int masach)
+		[HttpGet("Laysachtheoid/{masach}")]
+		public IActionResult GetSach(int masach)
 		{
 			var sach = _sachservice.GetSach(masach);
 			if (sach != null)
@@ -38,31 +39,31 @@ namespace DATN_API.Controllers
 		public IActionResult Laysach()
 		{
 			var sach = _sachservice.Laytontinsach();
-			if(sach != null)
+			if (sach != null)
 			{
 				return Ok(sach);
 			}
-            return BadRequest(new { Message = "Không có sách nào" });
-        }
+			return BadRequest(new { Message = "Không có sách nào" });
+		}
 		[HttpGet("Laysachtheotentheloai")]
-		public IActionResult Timsach(string theloai )
+		public IActionResult Timsach(string theloai)
 		{
 			var sach = _sachservice.Timsachtheotheloai(theloai);
-            if (sach != null)
+			if (sach != null)
 			{
 				return Ok(sach);
-            }
-            return BadRequest(new { Message = "Không có sách nào" });
-        }
+			}
+			return BadRequest(new { Message = "Không có sách nào" });
+		}
 		[HttpGet("Laysachtheothongtinnhap")]
 
 		[HttpGet]
 		public ActionResult<List<SachDTO>> Timsachtheothongtinnhap(
-	[FromQuery] string? tenSach = null,
-	[FromQuery] int? khoangGia = null,
-	[FromQuery] string? doTuoi = null,
-	[FromQuery] string? tacGia = null,
-	[FromQuery] List<string>? theLoai = null)
+			[FromQuery] string? tenSach = null,
+			[FromQuery] int? khoangGia = null,
+			[FromQuery] string? doTuoi = null,
+			[FromQuery] string? tacGia = null,
+			[FromQuery] List<string>? theLoai = null)
 		{
 			var sach = _sachservice.Timsachtheothongtinnhap(tenSach, khoangGia, doTuoi, tacGia, theLoai);
 
@@ -73,7 +74,19 @@ namespace DATN_API.Controllers
 
 			return BadRequest(new { Message = "Không có sách nào" });
 		}
+		[HttpGet("ThemGioHang/{masach}")]
+		public IActionResult Themhangvaogio(int masach)
+		{
+			var sacht = _sachservice.Themgiohang(masach);
+			if (masach != null)
+			{
+				return Ok(sacht);
+			}
+			else
+			{
+				return BadRequest(new { Message = "Khong co sach" });
+			}
 
-
+		}
 	}
 }

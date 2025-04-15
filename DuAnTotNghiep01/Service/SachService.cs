@@ -4,19 +4,19 @@ using System.Data;
 
 namespace DATN_API.Service
 {
-	public class SachService : ISachservice
-	{
-		private readonly MyDbContext _context;
+    public class SachService : ISachservice
+    {
+        private readonly MyDbContext _context;
         private readonly IConfiguration _configuration; // To access connection string
         public SachService(MyDbContext context, IConfiguration configuration)
-		{
-			_context = context;
+        {
+            _context = context;
             _configuration = configuration;
         }
-		public List<TheLoai> GetAll()
-		{
-			return _context.TheLoai.ToList(); 
-		}
+        public List<TheLoai> GetAll()
+        {
+            return _context.TheLoai.ToList();
+        }
         public SachDTO GetSach(int maSach)
         {
             // Khai báo đối tượng sach để trả về
@@ -83,7 +83,7 @@ namespace DATN_API.Service
                             SachDTO sach = new SachDTO
                             {
                                 MaSach = reader.GetInt32(reader.GetOrdinal("MaSach")),
-								TenSach = reader.GetString(reader.GetOrdinal("TenSach")),
+                                TenSach = reader.GetString(reader.GetOrdinal("TenSach")),
                                 HinhAnh = reader.GetString(reader.GetOrdinal("HinhAnh")),
                                 GiaBan = reader.GetInt32(reader.GetOrdinal("GiaBan")),
                                 TongSoLuongDaBan = reader.GetInt32(reader.GetOrdinal("TongSoLuongDaBan"))
@@ -129,61 +129,87 @@ namespace DATN_API.Service
 
             return list;
         }
-		public List<SachDTO> Timsachtheothongtinnhap(string tenSach = null, int? khoangGia = null, string doTuoi = null, string tacGia = null, List<string> theLoai = null)
-		{
-			List<SachDTO> danhSachSach = new List<SachDTO>();
-			var connectionString = _configuration.GetConnectionString("con");
+        public List<SachDTO> Timsachtheothongtinnhap(string tenSach = null, int? khoangGia = null, string doTuoi = null, string tacGia = null, List<string> theLoai = null)
+        {
+            List<SachDTO> danhSachSach = new List<SachDTO>();
+            var connectionString = _configuration.GetConnectionString("con");
 
-			using (SqlConnection conn = new SqlConnection(connectionString))
-			{
-				using (SqlCommand cmd = new SqlCommand("TimKiemSach", conn))
-				{
-					cmd.CommandType = CommandType.StoredProcedure;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("TimKiemSach", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-					// Truyền tham số
-					cmd.Parameters.AddWithValue("@TenSach", (object)tenSach ?? DBNull.Value);
-					cmd.Parameters.AddWithValue("@KhoangGia", (object)khoangGia ?? DBNull.Value);
-					cmd.Parameters.AddWithValue("@DoTuoi", (object)doTuoi ?? DBNull.Value);
-					cmd.Parameters.AddWithValue("@TacGia", (object)tacGia ?? DBNull.Value);
+                    // Truyền tham số
+                    cmd.Parameters.AddWithValue("@TenSach", (object)tenSach ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@KhoangGia", (object)khoangGia ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@DoTuoi", (object)doTuoi ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@TacGia", (object)tacGia ?? DBNull.Value);
 
-					// Chuyển List<string> thể loại thành chuỗi
-					var theLoaiString = theLoai != null && theLoai.Any() ? string.Join(",", theLoai) : null;
-					cmd.Parameters.AddWithValue("@TheLoai", (object)theLoaiString ?? DBNull.Value);
+                    // Chuyển List<string> thể loại thành chuỗi
+                    var theLoaiString = theLoai != null && theLoai.Any() ? string.Join(",", theLoai) : null;
+                    cmd.Parameters.AddWithValue("@TheLoai", (object)theLoaiString ?? DBNull.Value);
 
-					conn.Open();
-					using (SqlDataReader reader = cmd.ExecuteReader())
-					{
-						while (reader.Read())
-						{
-							string? theLoaiChuoi = reader.IsDBNull(reader.GetOrdinal("TheLoai"))
-								? null
-								: reader.GetString(reader.GetOrdinal("TheLoai"));
+                    conn.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string? theLoaiChuoi = reader.IsDBNull(reader.GetOrdinal("TheLoai"))
+                                ? null
+                                : reader.GetString(reader.GetOrdinal("TheLoai"));
 
-							var sach = new SachDTO
-							{
-								MaSach = reader.IsDBNull(reader.GetOrdinal("MaSach")) ? 0 : reader.GetInt32(reader.GetOrdinal("MaSach")),
-								TenSach = reader.IsDBNull(reader.GetOrdinal("TenSach")) ? null : reader.GetString(reader.GetOrdinal("TenSach")),
-								TacGia = reader.IsDBNull(reader.GetOrdinal("TacGia")) ? null : reader.GetString(reader.GetOrdinal("TacGia")),
-								HinhAnh = reader.IsDBNull(reader.GetOrdinal("HinhAnh")) ? null : reader.GetString(reader.GetOrdinal("HinhAnh")),
-								GiaBan = reader.IsDBNull(reader.GetOrdinal("GiaBan")) ? 0 : reader.GetInt32(reader.GetOrdinal("GiaBan")),
-								DoTuoi = reader.IsDBNull(reader.GetOrdinal("DoTuoi")) ? null : reader.GetString(reader.GetOrdinal("DoTuoi")),
-								TheLoais = string.IsNullOrWhiteSpace(theLoaiChuoi)
-									? new List<string>()
-									: theLoaiChuoi.Split(',').Select(t => t.Trim()).ToList()
-							};
+                            var sach = new SachDTO
+                            {
+                                MaSach = reader.IsDBNull(reader.GetOrdinal("MaSach")) ? 0 : reader.GetInt32(reader.GetOrdinal("MaSach")),
+                                TenSach = reader.IsDBNull(reader.GetOrdinal("TenSach")) ? null : reader.GetString(reader.GetOrdinal("TenSach")),
+                                TacGia = reader.IsDBNull(reader.GetOrdinal("TacGia")) ? null : reader.GetString(reader.GetOrdinal("TacGia")),
+                                HinhAnh = reader.IsDBNull(reader.GetOrdinal("HinhAnh")) ? null : reader.GetString(reader.GetOrdinal("HinhAnh")),
+                                GiaBan = reader.IsDBNull(reader.GetOrdinal("GiaBan")) ? 0 : reader.GetInt32(reader.GetOrdinal("GiaBan")),
+                                DoTuoi = reader.IsDBNull(reader.GetOrdinal("DoTuoi")) ? null : reader.GetString(reader.GetOrdinal("DoTuoi")),
+                                TheLoais = string.IsNullOrWhiteSpace(theLoaiChuoi)
+                                    ? new List<string>()
+                                    : theLoaiChuoi.Split(',').Select(t => t.Trim()).ToList()
+                            };
 
-							danhSachSach.Add(sach);
-						}
-					}
-				}
-			}
+                            danhSachSach.Add(sach);
+                        }
+                    }
+                }
+            }
 
-			return danhSachSach;
-		}
+            return danhSachSach;
+        }
+        public GioHang Themgiohang(int masach)
+        {
+            GioHang sach = null;
 
+            var connectionString = _configuration.GetConnectionString("con");
 
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("GetBookDetailsByMaSach", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@MaSach", masach);
 
-
-
-	}
+                    conn.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read()) // Lấy duy nhất 1 dòng
+                        {
+                            sach = new GioHang
+                            {
+                                MaSach = reader.GetInt32(reader.GetOrdinal("MaSach")),
+                                TenSach = reader.GetString(reader.GetOrdinal("TenSach")),
+                                GiaBan = reader.GetInt32(reader.GetOrdinal("GiaBan")),
+                                HinhAnh = reader.GetString(reader.GetOrdinal("HinhAnh"))
+                            };
+                        }
+                    }
+                }
+            }
+            return sach; // Trả về đối tượng SachDTO duy nhất
+        }
+    }
 }

@@ -16,6 +16,8 @@
 		public List<Sach> Saches { get; set; } = new List<Sach>();
 
 		public List<NhaCungCap> nhaCungCaps { get; set; } = new List<NhaCungCap>();
+		public List<GioHang> GioHangs { get; set;} = new List<GioHang>();
+		public GioHang GioHang { get; set; }
 	}
 
     }

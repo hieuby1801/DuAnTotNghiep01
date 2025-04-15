@@ -1,151 +1,264 @@
-﻿@{
-    ViewData["Title"] = "LaySach";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+﻿@model DATN_MVC.Models.Modeltong
+@{
+	ViewData["Title"] = "Giỏ Hàng";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Giỏ Hàng</title>
+	<meta charset="UTF-8">
+	<title>Giỏ Hàng</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
+	<style>
+		body {
+			font-family: 'Roboto', sans-serif;
+		}
 
-        .card h6,
-        h6 {
-            font-size: 15px;
-        }
+		.card h6,
+		h6 {
+			font-size: 15px;
+		}
 
-        .btn-outline-primary,
-        .btn-danger {
-            border-radius: 999px;
-        }
+		.btn-outline-primary,
+		.btn-danger {
+			border-radius: 999px;
+		}
 
-        .rounded-4 {
-            border-radius: 1rem !important;
-        }
+		.rounded-4 {
+			border-radius: 1rem !important;
+		}
 
-        .shadow-sm {
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
-        }
+		.shadow-sm {
+			box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+		}
 
-        .button-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: Arial, sans-serif;
-        }
+		.button-container {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-family: Arial, sans-serif;
+		}
 
-        .rounded-circle {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background-color: #3498db;
-            color: white;
-            font-size: 20px;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+		.rounded-circle {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 40px;
+			height: 40px;
+			background-color: #3498db;
+			color: white;
+			font-size: 20px;
+			border: none;
+			border-radius: 50%;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+		}
 
-            .rounded-circle:hover {
-                background-color: #2980b9;
-            }
+			.rounded-circle:hover {
+				background-color: #2980b9;
+			}
 
-        .mx-2 {
-            margin: 0 10px;
-            font-size: 20px;
-        }
+		.mx-2 {
+			margin: 0 10px;
+			font-size: 20px;
+		}
 
-        .btn-pay {
-            background: linear-gradient(135deg, #ff416c, #ff4b2b);
-            color: white;
-            border: none;
-            border-radius: 999px;
-            padding: 12px 0;
-            font-size: 16px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(255, 65, 108, 0.3);
-        }
+		.btn-pay {
+			background: linear-gradient(135deg, #ff416c, #ff4b2b);
+			color: white;
+			border: none;
+			border-radius: 999px;
+			padding: 12px 0;
+			font-size: 16px;
+			font-weight: bold;
+			transition: all 0.3s ease;
+			box-shadow: 0 4px 12px rgba(255, 65, 108, 0.3);
+		}
 
-            .btn-pay:hover {
-                background: linear-gradient(135deg, #ff4b2b, #ff416c);
-                box-shadow: 0 6px 16px rgba(255, 65, 108, 0.5);
-                transform: translateY(-1px);
-            }
-    </style>
+			.btn-pay:hover {
+				background: linear-gradient(135deg, #ff4b2b, #ff416c);
+				box-shadow: 0 6px 16px rgba(255, 65, 108, 0.5);
+				transform: translateY(-1px);
+			}
+	</style>
 
-    <script>
-        function toggleAll(source) {
-            const checkboxes = document.querySelectorAll('.item-checkbox');
-            checkboxes.forEach(cb => cb.checked = source.checked);
-        }
-    </script>
+	<script>
+		function toggleAll(source) {
+			const checkboxes = document.querySelectorAll('.item-checkbox');
+			checkboxes.forEach(cb => cb.checked = source.checked);
+		}
+	</script>
+
+
 </head>
 <body class="bg-light">
-    <div class="container py-4">
-        <h4 class="mb-4 fw-bold">🛒 GIỎ HÀNG</h4>
-        <div class="row g-4">
-            <!-- Cột trái: Sản phẩm -->
-            <div class="col-lg-8">
-                <div class="bg-white rounded-4 p-3 shadow-sm border">
-                    <div class="d-flex align-items-center mb-3">
-                        <input class="form-check-input me-2" type="checkbox" onclick="toggleAll(this)">
-                        <label class="form-check-label fw-semibold">Chọn tất cả (1 sản phẩm)</label>
-                    </div>
 
-                    <!-- Sản phẩm -->
-                    <div class="d-flex align-items-start border-top pt-3">
-                        <input class="form-check-input mt-2 me-3 item-checkbox" type="checkbox" checked>
-                        <img src="https://salt.tikicdn.com/cache/280x280/ts/product/46/5e/b1/36d4d0de5868a09883cf5eb2e7c0b40b.jpg" class="me-3 rounded-3" width="80" alt="Sách Excel">
-                        <div class="flex-grow-1">
-                            <h6 class="mb-1 fw-medium">Excel Ứng Dụng Văn Phòng - Từ Cơ Bản Đến Nâng Cao (Tái Bản 2023)</h6>
-                            <div class="d-flex align-items-center mt-2">
-                                <button class="rounded-circle">−</button>
-                                <span class="mx-2">1</span>
-                                <button class="rounded-circle">+</button>
-                            </div>
-                        </div>
-                        <div class="text-end ms-3">
-                            <div class="text-danger fw-bold fs-6">158.400 đ</div>
-                            <div class="text-muted text-decoration-line-through small">198.000 đ</div>
-                            <button class="btn btn-sm btn-light mt-2 text-danger" title="Xóa">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5.5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6zm2.5-.5a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5z" />
-                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h3.5a1 1 0 0 1 .96.74h3.08a1 1 0 0 1 .96-.74H14a1 1 0 0 1 1 1v1zM1 2a.5.5 0 0 0-.5.5V3a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-.5A.5.5 0 0 0 14 2H1z" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+	<div class="container py-4">
+		<h4 class="mb-4 fw-bold">🛒 GIỎ HÀNG</h4>
+		<div class="row g-4">
+			<!-- Cột trái: Sản phẩm -->
+			<div class="col-lg-8">
+				<div class="bg-white rounded-4 p-3 shadow-sm border">
+					<div class="d-flex align-items-center mb-3">
+						<input class="form-check-input me-2" type="checkbox" onclick="toggleAll(this)">
+						<label class="form-check-label fw-semibold">Chọn tất cả (1 sản phẩm)</label>
+					</div>
 
-            <!-- Cột phải: Thanh toán -->
-            <div class="col-lg-4">
-                <div class="bg-white rounded-4 p-3 shadow-sm border">
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Thành tiền</span>
-                        <strong>158.400 đ</strong>
-                    </div>
-                    <div class="d-flex justify-content-between mb-3">
-                        <strong class="fs-6">Tổng Số Tiền (gồm VAT)</strong>
-                        <strong class="fs-5 text-danger">158.400 đ</strong>
-                    </div>
-                    <form asp-controller="ThanhToan" asp-action="ThanhToan" method="post">
-                        <button type="submit" class="btn-pay w-100">THANH TOÁN</button>
-                    </form>
+					<!-- Lặp qua danh sách sản phẩm trong giỏ hàng -->
+					@for (int i = 0; i < Model.GioHangs.Count; i++)
+					{
+						var item = Model.GioHangs[i];
+						<form asp-action="ThayDoiGio" asp-controller="GioHang" method="post" class="quantity-form" id="form-@item.MaSach">
+							<div class="d-flex align-items-start border-top pt-3">
+								<!-- Checkbox để chọn sản phẩm -->
+								<input class="form-check-input mt-2 me-3 item-checkbox product-checkbox" id="checkbox-@item.MaSach" data-masach="@item.MaSach" type="checkbox" checked>
+								<img src="@item.HinhAnh" class="me-3 rounded-3" width="80" alt="@item.TenSach">
+								<div class="flex-grow-1">
+									<h6 class="mb-1 fw-medium">@item.TenSach</h6>
+									<div class="d-flex align-items-center mt-2">
 
-                </div>
-            </div>
-        </div>
-    </div>
+										<!-- Nút giảm số lượng -->
+										<button type="button" class="decrease btn btn-danger" data-index="@item.MaSach" onclick="updateQuantity('@item.MaSach', -1)">−</button>
+
+										<!-- Hiển thị số lượng -->
+										<span class="quantity mx-2" id="quantity-@item.MaSach">@item.Soluong</span>
+
+										<!-- Nút tăng số lượng -->
+										<button type="button" class="increase btn btn-success" data-index="@item.MaSach" onclick="updateQuantity('@item.MaSach', 1)">+</button>
+
+										<!-- Gửi số lượng nếu cần -->
+										<input type="hidden" name="MaSach" value="@item.MaSach" />
+										<input type="hidden" name="SoLuong" id="input-quantity-@item.MaSach" value="@item.Soluong" />
+
+									</div>
+								</div>
+
+								<!-- Thêm phần hiển thị giá -->
+								<div class="text-danger fw-bold fs-6" id="price-@item.MaSach">@item.GiaBan đ</div> <!-- Giá của sản phẩm -->
+							</div>
+						</form>
+					}
+
+				</div>
+			</div>
+
+			<!-- Cột phải: Thanh toán -->
+			<div class="col-lg-4">
+				<div class="bg-white rounded-4 p-3 shadow-sm border">
+					<div class="d-flex justify-content-between mb-2">
+						<span>Thành tiền</span>
+						<strong>@Model.GioHangs.Sum(g => g.GiaBan * g.Soluong) đ</strong>
+					</div>
+					<div class="d-flex justify-content-between mb-3">
+						<strong class="fs-6">Tổng Số Tiền (gồm VAT)</strong>
+						<strong class="tong-tien">@Model.GioHangs.Sum(g => g.GiaBan * g.Soluong) đ</strong>
+					</div>
+					<form asp-controller="ThanhToan" asp-action="ThanhToan" method="post">
+						<button type="submit" class="btn-pay w-100">THANH TOÁN</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<button id="clear-cart" class="btn btn-danger">Xóa giỏ hàng</button>
+	@* thêm *@
+	<script>
+		function updateQuantity(maSach, change) {
+			var quantityInput = document.getElementById('input-quantity-' + maSach);
+			var quantitySpan = document.getElementById('quantity-' + maSach);
+
+			// Cập nhật số lượng mới
+			var newQuantity = parseInt(quantityInput.value) + change;
+
+			if (newQuantity >= 0) {  // Đảm bảo số lượng không âm
+				quantityInput.value = newQuantity;
+				quantitySpan.textContent = newQuantity;  // Cập nhật số lượng hiển thị
+
+				// Gửi form sau khi thay đổi số lượng
+				var form = document.getElementById('form-' + maSach);
+				form.submit();  // Gửi form khi số lượng thay đổi
+			}
+		}
+	</script>
+	@* xóa *@
+	<script>
+		document.getElementById("clear-cart").addEventListener("click", async function () {
+			try {
+				const response = await fetch("/GioHang/XoaGioHang", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					}
+				});
+				const data = await response.json();
+				if (data.success) {
+					location.reload(); // reload lại trang để cập nhật giỏ hàng rỗng
+				} else {
+					alert("Xóa giỏ hàng thất bại!");
+				}
+			} catch (error) {
+				console.error("Lỗi:", error);
+			}
+
+		});
+	</script>
+	@* Chọn *@
+	<script>
+		// Hàm tính tổng tiền
+		function updateTotalPrice() {
+			var total = 0;
+
+			// Lặp qua tất cả các checkbox đã chọn và tính tổng tiền
+			document.querySelectorAll('.product-checkbox:checked').forEach(function (checkbox) {
+				var maSach = checkbox.getAttribute('data-masach');
+				var quantity = document.getElementById('input-quantity-' + maSach).value;
+				var price = document.getElementById('price-' + maSach).textContent;  // Lấy giá từ sản phẩm (nếu có)
+
+				total += parseInt(price) * parseInt(quantity);  // Cộng thêm vào tổng tiền
+			});
+
+			// Cập nhật tổng tiền vào UI
+			document.querySelector('.tong-tien').textContent = total + ' đ';  // Cập nhật vào phần tổng tiền
+		}
+
+		// Lắng nghe sự kiện thay đổi của checkbox
+		document.querySelectorAll('.product-checkbox').forEach(function (checkbox) {
+			checkbox.addEventListener('change', function () {
+				var maSach = this.getAttribute('data-masach');
+				var isChecked = this.checked;
+
+				// Cập nhật tổng tiền khi checkbox thay đổi
+				updateTotalPrice();
+
+				// Nếu checkbox được chọn
+				if (isChecked) {
+					console.log("Sản phẩm với mã " + maSach + " đã được chọn.");
+				} else {
+					console.log("Sản phẩm với mã " + maSach + " đã bị bỏ chọn.");
+				}
+			});
+		});
+
+		// Hàm chọn tất cả checkbox
+		function toggleAll(source) {
+			var checkboxes = document.querySelectorAll('.product-checkbox');
+			checkboxes.forEach(function (checkbox) {
+				checkbox.checked = source.checked;
+			});
+
+			// Cập nhật tổng tiền sau khi chọn tất cả hoặc bỏ chọn
+			updateTotalPrice();
+		}
+	</script>
+
+
+
+
 </body>
+
 </html>
+
+
+
