@@ -25,21 +25,32 @@ namespace DATN_MVC.Controllers
 			return View(modeltong);
 		}
 
-		public async Task<IActionResult> ChiTietSach(int id)
-		{
+        public async Task<IActionResult> ChiTietSach(int id)
+        {
+            var sach = new Modeltong();
+            var response = await _httpClient.GetAsync($"Sachs/Laysachtheoid/{id}");
 
-			var sach = new Modeltong();
-			var response = await _httpClient.GetAsync($"Sachs/Laysachtheoid/{id}");
-			if (response.IsSuccessStatusCode)
-			{
-				var jsonsach = await response.Content.ReadAsStringAsync();
-				sach.sachDTOs = JsonConvert.DeserializeObject<SachDTO>(jsonsach);
-               
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonsach = await response.Content.ReadAsStringAsync();
+                sach.sachDTOs = JsonConvert.DeserializeObject<SachDTO>(jsonsach);
             }
-			return View(sach);
-		}
+            else
+            {
+                // Xử lý khi không thành công, ví dụ: chuyển sang trang báo lỗi
+                return NotFound(); // hoặc View("NotFound")
+            }
 
-		public async Task<IActionResult> LaySach(List<string> tentheloai, List<string> theLoai, string tacGia, string doTuoi, int khoangGia, string tenSach)
+            // Kiểm tra null lần nữa
+            if (sach.sachDTOs == null)
+            {
+                return NotFound(); // hoặc View("NotFound")
+            }
+
+            return View(sach);
+        }
+
+        public async Task<IActionResult> LaySach(List<string> tentheloai, List<string> theLoai, string tacGia, string doTuoi, int khoangGia, string tenSach)
 		{
 			var modeltong = new Modeltong();
 			var queryParams = new List<string>();
