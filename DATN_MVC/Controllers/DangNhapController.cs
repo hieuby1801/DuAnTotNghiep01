@@ -23,67 +23,67 @@ namespace DATN_MVC.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> DangNhap(Modeltong loginguser)
-        {
-            var response = await _httpClient.PostAsJsonAsync("DangNhaps/DangNhap", loginguser);
-            var result = await response.Content.ReadFromJsonAsync<JsonElement>();
-            var json = result.ToString();
-            var error = JsonConvert.DeserializeObject<dynamic>(json);
-            string errorMessage = error.message?.ToString();
-            if (response.IsSuccessStatusCode)
-            {
+		public async Task<IActionResult> DangNhap(Modeltong loginguser)
+		{
+			var response = await _httpClient.PostAsJsonAsync("DangNhaps/DangNhap", loginguser);
+			var result = await response.Content.ReadFromJsonAsync<JsonElement>();
+			var json = result.ToString();
+			var error = JsonConvert.DeserializeObject<dynamic>(json);
+			string errorMessage = error.message?.ToString();
 
-                if (result.TryGetProperty("value", out JsonElement valueElement) &&
-                    valueElement.TryGetProperty("token", out JsonElement tokenElement))
-                {
-                    var token = tokenElement.GetString();
+			// Kiểm tra trạng thái thành công của phản hồi
+			if (response.IsSuccessStatusCode)
+			{
+				if (result.TryGetProperty("value", out JsonElement valueElement) &&
+					valueElement.TryGetProperty("token", out JsonElement tokenElement))
+				{
+					var token = tokenElement.GetString();
 
-                    if (!string.IsNullOrEmpty(token))
-                    {
-                        var tokenHandler = new JwtSecurityTokenHandler();
-                        var jwtToken = tokenHandler.ReadJwtToken(token);
+					if (!string.IsNullOrEmpty(token))
+					{
+						var tokenHandler = new JwtSecurityTokenHandler();
+						var jwtToken = tokenHandler.ReadJwtToken(token);
 
-                        var vaitro = jwtToken.Claims.FirstOrDefault(x => x.Type == "VaiTro")?.Value;
-                        var Sdt = jwtToken.Claims.FirstOrDefault(x => x.Type == "Sdt")?.Value;
-                        var id = jwtToken.Claims.FirstOrDefault(x => x.Type == "Id")?.Value;
-                        var Email = jwtToken.Claims.FirstOrDefault(x => x.Type == "Email")?.Value;
+						// Lấy thông tin từ claims
+						var vaitro = jwtToken.Claims.FirstOrDefault(x => x.Type == "VaiTro")?.Value;
+						var Sdt = jwtToken.Claims.FirstOrDefault(x => x.Type == "Sdt")?.Value;
+						var id = jwtToken.Claims.FirstOrDefault(x => x.Type == "Id")?.Value;
+						var Email = jwtToken.Claims.FirstOrDefault(x => x.Type == "Email")?.Value;
 
-                        HttpContext.Session.SetString("Email", Email);
-                        HttpContext.Session.SetString("VaiTro", vaitro);
-                        HttpContext.Session.SetString("NguoiDungId", id);
-                        HttpContext.Session.SetString("JWT_Token", token);// lưu token vào đây 
+						// Lưu thông tin vào session
+						HttpContext.Session.SetString("Email", Email);
+						HttpContext.Session.SetString("VaiTro", vaitro);
+						HttpContext.Session.SetString("NguoiDungId", id);
+						HttpContext.Session.SetString("JWT_Token", token); // Lưu token vào session
 
-                        // Thiết lập cookie
-                        Response.Cookies.Append("access_token", token, new CookieOptions
-                        {
-                            HttpOnly = true,
-                            Secure = false,
-                            Expires = DateTimeOffset.UtcNow.AddHours(1)
-                        });
-                        token = Request.Cookies["access_token"];
-                        // Chuyển hướng dựa trên vai trò
-                        return vaitro switch
-                        {
-                            "User" => RedirectToAction("index", "TrangChu"),//mấy azai tự phân quyền ở đây nha
+						// Thiết lập cookie
+						Response.Cookies.Append("access_token", token, new CookieOptions
+						{
+							HttpOnly = true,
+							Secure = false, // Set to true if using https
+							Expires = DateTimeOffset.UtcNow.AddHours(1)
+						});
 
-                            "Admin" => RedirectToAction("Admin", "Admin"),
+						// Chuyển hướng dựa trên vai trò
+						return vaitro switch
+						{
+							"User" => RedirectToAction("Index", "TrangChu"), // User chuyển đến TrangChu
+							"Admin" => RedirectToAction("Admin", "Admin"),  // Admin chuyển đến Admin
+							"admin" => RedirectToAction("Admin", "Admin"),  // admin chuyển đến Admin
+							_ => RedirectToAction("DefaultPage")            // Default chuyển đến DefaultPage
+						};
+					}
+				}
+			}
 
-                            "admin" => RedirectToAction("Admin", "Admin"),
+			// Nếu không thành công hoặc không có token, hiển thị lỗi và redirect
+			TempData["ErrorMessage"] = errorMessage ?? "Đăng nhập thất bại.";
+			return RedirectToAction("Index", "TrangChu");
+		}
 
-                            _ => RedirectToAction("DefaultPage")
-                        };
-                    }
-                    TempData["ErrorMessage"] = errorMessage.ToString();
-                    RedirectToAction("iindex", "TrangChu");
 
-                }
-            }
-            TempData["ErrorMessage"] = errorMessage.ToString();
-          return RedirectToAction("iiindex", "TrangChu");
-        }
 
-     
-        [HttpPost]
+		[HttpPost]
         public async Task<IActionResult> DangKy(Modeltong nguoiDung)
         {
            
