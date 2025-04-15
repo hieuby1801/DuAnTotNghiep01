@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace DATN_MVC.Controllers
@@ -7,15 +8,11 @@ namespace DATN_MVC.Controllers
     {
         public IActionResult ThanhToan()
         {
-			var userId = User.Claims.FirstOrDefault(c => c.Type == "Id")?.Value;
-			if (userId == null)
+			var token = HttpContext.Session.GetString("NguoiDungId");
+			if (string.IsNullOrEmpty(token))
 			{
 				return RedirectToAction("DangNhap", "DangNhap"); // hoặc xử lý theo ý bạn
 			}
-
-			// Dùng userId để lấy giỏ hàng của người dùng
-			
-
 			
 			return View();
         }
