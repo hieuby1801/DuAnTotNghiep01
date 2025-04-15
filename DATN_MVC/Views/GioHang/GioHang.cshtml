@@ -83,6 +83,42 @@
 				transform: translateY(-1px);
 			}
 	</style>
+	<style>
+		.quantity-wrapper {
+			display: inline-flex;
+			align-items: center;
+			border: 1px solid #ccc;
+			border-radius: 30px;
+			overflow: hidden;
+			width: fit-content;
+			background-color: #f8f9fa;
+		}
+
+		.quantity-btn {
+			background-color: #e74c3c;
+			color: white;
+			border: none;
+			padding: 6px 12px;
+			font-size: 18px;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+		}
+
+			.quantity-btn:hover {
+				background-color: #c0392b;
+			}
+
+		.quantity-number {
+			min-width: 40px;
+			text-align: center;
+			display: inline-block;
+			font-size: 16px;
+			font-weight: 500;
+			padding: 0 10px;
+			background-color: white;
+		}
+
+	</style>
 
 	<script>
 		function toggleAll(source) {
@@ -117,22 +153,15 @@
 								<img src="@Url.Content(item.HinhAnh)" class="me-3 rounded-3" width="80" alt="@item.TenSach" />
 								<div class="flex-grow-1">
 									<h6 class="mb-1 fw-medium">@item.TenSach</h6>
-									<div class="d-flex align-items-center mt-2">
+									<div class="quantity-wrapper mt-2">
+										<button type="button" class="quantity-btn" onclick="updateQuantity('@item.MaSach', -1)">−</button>
+										<span class="quantity-number" id="quantity-@item.MaSach">@item.Soluong</span>
+										<button type="button" class="quantity-btn" onclick="updateQuantity('@item.MaSach', 1)">+</button>
 
-										<!-- Nút giảm số lượng -->
-										<button type="button" class="decrease btn btn-danger" data-index="@item.MaSach" onclick="updateQuantity('@item.MaSach', -1)">−</button>
-
-										<!-- Hiển thị số lượng -->
-										<span class="quantity mx-2" id="quantity-@item.MaSach">@item.Soluong</span>
-
-										<!-- Nút tăng số lượng -->
-										<button type="button" class="increase btn btn-success" data-index="@item.MaSach" onclick="updateQuantity('@item.MaSach', 1)">+</button>
-
-										<!-- Gửi số lượng nếu cần -->
 										<input type="hidden" name="MaSach" value="@item.MaSach" />
 										<input type="hidden" name="SoLuong" id="input-quantity-@item.MaSach" value="@item.Soluong" />
-
 									</div>
+
 								</div>
 
 								<!-- Thêm phần hiển thị giá -->
