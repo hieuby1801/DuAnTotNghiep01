@@ -377,41 +377,25 @@
                     View All
                 </a>
             </div>
-
             <form action="/" method="post">
                 <div class="product-grid">
                     @foreach (var item in Model.sachDTOss)
                     {
                         <div class="product-card">
-                            <div class="card position-relative p-4 border rounded-3">
-                                <img src="@Url.Content(item.HinhAnh)" class="img-fluid shadow-sm" alt="product item">
-                                <h6 class="mt-4 mb-0 fw-bold"><a href="index.html">Heartland Stars</a></h6>
-                                <div class="review-content d-flex">
-                                    <p class="my-2 me-2 fs-6 text-black-50">@item.TenSach</p>
-                                    <div class="rating text-warning d-flex align-items-center">
-                                        <svg class="star star-fill"><use xlink:href="#star-fill"></use></svg>
-                                        <svg class="star star-fill"><use xlink:href="#star-fill"></use></svg>
-                                        <svg class="star star-fill"><use xlink:href="#star-fill"></use></svg>
-                                        <svg class="star star-fill"><use xlink:href="#star-fill"></use></svg>
-                                        <svg class="star star-fill"><use xlink:href="#star-fill"></use></svg>
-                                    </div>
+                            <a href="@Url.Action("ChiTietSach", "Sach", new { id = item.MaSach })" class="text-decoration-none text-dark">
+                                <div class="card position-relative p-4 border rounded-3">
+                                    <img src="@Url.Content(item.HinhAnh)" class="img-fluid shadow-sm" alt="product item">
+                                    <p class="mt-4 mb-0 fw-bold">@item.TenSach</p>
+                                    <span class="price text-primary fw-bold mb-2 fs-5">@item.GiaBan đ</span>
+                                    <h6 class="small mb-0">Đã bán: @item.TongSoLuongDaBan</h6>
                                 </div>
-                                <span class="price text-primary fw-bold mb-2 fs-5">@item.GiaBan Đ</span>
-                                <h6 class=" small mb-0">Đã bán: @item.TongSoLuongDaBan</h6>
-
-                                <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
-                                    <button type="button" class="btn btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Thêm vào giỏ">
-                                        <svg class="cart"><use xlink:href="#cart"></use></svg>
-                                    </button>
-                                    <a href="#" class="btn btn-dark">
-                                        <svg class="wishlist"><use xlink:href="#heart"></use></svg>
-                                    </a>
-                                </div>
-                            </div>
+                            </a>
                         </div>
                     }
+
                 </div>
             </form>
+           
         </div>
     </section>
 
