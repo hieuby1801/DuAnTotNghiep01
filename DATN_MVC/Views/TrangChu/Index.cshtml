@@ -78,7 +78,23 @@
          .subscribe-button:hover {
              background-color: #e68a00;
          }
+
 </style>
+<style>
+    .hover-shadow:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+    }
+</style>
+<style>
+    .sold-info {
+        color: #000;
+        font-weight: 400;
+        font-size: 0.85rem;
+    }
+</style>
+
 <html>
     
 <body>
@@ -304,23 +320,26 @@
             </div>
 
             <form action="/" method="post">
-                <div class="product-grid">
+                <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-xl-5 g-4">
                     @foreach (var item in Model.sachDTOss)
                     {
-                        <div class="product-card">
+                        <div class="col">
                             <a href="@Url.Action("ChiTietSach", "Sach", new { id = item.MaSach })" class="text-decoration-none text-dark">
-                                <div class="card position-relative p-4 border rounded-3">
-                                    <img src="@Url.Content(item.HinhAnh)" class="img-fluid shadow-sm" alt="product item">
-                                    <p class="mt-4 mb-0 fw-bold">@item.TenSach</p>
-                                    <span class="price text-primary fw-bold mb-2 fs-5">@item.GiaBan đ</span>
-                                    <h6 class="small mb-0">Đã bán: @item.TongSoLuongDaBan</h6>
+                                <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden position-relative hover-shadow">
+                                    <img src="@Url.Content(item.HinhAnh)" class="card-img-top img-fluid" alt="product item" style="object-fit: cover; height: 220px;">
+                                    <div class="card-body d-flex flex-column justify-content-between">
+                                        <h6 class="card-title fw-bold mb-2 text-truncate">@item.TenSach</h6>
+                                        <span class="price text-primary fw-bold fs-6 mb-1">@item.GiaBan đ</span>
+                                        <small class="sold-info">Đã bán: @item.TongSoLuongDaBan</small>
+
+                                    </div>
                                 </div>
                             </a>
                         </div>
                     }
-
                 </div>
             </form>
+
         </div>
     </section>
 
@@ -378,75 +397,28 @@
                 </a>
             </div>
             <form action="/" method="post">
-                <div class="product-grid">
+                <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-xl-5 g-4">
                     @foreach (var item in Model.sachDTOss)
                     {
-                        <div class="product-card">
+                        <div class="col">
                             <a href="@Url.Action("ChiTietSach", "Sach", new { id = item.MaSach })" class="text-decoration-none text-dark">
-                                <div class="card position-relative p-4 border rounded-3">
-                                    <img src="@Url.Content(item.HinhAnh)" class="img-fluid shadow-sm" alt="product item">
-                                    <p class="mt-4 mb-0 fw-bold">@item.TenSach</p>
-                                    <span class="price text-primary fw-bold mb-2 fs-5">@item.GiaBan đ</span>
-                                    <h6 class="small mb-0">Đã bán: @item.TongSoLuongDaBan</h6>
+                                <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden position-relative hover-shadow">
+                                    <img src="@Url.Content(item.HinhAnh)" class="card-img-top img-fluid" alt="product item" style="object-fit: cover; height: 220px;">
+                                    <div class="card-body d-flex flex-column justify-content-between">
+                                        <h6 class="card-title fw-bold mb-2 text-truncate">@item.TenSach</h6>
+                                        <span class="price text-primary fw-bold fs-6 mb-1">@item.GiaBan đ</span>
+                                        <small class="sold-info">Đã bán: @item.TongSoLuongDaBan</small>
+
+                                    </div>
                                 </div>
                             </a>
                         </div>
                     }
-
                 </div>
             </form>
            
         </div>
-    </section>
-
-    
-
-    <section id="latest-posts" class="padding-large">
-        <div class="container">
-            <div class="section-title d-md-flex justify-content-between align-items-center mb-4">
-                <h3 class="d-flex align-items-center">Latest posts</h3>
-                <a href="index.html" class="btn">View All</a>
-            </div>
-            <div class="row">
-                <div class="col-md-3 posts mb-4">
-                    <img src="images/post-item1.jpg" alt="post image" class="img-fluid rounded-3">
-                    <a href="blog.html" class="fs-6 text-primary">Books</a>
-                    <h4 class="card-title mb-2 text-capitalize text-dark"><a href="index.html">10 Must-Read Books of the Year: Our Top Picks!</a></h4>
-                    <p class="mb-2">
-                        Dive into the world of cutting-edge technology with our latest blog post, where we highlight
-                        five essential gadge. <span><a class="text-decoration-underline text-black-50" href="index.html">Read More</a></span>
-                    </p>
-                </div>
-                <div class="col-md-3 posts mb-4">
-                    <img src="images/post-item2.jpg" alt="post image" class="img-fluid rounded-3">
-                    <a href="blog.html" class="fs-6 text-primary">Books</a>
-                    <h4 class="card-title mb-2 text-capitalize text-dark"><a href="index.html">The Fascinating Realm of Science Fiction</a></h4>
-                    <p class="mb-2">
-                        Explore the intersection of technology and sustainability in our latest blog post. Learn about
-                        the innovative <span><a class="text-decoration-underline text-black-50" href="index.html">Read More</a></span>
-                    </p>
-                </div>
-                <div class="col-md-3 posts mb-4">
-                    <img src="images/post-item3.jpg" alt="post image" class="img-fluid rounded-3">
-                    <a href="blog.html" class="fs-6 text-primary">Books</a>
-                    <h4 class="card-title mb-2 text-capitalize text-dark"><a href="index.html">Finding Love in the Pages of a Book</a></h4>
-                    <p class="mb-2">
-                        Stay ahead of the curve with our insightful look into the rapidly evolving landscape of
-                        wearable technology. <span><a class="text-decoration-underline text-black-50" href="index.html">Read More</a></span>
-                    </p>
-                </div>
-                <div class="col-md-3 posts mb-4">
-                    <img src="images/post-item4.jpg" alt="post image" class="img-fluid rounded-3">
-                    <a href="blog.html" class="fs-6 text-primary">Books</a>
-                    <h4 class="card-title mb-2 text-capitalize text-dark"><a href="index.html">Reading for Mental Health: How Books Can Heal and Inspire</a></h4>
-                    <p class="mb-2">
-                        In today's remote work environment, productivity is key. Discover the top apps and tools that
-                        can help you stay <span><a class="text-decoration-underline text-black-50" href="index.html">Read More</a></span>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>  
+    </section>     
     <section>
         <div class="newsletter-container">
             <div class="icon-text">
