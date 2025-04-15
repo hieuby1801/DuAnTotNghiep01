@@ -1,0 +1,148 @@
+﻿@{
+    ViewData["Title"] = "ThanhToan";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Thông tin Giao hàng và Thanh toán</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f9f9f9;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .section {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ddd;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .radio-group {
+            margin-top: 10px;
+        }
+
+            .radio-group label {
+                display: block;
+            }
+
+        .summary {
+            margin-top: 20px;
+        }
+
+            .summary span {
+                display: block;
+                margin: 5px 0;
+            }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #c90000;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background-color: #a30000;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="section">
+        <h5>Địa Chỉ Giao Hàng</h5>
+        <label>
+            Họ và tên người nhận
+            <input type="text" value="Tạ Đức Như Trinh">
+        </label>
+        <label>
+            Email
+            <input type="email" value="tatrinh0102@gmail.com">
+        </label>
+        <label>
+            Số điện thoại
+            <input type="text" value="0373326455">
+        </label>
+        <label>
+            Quốc gia
+            <select>
+                <option selected>Việt Nam</option>
+            </select>
+        </label>
+        <label>
+            Tỉnh/Thành phố
+            <select>
+                <option selected>Quảng Ngãi</option>
+            </select>
+        </label>
+        <label>
+            Quận/Huyện
+            <select>
+                <option selected>Huyện Sơn Tịnh</option>
+            </select>
+        </label>
+        <label>
+            Phường/Xã
+            <select>
+                <option selected>Xã Tịnh Bắc</option>
+            </select>
+        </label>
+        <label>
+            Địa chỉ nhận hàng
+            <input type="text" value="12 sdsd">
+        </label>
+    </div>
+
+    <div class="section">
+        <h5>Phương Thức Vận Chuyển</h5>
+        <p><strong>Giao hàng tiêu chuẩn:</strong> 32.000 đ (Dự kiến giao: Thứ Bảy - 19/04)</p>
+    </div>
+
+    <div class="section">
+        <h5>Phương Thức Thanh Toán</h5>
+        <div class="radio-group">
+            <label><input type="radio" name="payment"> Ví ZaloPay - Giảm 15K cho đơn hàng từ 300K (Nhập mã: ZLPFAHASA)</label>
+            <label><input type="radio" name="payment"> VNPay</label>
+            <label><input type="radio" name="payment"> Ví ShopeePay - Giảm 20K cho đơn hàng từ 30K</label>
+            <label><input type="radio" name="payment"> Ví Momo</label>
+            <label><input type="radio" name="payment"> ATM / Internet Banking</label>
+            <label><input type="radio" name="payment"> Visa / Master / JCB</label>
+            <label><input type="radio" name="payment"> Thanh toán bằng tiền mặt khi nhận hàng</label>
+        </div>
+    </div>
+
+    <div class="section summary">
+        <h5>Tóm Tắt Đơn Hàng</h5>
+        <span>Thành tiền: 172.500 đ</span>
+        <span>Phí vận chuyển: 32.000 đ</span>
+        <strong>Tổng Số Tiền (gồm VAT): 204.500 đ</strong>
+        <br><br>
+        <button>Xác nhận thanh toán</button>
+    </div>
+
+</body>
+</html>

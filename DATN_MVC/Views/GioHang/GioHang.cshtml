@@ -139,7 +139,10 @@
                         <strong class="fs-6">Tổng Số Tiền (gồm VAT)</strong>
                         <strong class="fs-5 text-danger">158.400 đ</strong>
                     </div>
-                    <button class="btn-pay w-100">THANH TOÁN</button>
+                    <form asp-controller="ThanhToan" asp-action="ThanhToan" method="post">
+                        <button type="submit" class="btn-pay w-100">THANH TOÁN</button>
+                    </form>
+
                 </div>
             </div>
         </div>
