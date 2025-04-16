@@ -26,6 +26,8 @@ builder.Services.AddSession(options =>
 });
 builder.Services.AddScoped<ISachservice , SachService>();
 builder.Services.AddScoped<IDangNhapService, DangNhapService>();
+builder.Services.AddScoped<INguoiDungService, NguoiDungService>();
+
 var jwtKey = builder.Configuration["Jwt:Key"];
 if (string.IsNullOrEmpty(jwtKey))
 {
