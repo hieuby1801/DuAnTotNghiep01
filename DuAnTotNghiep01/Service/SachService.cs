@@ -1,6 +1,7 @@
 ﻿using DATN_API.DTOs;
 using DATN_API.Models;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System.Data;
 
 namespace DATN_API.Service
@@ -214,35 +215,31 @@ namespace DATN_API.Service
         }
         public async Task<bool> ThemSachAsync(ThemSachDto dto)
         {
-            using (SqlConnection conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            try
             {
-                using (SqlCommand cmd = new SqlCommand("sp_ThemSach", conn))
+                var sql = "EXEC sp_ThemSach @MaSach, @TenSach, @TacGia, @HinhAnh, @NgonNgu, @KichThuoc, @TrongLuong, @SoTrang, @HinhThuc, @MoTa, @DanhSachTheLoai";
+
+                var parameters = new[]
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
+            new SqlParameter("@MaSach", dto.MaSach),
+            new SqlParameter("@TenSach", dto.TenSach),
+            new SqlParameter("@TacGia", dto.TacGia),
+            new SqlParameter("@HinhAnh", dto.HinhAnh),
+            new SqlParameter("@NgonNgu", dto.NgonNgu),
+            new SqlParameter("@KichThuoc", dto.KichThuoc),
+            new SqlParameter("@TrongLuong", dto.TrongLuong),
+            new SqlParameter("@SoTrang", dto.SoTrang),
+            new SqlParameter("@HinhThuc", dto.HinhThuc),
+            new SqlParameter("@MoTa", dto.MoTa),
+            new SqlParameter("@DanhSachTheLoai", dto.DanhSachTheLoai),
+        };
 
-                    cmd.Parameters.AddWithValue("@MaSach", dto.MaSach);
-                    cmd.Parameters.AddWithValue("@TenSach", dto.TenSach);
-                    cmd.Parameters.AddWithValue("@TacGia", dto.TacGia);
-                    cmd.Parameters.AddWithValue("@HinhAnh", dto.HinhAnh);
-                    cmd.Parameters.AddWithValue("@NgonNgu", dto.NgonNgu);
-                    cmd.Parameters.AddWithValue("@KichThuoc", dto.KichThuoc);
-                    cmd.Parameters.AddWithValue("@TrongLuong", dto.TrongLuong);
-                    cmd.Parameters.AddWithValue("@SoTrang", dto.SoTrang);
-                    cmd.Parameters.AddWithValue("@HinhThuc", dto.HinhThuc);
-                    cmd.Parameters.AddWithValue("@MoTa", dto.MoTa);
-                    cmd.Parameters.AddWithValue("@DanhSachTheLoai", dto.DanhSachTheLoai);
-
-                    try
-                    {
-                        await conn.OpenAsync();
-                        await cmd.ExecuteNonQueryAsync();
-                        return true;
-                    }
-                    catch
-                    {
-                        return false;
-                    }
-                }
+                await _context.Database.ExecuteSqlRawAsync(sql, parameters);
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
     }

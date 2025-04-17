@@ -92,8 +92,18 @@ namespace DATN_API.Controllers
         [HttpPost("them")]
         public async Task<IActionResult> ThemSach([FromBody] ThemSachDto dto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState); // kiểm tra model hợp lệ
+            }
+
             var ketQua = await _sachservice.ThemSachAsync(dto);
-            return BadRequest();
+            if (ketQua)
+            {
+                return Ok(new { message = "Thêm sách thành công" });
+            }
+
+            return BadRequest(new { message = "Thêm sách thất bại" });
         }
     }
 }
