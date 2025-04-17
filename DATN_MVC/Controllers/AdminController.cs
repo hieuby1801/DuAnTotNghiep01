@@ -57,7 +57,18 @@ namespace DATN_MVC.Controllers
 
             return View();
         }
-
+        public async Task<IActionResult> DanhSach()
+        {
+            var modele = new Modeltong();
+            var rebom = await _httpClient.GetAsync("Sachs/Laysach");
+            if (rebom.IsSuccessStatusCode)
+            {
+                var json= await rebom.Content.ReadAsStringAsync();
+                modele.Saches = JsonConvert.DeserializeObject<List<Sach>>(json)?? new List<Sach>();
+                return View(modele);
+            }
+            return View();
+        }
         [HttpPost]
         public async Task<IActionResult> ThemSach(ThemSachDto dto)
         {
@@ -80,6 +91,9 @@ namespace DATN_MVC.Controllers
 
             return View(dto);
         }
-
+        public IActionResult QuanLy()
+        {
+            return View();
+        }
     }
 }

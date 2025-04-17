@@ -1,11 +1,10 @@
 ﻿@model DATN_MVC.Models.Modeltong
-@{
-    Layout = null;
-}
+
 
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+    <title>@ViewData["Title"] - Admin</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin - Quản lý Bán Sách</title>
@@ -207,7 +206,16 @@
             .delete-btn:hover {
                 background-color: #c0392b;
             }
+            li {
+  list-style: none;
+}
+
+a {
+  display: inline-block;
+}
+
     </style>
+    <style></style>
 </head>
 <body>
     <div class="admin-container">
@@ -217,8 +225,7 @@
             </div>
             <ul>
                 <li class="active"><i class="bi bi-speedometer2"></i> Tổng quan</li>
-                <li><i class="bi bi-book"></i> Quản lý Sách</li>
-                <li><i class="bi bi-people"></i> Quản lý Người dùng</li>
+                <li><i class="bi bi-cart-check"></i> Đơn hàng</li>
                 <li><i class="bi bi-cart-check"></i> Đơn hàng</li>
                 <li><i class="bi bi-bar-chart-line"></i> Thống kê</li>
                 <li><i class="bi bi-box-arrow-right"></i> Đăng xuất</li>
@@ -249,8 +256,8 @@
                     <p>25,000,000đ</p>
                 </div>
             </section>
-
-            <section class="table-section">
+            @RenderBody()
+            @*  <section class="table-section">
                 <div class="section-header">
                     <h2>📘 Danh sách Sách</h2>
                     <button class="btn btn-primary mb-3" onclick="toggleForm()">
@@ -297,7 +304,7 @@
                         </tr>
                     </tbody>
                 </table>
-            </section>
+            </section> *@
         </main>
     </div>
 </body>
