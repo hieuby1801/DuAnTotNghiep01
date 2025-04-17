@@ -1,4 +1,6 @@
-﻿namespace DATN_MVC.Models
+﻿using DATN_MVC.DTOs;
+
+namespace DATN_MVC.Models
 {
     public class Modeltong
     {
@@ -18,6 +20,7 @@
 		public List<NhaCungCap> nhaCungCaps { get; set; } = new List<NhaCungCap>();
 		public List<GioHang> GioHangs { get; set;} = new List<GioHang>();
 		public GioHang GioHang { get; set; }
+		public ThemSachDto ThemSachDto { get; set; }
 	}
 
     }

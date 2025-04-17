@@ -12,7 +12,7 @@ namespace DATN_API.Service
 		public List<SachDTO> Timsachtheothongtinnhap(string tenSach = null, int? khoangGia = null, string doTuoi = null, string tacGia = null, List<string> theLoai = null);
         public GioHang Themgiohang(int masach);
         public Task<bool> ThemSachAsync(ThemSachDto dto);
-
+        public Task<List<Sach>> GetAllAsync();
 
     }
 }
