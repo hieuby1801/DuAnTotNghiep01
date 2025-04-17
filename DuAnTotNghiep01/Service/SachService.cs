@@ -213,6 +213,20 @@ namespace DATN_API.Service
             }
             return sach; // Trả về đối tượng SachDTO duy nhất
         }
+        public async Task<List<Sach>> GetAllAsync()
+        {
+            return await _context.Sach
+                .Select(s => new Sach
+                {
+                    MaSach = s.MaSach,
+                    TenSach = s.TenSach,
+                    TacGia = s.TacGia,
+                    HinhAnh = s.HinhAnh,
+                    TrangThai = s.TrangThai
+                })
+                .ToListAsync();
+        }
+
         public async Task<bool> ThemSachAsync(ThemSachDto dto)
         {
             try

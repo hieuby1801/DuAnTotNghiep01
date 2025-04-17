@@ -1,6 +1,8 @@
-﻿using DATN_MVC.Models;
+﻿using DATN_MVC.DTOs;
+using DATN_MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Net.Http;
 using System.Text;
 
 namespace DATN_MVC.Controllers
@@ -49,8 +51,35 @@ namespace DATN_MVC.Controllers
             return View(model); // truyền đầy đủ sang view Admin
         }
 
-        
-       
-        
+        [HttpGet]
+        public IActionResult ThemSach()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ThemSach(ThemSachDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(dto);
+            }
+
+            var response = await _httpClient.PostAsJsonAsync("sach/themsach", dto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["ThongBao"] = "Thêm sách thành công";
+                return RedirectToAction("DanhSachSach"); // hoặc trang nào em muốn
+            }
+
+            // Có thể đọc lỗi từ API nếu cần
+            var errorContent = await response.Content.ReadAsStringAsync();
+            ModelState.AddModelError(string.Empty, $"Thêm sách thất bại: {errorContent}");
+
+            return View(dto);
+        }
+
     }
 }
