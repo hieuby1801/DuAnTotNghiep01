@@ -91,7 +91,7 @@ namespace DATN_MVC.Controllers
 
             return View(dto);
         }
-        public IActionResult QuanLy()
+        public IActionResult QuanLySach()
         {
             return View();
         }
