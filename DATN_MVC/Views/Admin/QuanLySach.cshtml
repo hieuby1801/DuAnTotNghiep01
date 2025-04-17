@@ -1,0 +1,176 @@
+﻿@model DATN_MVC.Models.Modeltong
+@{
+    Layout = "~/Views/Shared/Admin.cshtml";
+}
+
+@section Styles {
+    <style>
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0 20px;
+        }
+
+        h2 {
+            margin: 0;
+            color: #1f2937;
+        }
+
+        .add-btn {
+            background: linear-gradient(135deg, #16a34a, #10b981);
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 999px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+            .add-btn:hover {
+                background: linear-gradient(135deg, #059669, #0ea5e9);
+                transform: scale(1.05);
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+            }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 16px;
+            text-align: center;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        th {
+            background-color: #f3f4f6;
+            color: #111827;
+        }
+
+        tr:hover {
+            background-color: #f9fafb;
+        }
+
+        img {
+            height: 80px;
+            width: auto;
+            border-radius: 8px;
+        }
+
+        .update-btn {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+            .update-btn:hover {
+                background-color: #2563eb;
+            }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #d1d5db;
+            transition: 0.4s;
+            border-radius: 24px;
+        }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 18px;
+                width: 18px;
+                left: 3px;
+                bottom: 3px;
+                background-color: white;
+                transition: 0.4s;
+                border-radius: 50%;
+            }
+
+        .switch input:checked + .slider {
+            background-color: #10b981;
+        }
+
+            .switch input:checked + .slider:before {
+                transform: translateX(26px);
+            }
+    </style>
+}
+
+<div class="header-bar">
+    <h2>📘 Danh Sách Sách</h2>
+    <button class="add-btn" onclick="window.location.href='@Url.Action("ThemSach", "Admin")'">➕ Thêm Sản Phẩm</button>
+
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Mã Sách</th>
+            <th>Tên Sách</th>
+            <th>Tác Giả</th>
+            <th>Hình Ảnh</th>
+            <th>Cập nhật</th>
+            <th>Trạng thái</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>S001</td>
+            <td>Lập trình C#</td>
+            <td>Nguyễn Văn A</td>
+            <td><img src="https://via.placeholder.com/80x100?text=Sach+C%23" alt="Lập trình C#"></td>
+            <td><button class="update-btn" onclick="alert('Cập nhật S001')">Cập nhật</button></td>
+            <td>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>S002</td>
+            <td>HTML & CSS</td>
+            <td>Trần Thị B</td>
+            <td><img src="https://via.placeholder.com/80x100?text=HTML+CSS" alt="HTML & CSS"></td>
+            <td><button class="update-btn" onclick="alert('Cập nhật S002')">Cập nhật</button></td>
+            <td>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </td>
+        </tr>
+    </tbody>
+</table>

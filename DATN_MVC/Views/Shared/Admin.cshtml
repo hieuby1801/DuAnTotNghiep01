@@ -215,7 +215,9 @@ a {
 }
 
     </style>
-    <style></style>
+    
+    
+    
 </head>
 <body>
     <div class="admin-container">
@@ -225,7 +227,10 @@ a {
             </div>
             <ul>
                 <li class="active"><i class="bi bi-speedometer2"></i> Tổng quan</li>
-                <li><i class="bi bi-cart-check"></i> Đơn hàng</li>
+                <li onclick="location.href='@Url.Action("QuanLySach", "Admin")'" style="cursor: pointer;">
+                    <i class="bi bi-cart-check"></i> Quản Lý Sách
+                </li>
+
                 <li><i class="bi bi-cart-check"></i> Đơn hàng</li>
                 <li><i class="bi bi-bar-chart-line"></i> Thống kê</li>
                 <li><i class="bi bi-box-arrow-right"></i> Đăng xuất</li>
@@ -257,54 +262,9 @@ a {
                 </div>
             </section>
             @RenderBody()
-            @*  <section class="table-section">
-                <div class="section-header">
-                    <h2>📘 Danh sách Sách</h2>
-                    <button class="btn btn-primary mb-3" onclick="toggleForm()">
-                        <i class="bi bi-plus-circle"></i> Thêm sách
-                    </button>
-                </div>
+           
 
-                <div id="themSachContainer" class="d-none">
-                    <form method="post" enctype="multipart/form-data">
-                        <!-- Form thêm sách nằm ở đây -->
-                        <!-- Bỏ Razor PartialView -->
-                    </form>
-                </div>
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Mã sách</th>
-                            <th>Tên sách</th>
-                            <th>Tác giả</th>
-                            <th>Giá</th>
-                            <th>Kho</th>
-                            <th>Nhập</th>
-                            <th>Hình ảnh</th>
-                            <th>Hành động</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Dữ liệu sách mẫu -->
-                        <tr>
-                            <td>MS001</td>
-                            <td>Sách Mẫu</td>
-                            <td>Nguyễn Văn A</td>
-                            <td>100,000</td>
-                            <td>20</td>
-                            <td>50</td>
-                            <td>
-                                <img src="~/images/sample.jpg" alt="Ảnh sách" width="100" height="150" />
-                            </td>
-                            <td>
-                                <a href="#" class="btn btn-sm btn-warning">Sửa</a>
-                                <button class="delete-btn">Xóa</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section> *@
+           
         </main>
     </div>
     <script>
@@ -318,7 +278,10 @@ a {
             }
         }
     </script>
+    @RenderSection("Scripts", required: false)
+    @RenderSection("Styles", required: false)
 </body>
 
+</html>
 
 
