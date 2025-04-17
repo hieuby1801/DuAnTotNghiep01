@@ -1,4 +1,5 @@
-﻿@{
+﻿@model DATN_MVC.Models.Modeltong
+@{
     Layout = "~/Views/Shared/Admin.cshtml";
 }
 
@@ -129,7 +130,8 @@
 
 <div class="header-bar">
     <h2>📘 Danh Sách Sách</h2>
-    <button class="add-btn" onclick="alert('Thêm sản phẩm mới')">➕ Thêm Sản Phẩm</button>
+    <button class="add-btn" onclick="window.location.href='@Url.Action("ThemSach", "Admin")'">➕ Thêm Sản Phẩm</button>
+
 </div>
 
 <table>
