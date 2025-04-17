@@ -300,17 +300,18 @@
             </section>
         </main>
     </div>
+    <script>
+        function toggleForm() {
+            const container = document.getElementById("themSachContainer");
+            container.classList.toggle("d-none");
+
+            const thongBao = document.getElementById("thongBao");
+            if (thongBao) {
+                thongBao.style.display = "none";
+            }
+        }
+    </script>
 </body>
 
-<script>
-    function toggleForm() {
-        const container = document.getElementById("themSachContainer");
-        container.classList.toggle("d-none");
 
-        const thongBao = document.getElementById("thongBao");
-        if (thongBao) {
-            thongBao.style.display = "none";
-        }
-    }
-</script>
 

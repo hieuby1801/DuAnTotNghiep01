@@ -147,28 +147,32 @@
 					@for (int i = 0; i < Model.GioHangs.Count; i++)
 					{
 						var item = Model.GioHangs[i];
-						<form asp-action="ThayDoiGio" asp-controller="GioHang" method="post" class="quantity-form" id="form-@item.MaSach">
+						
 							<div class="d-flex align-items-start border-top pt-3">
+							<form asp-action="ThayDoiGio" asp-controller="GioHang" method="post" class="quantity-form" id="form-@item.MaSach">
 								<!-- Checkbox để chọn sản phẩm -->
 								<input class="form-check-input mt-2 me-3 item-checkbox product-checkbox" id="checkbox-@item.MaSach" data-masach="@item.MaSach" type="checkbox" checked>
 								<img src="@Url.Content(item.HinhAnh)" class="me-3 rounded-3" width="80" alt="@item.TenSach" />
 								<div class="flex-grow-1">
 									<h6 class="mb-1 fw-medium">@item.TenSach</h6>
+							
 									<div class="quantity-wrapper mt-2">
+								
 										<button type="button" class="quantity-btn" onclick="updateQuantity('@item.MaSach', -1)">−</button>
 										<span class="quantity-number" id="quantity-@item.MaSach">@item.Soluong</span>
 										<button type="button" class="quantity-btn" onclick="updateQuantity('@item.MaSach', 1)">+</button>
-
+										
+									
 										<input type="hidden" name="MaSach" value="@item.MaSach" />
 										<input type="hidden" name="SoLuong" id="input-quantity-@item.MaSach" value="@item.Soluong" />
 									</div>
-
+							
 								</div>
-
+							</form>
 								<!-- Thêm phần hiển thị giá -->
 								<div class="text-danger fw-bold fs-6" id="price-@item.MaSach">@item.GiaBan đ</div> <!-- Giá của sản phẩm -->
 							</div>
-						</form>
+						
 					}
 
 				</div>
@@ -185,7 +189,7 @@
 						<strong class="fs-6">Tổng Số Tiền (gồm VAT)</strong>
 						<strong class="tong-tien">@Model.GioHangs.Sum(g => g.GiaBan * g.Soluong) đ</strong>
 					</div>
-					<form asp-controller="ThanhToan" asp-action="ThanhToan" method="post">
+					<form asp-controller="ThanhToan" asp-action="ThanhToan" method="post" id="payment-form">
 						<input type="hidden" name="NguoiDungId" value="@Context.Session.GetString("NguoiDungId")" />
 						<button type="submit" class="btn-pay w-100">THANH TOÁN</button>
 					</form>
@@ -194,26 +198,24 @@
 		</div>
 	</div>
 	<button id="clear-cart" class="btn btn-danger">Xóa giỏ hàng</button>
-	@* thêm *@
+	@*Script cập nhật số lượng sản phẩm (updateQuantity *@
 	<script>
 		function updateQuantity(maSach, change) {
 			var quantityInput = document.getElementById('input-quantity-' + maSach);
 			var quantitySpan = document.getElementById('quantity-' + maSach);
 
-			// Cập nhật số lượng mới
 			var newQuantity = parseInt(quantityInput.value) + change;
 
-			if (newQuantity >= 0) {  // Đảm bảo số lượng không âm
+			if (newQuantity >= 1) {
 				quantityInput.value = newQuantity;
-				quantitySpan.textContent = newQuantity;  // Cập nhật số lượng hiển thị
+				quantitySpan.textContent = newQuantity;
 
-				// Gửi form sau khi thay đổi số lượng
 				var form = document.getElementById('form-' + maSach);
-				form.submit();  // Gửi form khi số lượng thay đổi
+				form.submit();
 			}
 		}
 	</script>
-	@* xóa *@
+	@* Script xóa giỏ hàng (clear-cart) *@
 	<script>
 		document.getElementById("clear-cart").addEventListener("click", async function () {
 			try {
@@ -225,63 +227,68 @@
 				});
 				const data = await response.json();
 				if (data.success) {
-					location.reload(); // reload lại trang để cập nhật giỏ hàng rỗng
+					location.reload();
 				} else {
 					alert("Xóa giỏ hàng thất bại!");
 				}
 			} catch (error) {
 				console.error("Lỗi:", error);
 			}
-
 		});
 	</script>
-	@* Chọn *@
+
+	@*  Script cập nhật tổng tiền theo checkbox (updateTotalPrice) *@
 	<script>
-		// Hàm tính tổng tiền
 		function updateTotalPrice() {
 			var total = 0;
-
-			// Lặp qua tất cả các checkbox đã chọn và tính tổng tiền
 			document.querySelectorAll('.product-checkbox:checked').forEach(function (checkbox) {
 				var maSach = checkbox.getAttribute('data-masach');
 				var quantity = document.getElementById('input-quantity-' + maSach).value;
-				var price = document.getElementById('price-' + maSach).textContent;  // Lấy giá từ sản phẩm (nếu có)
+				var price = document.getElementById('price-' + maSach).textContent;
 
-				total += parseInt(price) * parseInt(quantity);  // Cộng thêm vào tổng tiền
+				total += parseInt(price) * parseInt(quantity);
 			});
-
-			// Cập nhật tổng tiền vào UI
-			document.querySelector('.tong-tien').textContent = total + ' đ';  // Cập nhật vào phần tổng tiền
+			document.querySelector('.tong-tien').textContent = total + ' đ';
 		}
 
-		// Lắng nghe sự kiện thay đổi của checkbox
+		// Gán sự kiện checkbox
 		document.querySelectorAll('.product-checkbox').forEach(function (checkbox) {
-			checkbox.addEventListener('change', function () {
-				var maSach = this.getAttribute('data-masach');
-				var isChecked = this.checked;
-
-				// Cập nhật tổng tiền khi checkbox thay đổi
-				updateTotalPrice();
-
-				// Nếu checkbox được chọn
-				if (isChecked) {
-					console.log("Sản phẩm với mã " + maSach + " đã được chọn.");
-				} else {
-					console.log("Sản phẩm với mã " + maSach + " đã bị bỏ chọn.");
-				}
-			});
+			checkbox.addEventListener('change', updateTotalPrice);
 		});
 
-		// Hàm chọn tất cả checkbox
+		// Chọn tất cả checkbox
 		function toggleAll(source) {
-			var checkboxes = document.querySelectorAll('.product-checkbox');
-			checkboxes.forEach(function (checkbox) {
+			document.querySelectorAll('.product-checkbox').forEach(function (checkbox) {
 				checkbox.checked = source.checked;
 			});
-
-			// Cập nhật tổng tiền sau khi chọn tất cả hoặc bỏ chọn
 			updateTotalPrice();
 		}
+	</script>
+
+	@*   Script xử lý thanh toán với checkbox được chọn (updateSelectedBooks) *@
+	<script>
+		function updateSelectedBooks() {
+			const form = document.getElementById('payment-form');
+			form.querySelectorAll('input[name="masach"]').forEach(el => el.remove());
+			document.querySelectorAll('.product-checkbox:checked').forEach(cb => {
+				form.insertAdjacentHTML('beforeend', `<input type="hidden" name="masach" value="${cb.dataset.masach}">`);
+			});
+		}
+
+		document.addEventListener('DOMContentLoaded', updateSelectedBooks);
+		document.querySelectorAll('.product-checkbox').forEach(cb => {
+			cb.addEventListener('change', updateSelectedBooks);
+		});
+	</script>
+	@* Kiểm tra phải chọn sản phẩm mới cho phép thanh toán *@
+	<script>
+		document.getElementById('payment-form').addEventListener('submit', function (e) {
+			const kiemtracheckbox = document.querySelectorAll('.product-checkbox:checked');
+			if (kiemtracheckbox.length === 0) {
+				e.preventDefault(); // Ngăn form submit
+				alert('Vui lòng chọn ít nhất một sản phẩm để thanh toán!');
+			}
+		});
 	</script>
 </body>
 
