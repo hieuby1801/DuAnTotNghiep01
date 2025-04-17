@@ -1,4 +1,5 @@
 ﻿using Azure.Messaging;
+using DATN_API.DTOs;
 using DATN_API.Models;
 using DATN_API.Service;
 using Microsoft.AspNetCore.Http;
@@ -88,5 +89,11 @@ namespace DATN_API.Controllers
 			}
 
 		}
-	}
+        [HttpPost("them")]
+        public async Task<IActionResult> ThemSach([FromBody] ThemSachDto dto)
+        {
+            var ketQua = await _sachservice.ThemSachAsync(dto);
+            return BadRequest();
+        }
+    }
 }

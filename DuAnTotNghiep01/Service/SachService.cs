@@ -1,4 +1,5 @@
-﻿using DATN_API.Models;
+﻿using DATN_API.DTOs;
+using DATN_API.Models;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
@@ -210,6 +211,39 @@ namespace DATN_API.Service
                 }
             }
             return sach; // Trả về đối tượng SachDTO duy nhất
+        }
+        public async Task<bool> ThemSachAsync(ThemSachDto dto)
+        {
+            using (SqlConnection conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_ThemSach", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@MaSach", dto.MaSach);
+                    cmd.Parameters.AddWithValue("@TenSach", dto.TenSach);
+                    cmd.Parameters.AddWithValue("@TacGia", dto.TacGia);
+                    cmd.Parameters.AddWithValue("@HinhAnh", dto.HinhAnh);
+                    cmd.Parameters.AddWithValue("@NgonNgu", dto.NgonNgu);
+                    cmd.Parameters.AddWithValue("@KichThuoc", dto.KichThuoc);
+                    cmd.Parameters.AddWithValue("@TrongLuong", dto.TrongLuong);
+                    cmd.Parameters.AddWithValue("@SoTrang", dto.SoTrang);
+                    cmd.Parameters.AddWithValue("@HinhThuc", dto.HinhThuc);
+                    cmd.Parameters.AddWithValue("@MoTa", dto.MoTa);
+                    cmd.Parameters.AddWithValue("@DanhSachTheLoai", dto.DanhSachTheLoai);
+
+                    try
+                    {
+                        await conn.OpenAsync();
+                        await cmd.ExecuteNonQueryAsync();
+                        return true;
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                }
+            }
         }
     }
 }
