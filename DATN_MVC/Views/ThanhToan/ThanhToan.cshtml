@@ -96,21 +96,24 @@
         </label>
         <label>
             Tỉnh/Thành phố
-            <select>
-                <option selected>Quảng Ngãi</option>
+            <select id="province" onchange="loadDistricts()">
+                <option>-- Chọn tỉnh --</option>
             </select>
         </label>
+
         <label>
             Quận/Huyện
-            <select>
-                <option selected>Huyện Sơn Tịnh</option>
+            <select id="district" onchange="loadWards()">
+                <option>-- Chọn huyện --</option>
             </select>
         </label>
+
         <label>
             Phường/Xã
-            <select>
-                <option selected>Xã Tịnh Bắc</option>
+            <select id="ward">
+                <option>-- Chọn xã --</option>
             </select>
+        </label>
         </label>
         <label>
             Địa chỉ nhận hàng
@@ -146,4 +149,49 @@
     </div>
 
 </body>
+<script>
+    async function loadProvinces() {
+        const res = await fetch("https://provinces.open-api.vn/api/p/");
+        const provinces = await res.json();
+        const select = document.getElementById("province");
+        provinces.forEach(p => {
+            const opt = document.createElement("option");
+            opt.value = p.code;
+            opt.text = p.name;
+            select.appendChild(opt);
+        });
+    }
+
+    async function loadDistricts() {
+        const provinceCode = document.getElementById("province").value;
+        const res = await fetch(`https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`);
+        const data = await res.json();
+        const districtSelect = document.getElementById("district");
+        districtSelect.innerHTML = '<option>-- Chọn huyện --</option>';
+        document.getElementById("ward").innerHTML = '<option>-- Chọn xã --</option>';
+
+        data.districts.forEach(d => {
+            const opt = document.createElement("option");
+            opt.value = d.code;
+            opt.text = d.name;
+            districtSelect.appendChild(opt);
+        });
+    }
+
+    async function loadWards() {
+        const districtCode = document.getElementById("district").value;
+        const res = await fetch(`https://provinces.open-api.vn/api/d/${districtCode}?depth=2`);
+        const data = await res.json();
+        const wardSelect = document.getElementById("ward");
+        wardSelect.innerHTML = '<option>-- Chọn xã --</option>';
+        data.wards.forEach(w => {
+            const opt = document.createElement("option");
+            opt.text = w.name;
+            wardSelect.appendChild(opt);
+        });
+    }
+
+    // Gọi khi trang load
+    loadProvinces();
+</script>
 </html>
