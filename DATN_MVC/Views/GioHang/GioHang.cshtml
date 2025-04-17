@@ -2,6 +2,7 @@
 @{
 	ViewData["Title"] = "Giỏ Hàng";
 	Layout = "~/Views/Shared/_Layout.cshtml";
+	var nguoiDungId = Context.Session.GetString("NguoiDungId");
 }
 <!DOCTYPE html>
 <html lang="vi">
@@ -185,6 +186,7 @@
 						<strong class="tong-tien">@Model.GioHangs.Sum(g => g.GiaBan * g.Soluong) đ</strong>
 					</div>
 					<form asp-controller="ThanhToan" asp-action="ThanhToan" method="post">
+						<input type="hidden" name="NguoiDungId" value="@Context.Session.GetString("NguoiDungId")" />
 						<button type="submit" class="btn-pay w-100">THANH TOÁN</button>
 					</form>
 				</div>
@@ -281,10 +283,6 @@
 			updateTotalPrice();
 		}
 	</script>
-
-
-
-
 </body>
 
 </html>

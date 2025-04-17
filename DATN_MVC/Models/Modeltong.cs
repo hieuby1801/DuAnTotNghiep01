@@ -6,7 +6,7 @@
 		public string? Email { get; set; }
 		public string? Saft { get; set; }
 		public string MatKhau { get; set; }
-		public NguoiDung NguoiDungss { get; set; }
+		public NguoiDung NguoiDung { get; set; }
 		public Sach Sachs { get; set; }
 		public SachDTO? sachDTOs { get; set; }
         public List<SachDTO> sachDTOss { get; set; } = new List<SachDTO>();

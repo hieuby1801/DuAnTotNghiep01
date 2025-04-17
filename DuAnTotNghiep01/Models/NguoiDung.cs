@@ -21,7 +21,7 @@ namespace DATN_API.Models
 
         public string? VaiTro { get; set; }
 
-        public string? TrangThai { get; set; } = null!;
+        public string? TrangThai { get; set; }
 
   
     }

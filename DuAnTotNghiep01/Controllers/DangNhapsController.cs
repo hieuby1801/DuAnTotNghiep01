@@ -116,7 +116,7 @@ namespace DATN_API.Controllers
 
         //quen mat khau
         [HttpPost("layotp")]
-        public IActionResult layotp( [FromBody] string email)
+        public IActionResult Layotp( [FromBody] string email)
         {
             var emailck = _dangNhapService.XacNhanEmail(email);
 
@@ -181,7 +181,7 @@ namespace DATN_API.Controllers
             return BadRequest(new { message = "Cập nhật không thành công" });
         }
 
-        [HttpGet("LayId{id}")]
+        [HttpGet("LayId/{id}")]
         public NguoiDung LayNguoiDungId(int id)
         {
             var user = _dangNhapService.LayTheoId(id);

@@ -87,7 +87,7 @@ namespace DATN_MVC.Controllers
         public async Task<IActionResult> DangKy(Modeltong nguoiDung)
         {
            
-            var response = await _httpClient.PostAsJsonAsync("DangNhaps/DangKy", nguoiDung.NguoiDungss);
+            var response = await _httpClient.PostAsJsonAsync("DangNhaps/DangKy", nguoiDung.NguoiDung);
 
             if (response.IsSuccessStatusCode)
             {

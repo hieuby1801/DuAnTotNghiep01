@@ -89,20 +89,20 @@
                 <div class="tab-pane fade" id="nav-register" role="tabpanel" aria-labelledby="nav-register-tab">
                     <form asp-action="DangKy" asp-controller="DangNhap" method="post">
                         <div class="form-group py-3">
-                            <label asp-for="NguoiDungss.Email" class="mb-2">Email *</label>
-                            <input asp-for="NguoiDungss.Email" type="email" class="form-control" placeholder="Email" required>
+                            <label asp-for="NguoiDung.Email" class="mb-2">Email *</label>
+                            <input asp-for="NguoiDung.Email" type="email" class="form-control" placeholder="Email" required>
                         </div>
                         <div class="form-group py-3">
-                            <label asp-for="NguoiDungss.TenNguoiDung" class="mb-2">Tên người dùng *</label>
-                            <input asp-for="NguoiDungss.TenNguoiDung" type="text" class="form-control" placeholder="Tên người dùng" required>
+                            <label asp-for="NguoiDung.TenNguoiDung" class="mb-2">Tên người dùng *</label>
+                            <input asp-for="NguoiDung.TenNguoiDung" type="text" class="form-control" placeholder="Tên người dùng" required>
                         </div>
                         <div class="form-group pb-3">
-                            <label asp-for="NguoiDungss.MatKhau" class="mb-2">Mật khẩu *</label>
-                            <input asp-for="NguoiDungss.MatKhau" type="password" class="form-control" placeholder="Mật khẩu" required>
+                            <label asp-for="NguoiDung.MatKhau" class="mb-2">Mật khẩu *</label>
+                            <input asp-for="NguoiDung.MatKhau" type="password" class="form-control" placeholder="Mật khẩu" required>
                         </div>
                         <div class="form-group pb-3">
-                            <label asp-for="NguoiDungss.SoDienThoai" class="mb-2">Số điện thoại *</label>
-                            <input asp-for="NguoiDungss.SoDienThoai" type="text" class="form-control" placeholder="Số điện thoại" minlength="10" maxlength="10" required>
+                            <label asp-for="NguoiDung.SoDienThoai" class="mb-2">Số điện thoại *</label>
+                            <input asp-for="NguoiDung.SoDienThoai" type="text" class="form-control" placeholder="Số điện thoại" minlength="10" maxlength="10" required>
                         </div>
                         <div class="form-check py-3">
                             <input type="checkbox" class="form-check-input" id="agree" required>
