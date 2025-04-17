@@ -13,7 +13,7 @@ namespace DATN_MVC.Models
 
         public string? MatKhau { get; set; }
         public string? Saft { get; set; }
-        public DateTime NgaySinh { get; set; }
+        public DateTime? NgaySinh { get; set; }
 
         public string? SoDienThoai { get; set; }
 
