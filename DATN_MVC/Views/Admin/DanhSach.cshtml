@@ -49,21 +49,31 @@
         </thead>
         <tbody>
             <!-- Dữ liệu sách mẫu -->
-            @foreach (var item in Model.Saches)
+            @if (Model.Saches != null && Model.Saches.Any())
+            {
+                foreach (var item in Model.Saches)
+                {
+                    <tr>
+                        <td>@item.MaSach</td>
+                        <td>@item.TenSach</td>
+                        <td>@item.TacGia</td>
+                        <td>
+                            <img src="@Url.Content(item.HinhAnh)" alt="Ảnh sách" width="100" height="150" />
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-warning">Sửa</a>
+                            <button class="delete-btn">Xóa</button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
             {
                 <tr>
-                    <td>@item.MaSach</td>
-                    <td>@item.TenSach</td>
-                    <td>@item.TacGia</td>                    
-                    <td>
-                        <img src="@Url.Content(item.HinhAnh)" alt="Ảnh sách" width="100" height="150" />
-                    </td>
-                    <td>
-                        <a href="#" class="btn btn-sm btn-warning">Sửa</a>
-                        <button class="delete-btn">Xóa</button>
-                    </td>              
-            </tr>
+                    <td colspan="5" class="text-center text-muted">Không có sách nào được hiển thị.</td>
+                </tr>
             }
+
         </tbody>
     </table>
 </section>

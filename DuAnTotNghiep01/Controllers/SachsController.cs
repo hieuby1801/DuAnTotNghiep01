@@ -89,28 +89,27 @@ namespace DATN_API.Controllers
 			}
 		}
 
-<<<<<<< HEAD
-        [HttpGet("getOnlySach")]
-        public IActionResult GetAll()
+
+		[HttpGet("getOnlySach")]
+		public IActionResult GetAll()
+		{
+			var result = _sachservice.GetOnlySach();
+			if (result != null)
+			{
+				return Ok(result);
+			}
+			else
+			{
+				return BadRequest(new { Message = "Khong co sach" });
+			}
+		}
+
+        [HttpGet]
+        public IActionResult GetOnlySach()
         {
             var result = _sachservice.GetOnlySach();
-            if (result != null)
-            {
-                return Ok(result);
-            }
-            else
-            {
-                return BadRequest(new { Message = "Khong co sach" });
-            }
-=======
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var result = await _sachservice.GetAllAsync();
             return Ok(result);
->>>>>>> 51d004671a7640d6a441416d66b1d59435708bc8
         }
-
         [HttpPost("them")]
         public async Task<IActionResult> ThemSach([FromBody] ThemSachDto dto)
         {

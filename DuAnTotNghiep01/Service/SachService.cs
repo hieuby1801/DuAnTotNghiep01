@@ -197,30 +197,45 @@ namespace DATN_API.Service
 				.ToListAsync();
 		}
 
-		public async Task<bool> ThemSachAsync(ThemSachDto dto)
-		{
-			try
-			{
-				var sql = "EXEC sp_ThemSach @MaSach, @TenSach, @TacGia, @HinhAnh, @NgonNgu, @KichThuoc, @TrongLuong, @SoTrang, @HinhThuc, @MoTa, @DanhSachTheLoai";
+        public async Task<bool> ThemSachAsync(ThemSachDto dto)
+        {
+            try
+            {
+                var sql = "EXEC sp_ThemSach @MaSach, @TenSach, @TacGia, @HinhAnh, @NgonNgu, @KichThuoc, @TrongLuong, @SoTrang, @HinhThuc, @MoTa, @DanhSachTheLoai";
 
-<<<<<<< HEAD
-                    conn.Open();
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                using (var conn = new SqlConnection("con"))
+                using (var cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@MaSach", dto.MaSach);
+                    cmd.Parameters.AddWithValue("@TenSach", dto.TenSach);
+                    cmd.Parameters.AddWithValue("@TacGia", dto.TacGia ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@HinhAnh", dto.HinhAnh ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@NgonNgu", dto.NgonNgu ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@KichThuoc", dto.KichThuoc ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@TrongLuong", dto.TrongLuong);
+                    cmd.Parameters.AddWithValue("@SoTrang", dto.SoTrang);
+                    cmd.Parameters.AddWithValue("@HinhThuc", dto.HinhThuc ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@MoTa", dto.MoTa ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@DanhSachTheLoai", dto.DanhSachTheLoai ?? (object)DBNull.Value);
+
+                    await conn.OpenAsync();
+                    using (var reader = await cmd.ExecuteReaderAsync())
                     {
-                        if (reader.Read()) // Lấy duy nhất 1 dòng
+                        if (await reader.ReadAsync())
                         {
-                            sach = new GioHang
-                            {
-                                MaSach = reader.GetInt32(reader.GetOrdinal("MaSach")),
-                                TenSach = reader.GetString(reader.GetOrdinal("TenSach")),
-                                GiaBan = reader.GetInt32(reader.GetOrdinal("GiaBan")),
-                                HinhAnh = reader.GetString(reader.GetOrdinal("HinhAnh"))
-                            };
+                            // Nếu cần đọc dữ liệu từ SP, xử lý ở đây
+                            return true;
                         }
                     }
                 }
             }
-            return sach; // Trả về đối tượng SachDTO duy nhất
+            catch (Exception ex)
+            {
+                // Ghi log nếu cần: _logger.LogError(ex, "Lỗi khi thêm sách");
+                return false;
+            }
+
+            return false;
         }
         public List<SachDto> GetOnlySach()
         {
@@ -235,33 +250,9 @@ namespace DATN_API.Service
                 })
                 .ToList();
         }
-=======
-				var parameters = new[]
-				{
-			new SqlParameter("@MaSach", dto.MaSach),
-			new SqlParameter("@TenSach", dto.TenSach),
-			new SqlParameter("@TacGia", dto.TacGia),
-			new SqlParameter("@HinhAnh", dto.HinhAnh),
-			new SqlParameter("@NgonNgu", dto.NgonNgu),
-			new SqlParameter("@KichThuoc", dto.KichThuoc),
-			new SqlParameter("@TrongLuong", dto.TrongLuong),
-			new SqlParameter("@SoTrang", dto.SoTrang),
-			new SqlParameter("@HinhThuc", dto.HinhThuc),
-			new SqlParameter("@MoTa", dto.MoTa),
-			new SqlParameter("@DanhSachTheLoai", dto.DanhSachTheLoai),
-		};
->>>>>>> 51d004671a7640d6a441416d66b1d59435708bc8
 
-				await _context.Database.ExecuteSqlRawAsync(sql, parameters);
-				return true;
-			}
-			catch
-			{
-				return false;
-			}
-		}
-		// thêm giỏ hàng khi chưa đăng nhập
-		public GioHangDTO Themgiohang(int masach)
+        // thêm giỏ hàng khi chưa đăng nhập
+        public GioHangDTO Themgiohang(int masach)
 		{
 			GioHangDTO sach = null;
 
