@@ -13,11 +13,7 @@ namespace DATN_API.Service
         public  Task<List<Sach>> GetAllAsync();
         public  Task<bool> ThemSachAsync(ThemSachDto dto);
         public List<SachDto> GetOnlySach();
-        public GioHangDTO Themgiohang(int masach);
-        public Task<bool> ThemgiohangDN(int masach, int id, int soluong);
-        public Task<bool> CapNhatGioHang(int masach, int id, int soluong);
-        public GioHang KiemTra(int masach);
-        public List<GioHang> Laygiohnagtheoid(int manguoidung);
+
     }
 
 }

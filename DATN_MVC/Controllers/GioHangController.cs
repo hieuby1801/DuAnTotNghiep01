@@ -2,6 +2,7 @@
 using DATN_MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace DATN_MVC.Controllers
 {
@@ -95,7 +96,7 @@ namespace DATN_MVC.Controllers
 					}
 
 					// Lưu giỏ hàng vào cookie
-					LuuGioHangVaoCookie(gioHangList);
+					_= LuuGioHangVaoCookie(gioHangList);
 				}
 				return RedirectToAction("XemGioHang");
 			}
@@ -148,7 +149,7 @@ namespace DATN_MVC.Controllers
 			var model = new Modeltong();
 			var idnd = HttpContext.Session.GetString("NguoiDungId");
 
-			
+		
 
 			if (idnd == null)
 			{
@@ -191,21 +192,23 @@ namespace DATN_MVC.Controllers
 				};
 
 				// Gọi API bất đồng bộ với await
-				var response = await _httpClient.PostAsync(
-				$"GioHangs/ThemGioHang?masach={MaSach}&id={idnd}&soluong={Soluong}", null);
+
+				var json = JsonConvert.SerializeObject(model.gioHangDTO);
+				var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+				var response = await _httpClient.PutAsync("GioHangs/Capnhapgiohang", content);
 
 				// Kiểm tra nếu API trả về thành công
 				if (response.IsSuccessStatusCode)
 				{
-					var content = await response.Content.ReadAsStringAsync();
+					
 					return RedirectToAction("XemGioHang");
 					// Xử lý dữ liệu trả về từ API nếu cần
 				}
 				else
 				{
 					var errorContent = await response.Content.ReadAsStringAsync();
-					// Xử lý khi API trả về lỗi
-					return BadRequest($"Không thể thêm giỏ hàng qua API. Lỗi: {errorContent}");
+					return BadRequest($"Không thể thêm giỏ hàng qua API. Mã lỗi: {(int)response.StatusCode}, Nội dung lỗi: {errorContent}");
 				}
 			}
 

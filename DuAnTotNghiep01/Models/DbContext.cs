@@ -24,6 +24,6 @@ namespace DATN_API.Models
 		public  DbSet<TheLoai> TheLoai { get; set;}
 		public DbSet<TonKho> tonKhos { get; set; }
 		public DbSet<VanChuyen>	vanChuyens { get; set; }
-		public DbSet<GioHang> GioHang { get; set; }
+		public DbSet<GioHang> Giohang { get; set; }
 	}
 }

@@ -1,4 +1,5 @@
-﻿using DATN_API.Models;
+﻿using DATN_API.DTOs;
+using DATN_API.Models;
 
 namespace DATN_API.Service
 {
@@ -6,8 +7,9 @@ namespace DATN_API.Service
     {
         public GioHangDTO Themgiohang(int masach);
         public Task<bool> ThemgiohangDN(int masach, int id, int soluong);
-        public Task<bool> CapNhatGioHang(int masach, int id, int soluong);
-        public GioHang KiemTra(int masach, int maNguoiDung);
+        public GioHang CapNhatGioHang(CapNhatGioHangRequest request);
+
+		public GioHang KiemTra(int masach, int maNguoiDung);
 
 		public List<GioHang> Laygiohnagtheoid(int manguoidung);
     }

@@ -1,4 +1,5 @@
-﻿using DATN_API.Models;
+﻿using DATN_API.DTOs;
+using DATN_API.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -70,43 +71,64 @@ namespace DATN_API.Service
                 return false;
             }
         }
-        // cập nhật giỏ hàng
-        public async Task<bool> CapNhatGioHang(int masach, int id, int soluong)
-        {
-            try
-            {
-                var sql = "UPDATE GioHang SET SoLuong = @soluong, ThoiGian = GETDATE() WHERE MaNguoiDung = @id AND MaSach = @masach";
+		// cập nhật giỏ hàng
+		public GioHang CapNhatGioHang(CapNhatGioHangRequest request)
+		{
+			try
+			{
+				// Kiểm tra xem bản ghi có tồn tại không
+				var gioHang = _context.Giohang
+					.FirstOrDefault(g => g.MaNguoiDung == request.MaNguoiDung && g.MaSach == request.MaSach);
 
-                var parameters = new[]
-                {
-            new SqlParameter("@id", id),
-            new SqlParameter("@masach", masach),
-            new SqlParameter("@soluong", soluong)
-        };
+				if (gioHang == null)
+				{
+					// Nếu không có bản ghi → trả về null hoặc có thể tạo mới tùy nhu cầu
+					return null;
+				}
 
-                // Thực thi câu lệnh SQL để cập nhật
-                int result = await _context.Database.ExecuteSqlRawAsync(sql, parameters);
+				// Kiểm tra sự thay đổi thực sự của SoLuong
+				if (gioHang.SoLuong == request.SoLuong)
+				{
+					// Nếu không thay đổi, trả về giỏ hàng hiện tại
+					return gioHang;
+				}
 
-                // Nếu cập nhật thành công, ExecuteSqlRawAsync sẽ trả về số dòng ảnh hưởng > 0
-                return result > 0;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message); // Ghi log nếu cần
-                return false;
-            }
-        }
+				// Nếu số lượng = 0 thì xóa khỏi giỏ
+				if (request.SoLuong == 0)
+				{
+					_context.Giohang.Remove(gioHang);
+				}
+				else
+				{
+					// Ngược lại, cập nhật số lượng và thời gian
+					gioHang.SoLuong = request.SoLuong;
+					gioHang.ThoiGian = DateTime.Now;
+					_context.Giohang.Update(gioHang);
+				}
+
+				// Lưu thay đổi đồng bộ
+				_context.SaveChanges();
+
+				// Trả về giỏ hàng đã được cập nhật
+				return gioHang;
+			}
+			catch (Exception ex)
+			{
+				// Nếu có lỗi, trả về null
+				return null;
+			}
+		}
 
 		//kiểm tra giỏ hàng 
 		public GioHang KiemTra(int masach, int maNguoiDung)
 		{
-			return _context.GioHang.FirstOrDefault(s => s.MaSach == masach && s.MaNguoiDung == maNguoiDung);
+			return _context.Giohang.FirstOrDefault(s => s.MaSach == masach && s.MaNguoiDung == maNguoiDung);
 		}
 
 		// Lấy Giỏ hàng theo MaNguoiDung
 		public List<GioHang> Laygiohnagtheoid(int manguoidung)
         {
-            var gioHangs = _context.GioHang
+            var gioHangs = _context.Giohang
         .Where(s => s.MaNguoiDung == manguoidung)
         .ToList();
             return gioHangs;
