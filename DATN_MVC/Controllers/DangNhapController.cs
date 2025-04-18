@@ -96,54 +96,56 @@ namespace DATN_MVC.Controllers
 
 
 
-		[HttpPost]
-        public async Task<IActionResult> DangKy(Modeltong nguoiDung)
+        [HttpPost]
+        public async Task<IActionResult> DangKy(Modeltong nguoidung)
         {
-           
-            var response = await _httpClient.PostAsJsonAsync("DangNhaps/DangKy", nguoiDung.NguoiDung);
+            if (nguoidung.NguoiDung == null)
+            {
+                TempData["ErrorMessage1"] = "Dữ liệu người dùng bị thiếu.";
+                return RedirectToAction("index", "TrangChu"); // Trả lại view để người dùng nhập lại
+            }
+            var response = await _httpClient.PostAsJsonAsync("DangNhaps/DangKy",nguoidung.NguoiDung);
 
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("index","TrangChu"); 
+                return RedirectToAction("index", "TrangChu");
             }
 
-            else
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var error = JsonConvert.DeserializeObject<dynamic>(responseContent);
+
+            if (error != null)
             {
-                var responseContent = await response.Content.ReadAsStringAsync();
-                var error = JsonConvert.DeserializeObject<dynamic>(responseContent);
+                string errorField = error.field?.ToString();
+                string errorMessage = error.message?.ToString();
 
-                if (error != null)
+                if (errorField == "Email")
                 {
-                    string errorField = error.field?.ToString(); // Lưu ý chữ thường 'field'
-                    string errorMessage = error.message?.ToString(); // Lưu ý chữ thường 'message'
-
-                    if (errorField == "Email")
-                    {
-                        ViewBag.ErrorField = "Email";
-                        TempData["ErrorMessage1"] = errorMessage;
-                    }
-                    else if (errorField == "Sdt")
-                    {
-                        ViewBag.ErrorField = "Sdt";
-                        TempData["ErrorMessage1"] = errorMessage;           
-                    }
-                    else
-                    {
-                        TempData["ErrorMessage1"] = $"Không xác định lỗi từ API. field: {errorField}, message: {errorMessage}";
-                    }
+                    ViewBag.ErrorField = "Email";
+                    TempData["ErrorMessage1"] = errorMessage;
+                }
+                else if (errorField == "Sdt")
+                {
+                    ViewBag.ErrorField = "Sdt";
+                    TempData["ErrorMessage1"] = errorMessage;
                 }
                 else
                 {
-                    TempData["ErrorMessage1"] = $"Không xác định lỗi từ API. field:";
+                    TempData["ErrorMessage1"] = $"Không xác định lỗi từ API. field: {errorField}, message: {errorMessage}";
                 }
-
-                return RedirectToAction("Index", "TrangChu");
             }
+            else
+            {
+                TempData["ErrorMessage1"] = $"Không xác định lỗi từ API.";
+            }
+
+            return RedirectToAction("index", "TrangChu"); // Gợi ý: Trả lại view thay vì RedirectToAction để hiển thị lỗi luôn
         }
 
 
+
         // đổi mật khẩu
-      
+
         [HttpPost]
         public async Task<IActionResult> layOtp(string Email)
         {

@@ -61,7 +61,7 @@ namespace DATN_API.Controllers
         }
         //dang ky
         [HttpPost("DangKy")]
-        public IActionResult DangKy(NguoiDung nguoiDung)
+        public IActionResult DangKy(Modeltong nguoiDung)
         {
 
             var ramdomsatf = _dangNhapService.Ramdom();
@@ -70,19 +70,19 @@ namespace DATN_API.Controllers
                 nguoiDung.Saft = ramdomsatf;
             }
 
-            var email = _dangNhapService.XacNhanEmail(nguoiDung.Email);
+            var email = _dangNhapService.XacNhanEmail(nguoiDung.NguoiDung.Email);
             if (email != null)
             {
                 return BadRequest(new { Field = "Email", Message = "Email đã được sử dụng." });
             }
-            var sdt = _dangNhapService.XacNhanSdt(nguoiDung.SoDienThoai);
+            var sdt = _dangNhapService.XacNhanSdt(nguoiDung.NguoiDung.SoDienThoai);
             if (sdt != null)
             {
                 return BadRequest(new { Field = "Sdt", Message = "số điện thoại đã được sử dụng." });
             }
             try
             {
-                var dangky = _dangNhapService.DangKy(nguoiDung);
+                var dangky = _dangNhapService.DangKy(nguoiDung.NguoiDung);
 
                 // Kiểm tra nếu đăng ký thành công
                 if (dangky != null)

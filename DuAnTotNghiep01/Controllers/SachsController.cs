@@ -58,7 +58,7 @@ namespace DATN_API.Controllers
 		}
 		[HttpGet("Laysachtheothongtinnhap")]
 
-		[HttpGet]
+
 		public ActionResult<List<SachDTO>> Timsachtheothongtinnhap(
 			[FromQuery] string? tenSach = null,
 			[FromQuery] int? khoangGia = null,

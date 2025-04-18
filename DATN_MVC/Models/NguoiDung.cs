@@ -4,7 +4,7 @@ namespace DATN_MVC.Models
 {
     public class NguoiDung
     {
-        [Key]
+       
         public int MaNguoiDung { get; set; }
 
         public string? TenNguoiDung { get; set; }
@@ -21,7 +21,7 @@ namespace DATN_MVC.Models
 
         public string? VaiTro { get; set; }
 
-        public string? TrangThai { get; set; } = null!;
+        public string? TrangThai { get; set; } 
 
   
     }
