@@ -3,7 +3,10 @@
 	ViewData["Title"] = "Giỏ Hàng";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 	var nguoiDungId = Context.Session.GetString("NguoiDungId");
-	
+	var id = TempData["mand"];
+	var soluong = TempData["soluong"];
+	var masach = TempData["masach"];
+
 }
 <!DOCTYPE html>
 <html lang="vi">
@@ -137,9 +140,9 @@
 		<h4 class="mb-4 fw-bold">🛒 GIỎ HÀNG</h4>
 		<div class="row g-4">
 			<!-- Cột trái: Sản phẩm -->
-			@if (nguoiDungId != null)
+			@if (id!=null || soluong!= null || masach !=null)
 			{
-				<p>Tài khoản của bạn: @nguoiDungId</p>
+				<p>Tài khoản của bạn: @id , @masach ,@soluong</p>
 			}
 			else
 			{

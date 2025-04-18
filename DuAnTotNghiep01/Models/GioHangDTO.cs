@@ -11,7 +11,7 @@ namespace DATN_API.Models
 		public int SoLuong { get; set; }
 		public DateTime ThoiGian { get; set; } = DateTime.Now;
 		public string? TenSach { get; set; }
-
+		public string? GiaTien { get; set; }
 		public int? GiaBan { get; set; }
 		public string? HinhAnh { get; set; }
 	}

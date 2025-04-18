@@ -8,7 +8,7 @@
         public int? Soluong { get; set; }
         public int? GiaBan { get; set; }
         public int? TongGiaTungCai { get; set; }
-		public int? TongGia { get; set; }
+		public int? TongTien { get; set; }
 		public string? HinhAnh { get; set; }
 
     }

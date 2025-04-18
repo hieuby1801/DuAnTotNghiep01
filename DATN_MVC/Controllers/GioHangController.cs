@@ -102,8 +102,18 @@ namespace DATN_MVC.Controllers
 			}
 			else
 			{
+				
+				model.gioHangDTO = new DTOs.GioHangDTO
+				{
+					MaSach = masach,
+					SoLuong = 1,
+					MaNguoiDung = int.Parse(idnd) // Chuyển đổi idnd thành int
+				};
+				
+				var json = JsonConvert.SerializeObject(model.gioHangDTO);
+				var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-				var response = await _httpClient.PostAsync($"GioHangs/ThemGioHang?masach={masach}&id={idnd}&soluong=1", null);
+				var response = await _httpClient.PostAsync("GioHangs/ThemGioHang", content);
 
 				if (response.IsSuccessStatusCode)
 				{
@@ -127,14 +137,14 @@ namespace DATN_MVC.Controllers
 							gioHangList.Add(model.GioHang);
 						}
 
-						LuuGioHangVaoCookie(gioHangList);
+						_= LuuGioHangVaoCookie(gioHangList);
 					}
 					return RedirectToAction("XemGioHang");
 				}
 				else
 				{
 					// Xử lý khi không thành công, ví dụ: chuyển sang trang báo lỗi
-					return View("NotFound");
+					return RedirectToAction("XemGioHang");
 				}
 			}
 		}
@@ -148,9 +158,6 @@ namespace DATN_MVC.Controllers
 		{
 			var model = new Modeltong();
 			var idnd = HttpContext.Session.GetString("NguoiDungId");
-
-		
-
 			if (idnd == null)
 			{
 				// Lấy giỏ hàng từ cookie nếu chưa đăng nhập
