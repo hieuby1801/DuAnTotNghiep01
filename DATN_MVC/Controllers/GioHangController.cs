@@ -1,50 +1,141 @@
-﻿using DATN_MVC.Models;
+﻿using Azure;
+using DATN_MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace DATN_MVC.Controllers
 {
-    public class GioHangController : Controller
-    {
-        private readonly HttpClient _httpClient;
-        public GioHangController(HttpClient httpClient)
-        {
-            _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("https://localhost:7189/api/");
-        }
+	public class GioHangController : Controller
+	{
+		private readonly HttpClient _httpClient;
+		public GioHangController(HttpClient httpClient)
+		{
+			_httpClient = httpClient;
+			_httpClient.BaseAddress = new Uri("https://localhost:7189/api/");
+		}
 		public const string CookieName = "GioHang";
-        [HttpPost]
+		[HttpPost]
 		public IActionResult XoaGioHang()
 		{
 			Response.Cookies.Delete("GioHang");
 			return Json(new { success = true });
 		}
-		public async Task <IActionResult> XemGioHang()
+		public async Task<IActionResult> XemGioHang()
 		{
 			var modeltong = new Modeltong();
 			var idnd = HttpContext.Session.GetString("NguoiDungId");
 			if (idnd == null)
 			{
+				// Nếu người dùng chưa đăng nhập, lấy giỏ hàng từ cookie
 				modeltong.GioHangs = LayGioHangTuCookie();
 				return View("GioHang", modeltong);
 			}
-			// Nếu đã đăng nhập, lấy giỏ hàng từ cơ sở dữ liệu
-			else 
+			else
 			{
+				// Nếu người dùng đã đăng nhập, lấy giỏ hàng từ cơ sở dữ liệu
 				var response = await _httpClient.GetAsync($"GioHangs/LayGioHang/{idnd}");
 				if (response.IsSuccessStatusCode)
 				{
-					var json = response.Content.ReadAsStringAsync().Result;
+					var json = await response.Content.ReadAsStringAsync();
 					modeltong.GioHangs = JsonConvert.DeserializeObject<List<GioHang>>(json);
+
+					if (modeltong.GioHangs != null)
+					{
+						// Duyệt qua từng món trong giỏ hàng và lấy thêm thông tin
+						foreach (var item in modeltong.GioHangs)
+						{
+							var repon = await _httpClient.GetAsync($"GioHangs/ThemGioHangck/{item.MaSach}");
+							if (repon.IsSuccessStatusCode)
+							{
+								var sachInfo = await repon.Content.ReadAsStringAsync();
+								var sach = JsonConvert.DeserializeObject<GioHang>(sachInfo);
+
+								// Cập nhật thông tin sách vào giỏ hàng nếu cần
+								item.TenSach = sach.TenSach;
+								item.GiaBan = sach.GiaBan;
+								item.HinhAnh = sach.HinhAnh;
+								
+							}
+						}
+					}
 					return View("GioHang", modeltong);
 				}
 				else
 				{
-					// Xử lý khi không thành công, ví dụ: chuyển sang trang báo lỗi
-					return View("NotFound"); // hoặc View("NotFound")
+					// Xử lý khi không thể lấy giỏ hàng từ cơ sở dữ liệu
+					return View("NotFound");
 				}
 			}
+		}
+		public async Task<IActionResult> ThemVaoGio(int masach)
+		{
+			var model = new Modeltong();
+			var idnd = HttpContext.Session.GetString("NguoiDungId");
+			if (idnd == null)
+			{
+				var repon = await _httpClient.GetAsync($"GioHangs/ThemGioHangck/{masach}");
 
+				if (repon.IsSuccessStatusCode)
+				{
+					var sacht = await repon.Content.ReadAsStringAsync();
+					var gioHangInfo = JsonConvert.DeserializeObject<GioHang>(sacht);
+
+					// Thêm sách vào giỏ hàng
+					var gioHangList = LayGioHangTuCookie() ?? new List<GioHang>();
+					var existingItem = gioHangList.Find(x => x.MaSach == gioHangInfo.MaSach);
+
+					if (existingItem != null)
+					{
+						existingItem.Soluong += 1;  // Cập nhật số lượng
+					}
+					else
+					{
+						gioHangInfo.Soluong = 1;
+						gioHangList.Add(gioHangInfo);
+					}
+
+					// Lưu giỏ hàng vào cookie
+					LuuGioHangVaoCookie(gioHangList);
+				}
+				return RedirectToAction("XemGioHang");
+			}
+			else
+			{
+
+				var response = await _httpClient.PostAsync($"GioHangs/ThemGioHang?masach={masach}&id={idnd}&soluong=1", null);
+
+				if (response.IsSuccessStatusCode)
+				{
+					var repon = await _httpClient.GetAsync($"GioHangs/ThemGioHangck/{masach}");
+
+					if (repon.IsSuccessStatusCode)
+					{
+						var sacht = await repon.Content.ReadAsStringAsync();
+						model.GioHang = JsonConvert.DeserializeObject<GioHang>(sacht);
+
+						var gioHangList = LayGioHangTuCookie() ?? new List<GioHang>();
+						var existingItem = gioHangList.Find(x => x.MaSach == model.GioHang.MaSach);
+
+						if (existingItem != null)
+						{
+							existingItem.Soluong += 1;
+						}
+						else
+						{
+							model.GioHang.Soluong = 1;
+							gioHangList.Add(model.GioHang);
+						}
+
+						LuuGioHangVaoCookie(gioHangList);
+					}
+					return RedirectToAction("XemGioHang");
+				}
+				else
+				{
+					// Xử lý khi không thành công, ví dụ: chuyển sang trang báo lỗi
+					return View("NotFound");
+				}
+			}
 		}
 		public GioHang? LayMotGioHangTheoMaSach(int maSach)
 		{
@@ -52,76 +143,82 @@ namespace DATN_MVC.Controllers
 
 			return gioHangList.FirstOrDefault(x => x.MaSach == maSach);
 		}
-		public IActionResult ThayDoiGio(int MaSach, int Soluong)
-        {
-            var model = new Modeltong();
-            model.GioHangs = LayGioHangTuCookie();
+		public async Task<IActionResult> ThayDoiGio(int MaSach, int Soluong)
+		{
+			var model = new Modeltong();
+			var idnd = HttpContext.Session.GetString("NguoiDungId");
 
-            if (model.GioHangs != null)
-            {
-                bool isItemFound = false; // Biến cờ để kiểm tra xem có phần tử nào được cập nhật không
+			
 
-                foreach (var mas in model.GioHangs)
-                {
-                    if (mas.MaSach == MaSach)
-                    {
-                        mas.Soluong = Soluong;
-                        //mas.TongGiaTungCai = mas.GiaBan * Soluong; // Nếu cần tính lại tổng giá
-                        LuuGioHangVaoCookie(model.GioHangs); // Lưu lại giỏ hàng sau khi thay đổi
-                        isItemFound = true; // Đánh dấu đã tìm thấy sản phẩm và cập nhật
-                        break; // Nếu tìm thấy thì thoát khỏi vòng lặp
-                    }
-                }
-                if (isItemFound)
-                {
-                    return RedirectToAction("XemGioHang"); // Trả về sau khi đã tìm thấy sản phẩm và cập nhật
-                }
-                else
-                {
-                    // Nếu không tìm thấy sản phẩm trong giỏ hàng
-                    return RedirectToAction("XemGioHang1");
-                }
-            }
+			if (idnd == null)
+			{
+				// Lấy giỏ hàng từ cookie nếu chưa đăng nhập
+				model.GioHangs = LayGioHangTuCookie() ?? new List<GioHang>(); // Khởi tạo giỏ hàng nếu null
 
-            // Trường hợp giỏ hàng là null
-            return RedirectToAction("XemGioHang4");
-        }
-        public async Task<IActionResult> ThemVaoGio(int masach)
-        {
-            var model = new Modeltong();
-            var repon = await _httpClient.GetAsync($"Sachs/ThemGioHang/{masach}");
+				// Kiểm tra và cập nhật giỏ hàng
+				bool isItemFound = false;
+				foreach (var mas in model.GioHangs)
+				{
+					if (mas.MaSach == MaSach)
+					{
+						mas.Soluong = Soluong;
+						isItemFound = true;
+						break;
+					}
+				}
 
-            if (repon.IsSuccessStatusCode)
-            {
-                var sacht = await repon.Content.ReadAsStringAsync();
-                model.GioHang = JsonConvert.DeserializeObject<GioHang>(sacht);
+				// Nếu không tìm thấy sản phẩm trong giỏ hàng
+				if (!isItemFound)
+				{
+					model.GioHangs.Add(new GioHang
+					{
+						MaSach = MaSach,
+						Soluong = Soluong
+					});
+				}
 
-                var gioHangList = LayGioHangTuCookie() ?? new List<GioHang>();
-                var existingItem = gioHangList.Find(x => x.MaSach == model.GioHang.MaSach);
+				// Lưu lại giỏ hàng vào cookie sau khi cập nhật
+				_ = LuuGioHangVaoCookie(model.GioHangs);
+			}
+			else
+			{
+				// Giỏ hàng đã đăng nhập, tạo DTO và gọi API
+				model.gioHangDTO = new DTOs.GioHangDTO
+				{
+					MaSach = MaSach,
+					MaNguoiDung = int.Parse(idnd), // Chuyển đổi idnd thành int
+					SoLuong = Soluong
+				};
 
-                if (existingItem != null)
-                {
-                    existingItem.Soluong += 1;
-                }
-                else
-                {
-                    model.GioHang.Soluong = 1;
+				// Gọi API bất đồng bộ với await
+				var response = await _httpClient.PostAsync(
+				$"GioHangs/ThemGioHang?masach={MaSach}&id={idnd}&soluong={Soluong}", null);
 
-                    gioHangList.Add(model.GioHang);
-                }
+				// Kiểm tra nếu API trả về thành công
+				if (response.IsSuccessStatusCode)
+				{
+					var content = await response.Content.ReadAsStringAsync();
+					return RedirectToAction("XemGioHang");
+					// Xử lý dữ liệu trả về từ API nếu cần
+				}
+				else
+				{
+					var errorContent = await response.Content.ReadAsStringAsync();
+					// Xử lý khi API trả về lỗi
+					return BadRequest($"Không thể thêm giỏ hàng qua API. Lỗi: {errorContent}");
+				}
+			}
 
-                LuuGioHangVaoCookie(gioHangList);
-            }
-
-            return RedirectToAction("XemGioHang");
-        }
-        public IActionResult GioHang()
-        {
-            return View();
-        }
+			// Sau khi thao tác thành công, chuyển hướng đến trang giỏ hàng
+			return RedirectToAction("XemGioHang");
+		}
+		public IActionResult GioHang()
+		{
+			return View();
+		}
 		private List<GioHang> LayGioHangTuCookie()
-		{ 
-            var gioHangCookie = HttpContext.Request.Cookies[CookieName];
+		{
+			var gioHangCookie = HttpContext.Request.Cookies[CookieName];
 			if (string.IsNullOrEmpty(gioHangCookie))
 			{
 				// Nếu không có giỏ hàng trong cookie, trả về một danh sách trống
@@ -134,32 +231,33 @@ namespace DATN_MVC.Controllers
 		}
 		private async Task LuuGioHangVaoCookie(List<GioHang> gioHang)
 		{
-			var modeltong = new Modeltong();
 			var idnd = HttpContext.Session.GetString("NguoiDungId");
-            if (idnd != null) 
-            {
+			if (idnd != null)
+			{
 				// Lưu giỏ hàng vào cơ sở dữ liệu nếu có mã người dùng
 				foreach (var item in gioHang)
 				{
 					var response = await _httpClient.PostAsync(
-				$"GioHangs/ThemGioHang?masach={item.MaSach}&id={idnd}&soluong={item.Soluong}",null);
+						$"GioHangs/ThemGioHang?masach={item.MaSach}&id={idnd}&soluong={item.Soluong}", null);
 					if (response.IsSuccessStatusCode)
 					{
+						// Xóa cookie sau khi giỏ hàng được lưu vào cơ sở dữ liệu
 						HttpContext.Response.Cookies.Delete(CookieName);
 					}
 				}
 			}
-			// Chuyển giỏ hàng thành chuỗi JSON để lưu vào cookie
-			var gioHangJson = JsonConvert.SerializeObject(gioHang);
-
-			// Lưu giỏ hàng vào cookie, với thời gian hết hạn là 7 ngày
-			HttpContext.Response.Cookies.Append(CookieName, gioHangJson, new CookieOptions
+			else
 			{
-				Expires = DateTimeOffset.Now.AddDays(7),
-				HttpOnly = true
-			});
+				// Nếu người dùng chưa đăng nhập, lưu giỏ hàng vào cookie
+				var gioHangJson = JsonConvert.SerializeObject(gioHang);
+
+				// Lưu giỏ hàng vào cookie, với thời gian hết hạn là 7 ngày
+				HttpContext.Response.Cookies.Append(CookieName, gioHangJson, new CookieOptions
+				{
+					Expires = DateTimeOffset.Now.AddDays(7),
+					HttpOnly = true
+				});
+			}
 		}
-
-
 	}
 }

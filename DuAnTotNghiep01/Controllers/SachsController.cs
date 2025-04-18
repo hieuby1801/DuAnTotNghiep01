@@ -75,19 +75,7 @@ namespace DATN_API.Controllers
 
 			return BadRequest(new { Message = "Không có sách nào" });
 		}
-		[HttpGet("ThemGioHang/{masach}")]
-		public IActionResult Themhangvaogio(int masach)
-		{
-			var sacht = _sachservice.Themgiohang(masach);
-			if (masach != null)
-			{
-				return Ok(sacht);
-			}
-			else
-			{
-				return BadRequest(new { Message = "Khong co sach" });
-			}
-		}
+		
 
 
 		[HttpGet("getOnlySach")]

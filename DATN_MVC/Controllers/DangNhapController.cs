@@ -52,12 +52,19 @@ namespace DATN_MVC.Controllers
                         var id = jwtToken.Claims.FirstOrDefault(x => x.Type == "Id")?.Value;
                         var Email = jwtToken.Claims.FirstOrDefault(x => x.Type == "Email")?.Value;
 
-                        HttpContext.Session.SetString("Email", Email);
-                        HttpContext.Session.SetString("VaiTro", vaitro);
-                        HttpContext.Session.SetString("NguoiDungId", id);
-                        HttpContext.Session.SetString("JWT_Token", token);
+						if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(vaitro))
+						{
+							// Nếu bất kỳ giá trị nào là null hoặc rỗng, bạn có thể xử lý lỗi hoặc trả về thông báo
+							throw new InvalidOperationException("Token không hợp lệ hoặc thiếu thông tin.");
+						}
 
-                        var gioHangCookie = HttpContext.Request.Cookies["GioHang"];
+						// Lưu các giá trị vào session
+						HttpContext.Session.SetString("Email", Email);
+						HttpContext.Session.SetString("VaiTro", vaitro);
+						HttpContext.Session.SetString("NguoiDungId", id);
+						HttpContext.Session.SetString("JWT_Token", token);
+
+						var gioHangCookie = HttpContext.Request.Cookies["GioHang"];
                         if (!string.IsNullOrEmpty(gioHangCookie))
                         {
                             var gioHangData = JsonConvert.DeserializeObject<List<GioHang>>(gioHangCookie);
