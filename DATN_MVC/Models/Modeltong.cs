@@ -9,7 +9,8 @@ namespace DATN_MVC.Models
 		public string? Saft { get; set; }
 		public string MatKhau { get; set; }
 		public NguoiDung NguoiDung { get; set; }
-		public Sach Sachs { get; set; }
+
+        public Sach Sachs { get; set; }
 		public SachDTO? sachDTOs { get; set; }
         public List<SachDTO> sachDTOss { get; set; } = new List<SachDTO>();
         public List<TheLoai> TheLoais { get; set; } = new List<TheLoai>();

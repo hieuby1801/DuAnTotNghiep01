@@ -12,18 +12,39 @@ namespace DATN_MVC.Controllers
             _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri("https://localhost:7189/api/");
         }
-        public const string CookieName = "GioHang";
+		public const string CookieName = "GioHang";
         [HttpPost]
 		public IActionResult XoaGioHang()
 		{
 			Response.Cookies.Delete("GioHang");
 			return Json(new { success = true });
 		}
-		public IActionResult XemGioHang()
+		public async Task <IActionResult> XemGioHang()
 		{
 			var modeltong = new Modeltong();
-			modeltong.GioHangs = LayGioHangTuCookie();
-			return View("GioHang", modeltong);
+			var idnd = HttpContext.Session.GetString("NguoiDungId");
+			if (idnd == null)
+			{
+				modeltong.GioHangs = LayGioHangTuCookie();
+				return View("GioHang", modeltong);
+			}
+			// Nếu đã đăng nhập, lấy giỏ hàng từ cơ sở dữ liệu
+			else 
+			{
+				var response = await _httpClient.GetAsync($"GioHangs/LayGioHang/{idnd}");
+				if (response.IsSuccessStatusCode)
+				{
+					var json = response.Content.ReadAsStringAsync().Result;
+					modeltong.GioHangs = JsonConvert.DeserializeObject<List<GioHang>>(json);
+					return View("GioHang", modeltong);
+				}
+				else
+				{
+					// Xử lý khi không thành công, ví dụ: chuyển sang trang báo lỗi
+					return View("NotFound"); // hoặc View("NotFound")
+				}
+			}
+
 		}
 		public GioHang? LayMotGioHangTheoMaSach(int maSach)
 		{
@@ -31,7 +52,6 @@ namespace DATN_MVC.Controllers
 
 			return gioHangList.FirstOrDefault(x => x.MaSach == maSach);
 		}
-
 		public IActionResult ThayDoiGio(int MaSach, int Soluong)
         {
             var model = new Modeltong();
@@ -100,9 +120,7 @@ namespace DATN_MVC.Controllers
             return View();
         }
 		private List<GioHang> LayGioHangTuCookie()
-		{
-            // Lấy giỏ hàng từ cookie
-           
+		{ 
             var gioHangCookie = HttpContext.Request.Cookies[CookieName];
 			if (string.IsNullOrEmpty(gioHangCookie))
 			{
@@ -114,8 +132,23 @@ namespace DATN_MVC.Controllers
 			var gioHang = JsonConvert.DeserializeObject<List<GioHang>>(gioHangCookie);
 			return gioHang ?? new List<GioHang>();
 		}
-		private void LuuGioHangVaoCookie(List<GioHang> gioHang)
+		private async Task LuuGioHangVaoCookie(List<GioHang> gioHang)
 		{
+			var modeltong = new Modeltong();
+			var idnd = HttpContext.Session.GetString("NguoiDungId");
+            if (idnd != null) 
+            {
+				// Lưu giỏ hàng vào cơ sở dữ liệu nếu có mã người dùng
+				foreach (var item in gioHang)
+				{
+					var response = await _httpClient.PostAsync(
+				$"GioHangs/ThemGioHang?masach={item.MaSach}&id={idnd}&soluong={item.Soluong}",null);
+					if (response.IsSuccessStatusCode)
+					{
+						HttpContext.Response.Cookies.Delete(CookieName);
+					}
+				}
+			}
 			// Chuyển giỏ hàng thành chuỗi JSON để lưu vào cookie
 			var gioHangJson = JsonConvert.SerializeObject(gioHang);
 

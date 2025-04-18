@@ -118,5 +118,9 @@ namespace DATN_MVC.Controllers
             }
             return View();
         }
+        public IActionResult CapNhatSach()
+        {
+            return View() ;
+        }
     }
 }

@@ -58,7 +58,7 @@ namespace DATN_API.Controllers
 		}
 		[HttpGet("Laysachtheothongtinnhap")]
 
-		[HttpGet]
+
 		public ActionResult<List<SachDTO>> Timsachtheothongtinnhap(
 			[FromQuery] string? tenSach = null,
 			[FromQuery] int? khoangGia = null,
@@ -89,6 +89,7 @@ namespace DATN_API.Controllers
 			}
 		}
 
+<<<<<<< HEAD
         [HttpGet("getOnlySach")]
         public IActionResult GetAll()
         {
@@ -101,6 +102,13 @@ namespace DATN_API.Controllers
             {
                 return BadRequest(new { Message = "Khong co sach" });
             }
+=======
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _sachservice.GetAllAsync();
+            return Ok(result);
+>>>>>>> 51d004671a7640d6a441416d66b1d59435708bc8
         }
 
         [HttpPost("them")]

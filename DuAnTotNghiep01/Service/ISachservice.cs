@@ -10,9 +10,20 @@ namespace DATN_API.Service
         public List<SachDTO> Laytontinsach();
         public List<SachDTO> Timsachtheotheloai(string TenTheLoai);
 		public List<SachDTO> Timsachtheothongtinnhap(string tenSach = null, int? khoangGia = null, string doTuoi = null, string tacGia = null, List<string> theLoai = null);
+<<<<<<< HEAD
         public GioHang Themgiohang(int masach);
         public Task<bool> ThemSachAsync(ThemSachDto dto);
         public List<SachDto> GetOnlySach();
 
     }
+=======
+		public GioHangDTO Themgiohang(int masach);
+		public Task<bool> ThemSachAsync(ThemSachDto dto);
+        public Task<List<Sach>> GetAllAsync();
+		public Task<bool> ThemgiohangDN(int masach, int id, int soluong);
+		public GioHang KiemTra(int masach);
+		public Task<bool> CapNhatGioHang(int masach, int id,  int soluong);
+		public List<GioHang> Laygiohnagtheoid(int manguoidung);
+	}
+>>>>>>> 51d004671a7640d6a441416d66b1d59435708bc8
 }

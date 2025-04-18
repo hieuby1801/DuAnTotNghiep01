@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
@@ -20,117 +21,125 @@ namespace DATN_MVC.Controllers
         [HttpGet]
         public IActionResult DangNhap()
         {
-            return View();
+            var model = new Modeltong
+            {
+                NguoiDung = new NguoiDung() // ✅ khởi tạo tránh bị null
+            };
+
+            return View(model);
         }
         [HttpPost]
-		public async Task<IActionResult> DangNhap(Modeltong loginguser)
-		{
-			var response = await _httpClient.PostAsJsonAsync("DangNhaps/DangNhap", loginguser);
-			var result = await response.Content.ReadFromJsonAsync<JsonElement>();
-			var json = result.ToString();
-			var error = JsonConvert.DeserializeObject<dynamic>(json);
-			string errorMessage = error.message?.ToString();
-
-			// Kiểm tra trạng thái thành công của phản hồi
-			if (response.IsSuccessStatusCode)
-			{
-				if (result.TryGetProperty("value", out JsonElement valueElement) &&
-					valueElement.TryGetProperty("token", out JsonElement tokenElement))
-				{
-					var token = tokenElement.GetString();
-
-					if (!string.IsNullOrEmpty(token))
-					{
-						var tokenHandler = new JwtSecurityTokenHandler();
-						var jwtToken = tokenHandler.ReadJwtToken(token);
-
-						// Lấy thông tin từ claims
-						var vaitro = jwtToken.Claims.FirstOrDefault(x => x.Type == "VaiTro")?.Value;
-						var Sdt = jwtToken.Claims.FirstOrDefault(x => x.Type == "Sdt")?.Value;
-						var id = jwtToken.Claims.FirstOrDefault(x => x.Type == "Id")?.Value;
-						var Email = jwtToken.Claims.FirstOrDefault(x => x.Type == "Email")?.Value;
-
-						// Lưu thông tin vào session
-						HttpContext.Session.SetString("Email", Email);
-						HttpContext.Session.SetString("VaiTro", vaitro);
-						HttpContext.Session.SetString("NguoiDungId", id);
-						HttpContext.Session.SetString("JWT_Token", token); // Lưu token vào session
-
-						// Thiết lập cookie
-						Response.Cookies.Append("access_token", token, new CookieOptions
-						{
-							HttpOnly = true,
-							Secure = false, // Set to true if using https
-							Expires = DateTimeOffset.UtcNow.AddHours(1)
-						});
-
-						// Chuyển hướng dựa trên vai trò
-						return vaitro switch
-						{
-							"User" => RedirectToAction("Index", "TrangChu"), // User chuyển đến TrangChu
-							"Admin" => RedirectToAction("DanhSach", "Admin"),  // Admin chuyển đến Admin
-							"admin" => RedirectToAction("DanhSach", "Admin"),  // admin chuyển đến Admin
-							_ => RedirectToAction("DefaultPage")            // Default chuyển đến DefaultPage
-						};
-					}
-				}
-			}
-
-			// Nếu không thành công hoặc không có token, hiển thị lỗi và redirect
-			TempData["ErrorMessage"] = errorMessage ?? "Đăng nhập thất bại.";
-			return RedirectToAction("Index", "TrangChu");
-		}
-
-
-
-		[HttpPost]
-        public async Task<IActionResult> DangKy(Modeltong nguoiDung)
+        public async Task<IActionResult> DangNhap(Modeltong loginguser)
         {
-           
-            var response = await _httpClient.PostAsJsonAsync("DangNhaps/DangKy", nguoiDung.NguoiDung);
+            var response = await _httpClient.PostAsJsonAsync("DangNhaps/DangNhap", loginguser);
+            var result = await response.Content.ReadFromJsonAsync<JsonElement>();
+            var json = result.ToString();
+            var error = JsonConvert.DeserializeObject<dynamic>(json);
+            string errorMessage = error.message?.ToString();
 
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("index","TrangChu"); 
+                if (result.TryGetProperty("value", out JsonElement valueElement) &&
+                    valueElement.TryGetProperty("token", out JsonElement tokenElement))
+                {
+                    var token = tokenElement.GetString();
+                    if (!string.IsNullOrEmpty(token))
+                    {
+                        var tokenHandler = new JwtSecurityTokenHandler();
+                        var jwtToken = tokenHandler.ReadJwtToken(token);
+                        var vaitro = jwtToken.Claims.FirstOrDefault(x => x.Type == "VaiTro")?.Value;
+                        var Sdt = jwtToken.Claims.FirstOrDefault(x => x.Type == "Sdt")?.Value;
+                        var id = jwtToken.Claims.FirstOrDefault(x => x.Type == "Id")?.Value;
+                        var Email = jwtToken.Claims.FirstOrDefault(x => x.Type == "Email")?.Value;
+
+                        HttpContext.Session.SetString("Email", Email);
+                        HttpContext.Session.SetString("VaiTro", vaitro);
+                        HttpContext.Session.SetString("NguoiDungId", id);
+                        HttpContext.Session.SetString("JWT_Token", token);
+
+                        var gioHangCookie = HttpContext.Request.Cookies["GioHang"];
+                        if (!string.IsNullOrEmpty(gioHangCookie))
+                        {
+                            var gioHangData = JsonConvert.DeserializeObject<List<GioHang>>(gioHangCookie);
+                            foreach (var item in gioHangData)
+                            {
+                                await _httpClient.PostAsync($"GioHangs/ThemGioHang?masach={item.MaSach}&id={id}&soluong={item.Soluong}", null);
+                            }
+                        }
+
+                        Response.Cookies.Append("access_token", token, new CookieOptions
+                        {
+                            HttpOnly = true,
+                            Secure = false,
+                            Expires = DateTimeOffset.UtcNow.AddHours(1)
+                        });
+
+                        return vaitro switch
+                        {
+                            "User" => RedirectToAction("Index", "TrangChu"),
+                            "Admin" => RedirectToAction("Admin", "Admin"),
+                            "admin" => RedirectToAction("DanhSach", "Admin"),
+                            _ => RedirectToAction("DefaultPage")
+                        };
+                    }
+                }
             }
 
-            else
+            // ❗ Nếu thất bại: giữ lại lỗi và model, show lại form
+            TempData["ErrorMessage"] = errorMessage ?? "Đăng nhập thất bại.";
+            return View("DangNhap", loginguser); // <-- Quan trọng
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DangKy(Modeltong modeltong)
+        {
+            // Kiểm tra dữ liệu người dùng
+            if (string.IsNullOrEmpty(modeltong.NguoiDung.Email) ||
+                string.IsNullOrEmpty(modeltong.NguoiDung.TenNguoiDung) ||
+                string.IsNullOrEmpty(modeltong.NguoiDung.MatKhau) ||
+                string.IsNullOrEmpty(modeltong.NguoiDung.SoDienThoai))
             {
-                var responseContent = await response.Content.ReadAsStringAsync();
-                var error = JsonConvert.DeserializeObject<dynamic>(responseContent);
+                TempData["ErrorMessage1"] = "Dữ liệu người dùng bị thiếu.";
+                TempData["ActiveTab"] = "register";
+                return View("DangNhap", modeltong); // Hiển thị lại form đăng ký
+            }
 
-                if (error != null)
+            try
+            {
+                // Gửi dữ liệu đăng ký chỉ chứa thông tin NguoiDung
+                var response = await _httpClient.PostAsJsonAsync("DangNhaps/DangKy", modeltong.NguoiDung);
+
+                if (response.IsSuccessStatusCode)
                 {
-                    string errorField = error.field?.ToString(); // Lưu ý chữ thường 'field'
-                    string errorMessage = error.message?.ToString(); // Lưu ý chữ thường 'message'
-
-                    if (errorField == "Email")
-                    {
-                        ViewBag.ErrorField = "Email";
-                        TempData["ErrorMessage1"] = errorMessage;
-                    }
-                    else if (errorField == "Sdt")
-                    {
-                        ViewBag.ErrorField = "Sdt";
-                        TempData["ErrorMessage1"] = errorMessage;           
-                    }
-                    else
-                    {
-                        TempData["ErrorMessage1"] = "Đăng ký thất bại. Vui lòng thử lại.1";// 
-                    }
+                    return RedirectToAction("Index", "TrangChu");
                 }
                 else
                 {
-                    TempData["ErrorMessage1"] = "Đăng ký thất bại. Vui lòng thử lại1.";
-                }
+                    // Lấy nội dung lỗi trả về từ API
+                    var responseContent = await response.Content.ReadAsStringAsync();
 
-                return RedirectToAction("Index", "TrangChu");
+                    // Nếu có lỗi, hiển thị mã trạng thái và nội dung lỗi
+                    TempData["ErrorMessage1"] = "Đã xảy ra lỗi: " + response.StatusCode + " - " + responseContent;
+                    return View("DangNhap", modeltong);
+                }
             }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi trong trường hợp có lỗi kết nối hoặc API không phản hồi
+                TempData["ErrorMessage1"] = "Lỗi kết nối đến server: " + ex.Message;
+                TempData["ActiveTab"] = "register";
+            }
+
+            return View("DangNhap", modeltong); // Giữ lại thông tin nhập và lỗi nếu có
         }
 
 
+
+
+
+
         // đổi mật khẩu
-      
+
         [HttpPost]
         public async Task<IActionResult> layOtp(string Email)
         {

@@ -6,195 +6,204 @@ using System.Data;
 
 namespace DATN_API.Service
 {
-    public class SachService : ISachservice
-    {
-        private readonly MyDbContext _context;
-        private readonly IConfiguration _configuration; // To access connection string
-        public SachService(MyDbContext context, IConfiguration configuration)
-        {
-            _context = context;
-            _configuration = configuration;
-        }
-        public List<TheLoai> GetAll()
-        {
-            return _context.TheLoai.ToList();
-        }
-        public SachDTO GetSach(int maSach)
-        {
-            // Khai báo đối tượng sach để trả về
-            SachDTO sach = null;
+	public class SachService : ISachservice
+	{
+		private readonly MyDbContext _context;
+		private readonly IConfiguration _configuration; // To access connection string
+		public SachService(MyDbContext context, IConfiguration configuration)
+		{
+			_context = context;
+			_configuration = configuration;
+		}
+		public List<TheLoai> GetAll()
+		{
+			return _context.TheLoai.ToList();
+		}
+		public SachDTO GetSach(int maSach)
+		{
+			// Khai báo đối tượng sach để trả về
+			SachDTO sach = null;
 
-            var connectionString = _configuration.GetConnectionString("con");
+			var connectionString = _configuration.GetConnectionString("con");
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                using (SqlCommand cmd = new SqlCommand("GetBookDetailsByMaSach", conn))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@MaSach", maSach);
+			using (SqlConnection conn = new SqlConnection(connectionString))
+			{
+				using (SqlCommand cmd = new SqlCommand("GetBookDetailsByMaSach", conn))
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
+					cmd.Parameters.AddWithValue("@MaSach", maSach);
 
-                    conn.Open();
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read()) // Lấy duy nhất 1 dòng
-                        {
-                            sach = new SachDTO
-                            {
-                                MaSach = reader.GetInt32(reader.GetOrdinal("MaSach")),
-                                TenSach = reader.GetString(reader.GetOrdinal("TenSach")),
-                                TacGia = reader.GetString(reader.GetOrdinal("TacGia")),
-                                HinhAnh = reader.GetString(reader.GetOrdinal("HinhAnh")),
-                                NgonNgu = reader.GetString(reader.GetOrdinal("NgonNgu")),
-                                KichThuoc = reader.GetString(reader.GetOrdinal("KichThuoc")),
-                                TrongLuong = reader.GetDecimal(reader.GetOrdinal("TrongLuong")),
-                                SoTrang = reader.GetInt32(reader.GetOrdinal("SoTrang")),
-                                HinhThuc = reader.GetString(reader.GetOrdinal("HinhThuc")),
-                                MoTa = reader.GetString(reader.GetOrdinal("MoTa")),
-                                TheLoai = reader.GetString(reader.GetOrdinal("TheLoai")),
-                                TenNhaCungCap = reader.GetString(reader.GetOrdinal("TenNhaCungCap")),
-                                NhaXuatBan = reader.GetString(reader.GetOrdinal("NhaXuatBan")),
-                                GiaBan = reader.GetInt32(reader.GetOrdinal("GiaBan")),
-                            };
-                        }
-                    }
-                }
-            }
-            return sach; // Trả về đối tượng SachDTO duy nhất
-        }
-        public List<SachDTO> Laytontinsach()
-        {
-            List<SachDTO> result = new List<SachDTO>();
-            var connectionString = _configuration.GetConnectionString("con");
+					conn.Open();
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						if (reader.Read()) // Lấy duy nhất 1 dòng
+						{
+							sach = new SachDTO
+							{
+								MaSach = reader.GetInt32(reader.GetOrdinal("MaSach")),
+								TenSach = reader.GetString(reader.GetOrdinal("TenSach")),
+								TacGia = reader.GetString(reader.GetOrdinal("TacGia")),
+								HinhAnh = reader.GetString(reader.GetOrdinal("HinhAnh")),
+								NgonNgu = reader.GetString(reader.GetOrdinal("NgonNgu")),
+								KichThuoc = reader.GetString(reader.GetOrdinal("KichThuoc")),
+								TrongLuong = reader.GetDecimal(reader.GetOrdinal("TrongLuong")),
+								SoTrang = reader.GetInt32(reader.GetOrdinal("SoTrang")),
+								HinhThuc = reader.GetString(reader.GetOrdinal("HinhThuc")),
+								MoTa = reader.GetString(reader.GetOrdinal("MoTa")),
+								TheLoai = reader.GetString(reader.GetOrdinal("TheLoai")),
+								TenNhaCungCap = reader.GetString(reader.GetOrdinal("TenNhaCungCap")),
+								NhaXuatBan = reader.GetString(reader.GetOrdinal("NhaXuatBan")),
+								GiaBan = reader.GetInt32(reader.GetOrdinal("GiaBan")),
+							};
+						}
+					}
+				}
+			}
+			return sach; // Trả về đối tượng SachDTO duy nhất
+		}
+		public List<SachDTO> Laytontinsach()
+		{
+			List<SachDTO> result = new List<SachDTO>();
+			var connectionString = _configuration.GetConnectionString("con");
 
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                // Tạo command để gọi stored procedure
-                using (SqlCommand cmd = new SqlCommand("GetThongTinSach_DangBan", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
+			using (SqlConnection con = new SqlConnection(connectionString))
+			{
+				// Tạo command để gọi stored procedure
+				using (SqlCommand cmd = new SqlCommand("GetThongTinSach_DangBan", con))
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
 
-                    // Mở kết nối
-                    con.Open();
+					// Mở kết nối
+					con.Open();
 
-                    // Thực thi câu lệnh và lấy dữ liệu
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        // Đọc từng dòng dữ liệu từ SqlDataReader
-                        while (reader.Read())
-                        {
-                            SachDTO sach = new SachDTO
-                            {
-                                MaSach = reader.GetInt32(reader.GetOrdinal("MaSach")),
-                                TenSach = reader.GetString(reader.GetOrdinal("TenSach")),
-                                HinhAnh = reader.GetString(reader.GetOrdinal("HinhAnh")),
-                                GiaBan = reader.GetInt32(reader.GetOrdinal("GiaBan")),
-                                TongSoLuongDaBan = reader.GetInt32(reader.GetOrdinal("TongSoLuongDaBan"))
-                            };
+					// Thực thi câu lệnh và lấy dữ liệu
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						// Đọc từng dòng dữ liệu từ SqlDataReader
+						while (reader.Read())
+						{
+							SachDTO sach = new SachDTO
+							{
+								MaSach = reader.GetInt32(reader.GetOrdinal("MaSach")),
+								TenSach = reader.GetString(reader.GetOrdinal("TenSach")),
+								HinhAnh = reader.GetString(reader.GetOrdinal("HinhAnh")),
+								GiaBan = reader.GetInt32(reader.GetOrdinal("GiaBan")),
+								TongSoLuongDaBan = reader.GetInt32(reader.GetOrdinal("TongSoLuongDaBan"))
+							};
 
-                            result.Add(sach);
-                        }
-                    }
-                }
-            }
+							result.Add(sach);
+						}
+					}
+				}
+			}
 
-            return result; // Trả về danh sách các sách
-        }
-        public List<SachDTO> Timsachtheotheloai(string TenTheLoai)
-        {
-            List<SachDTO> list = new List<SachDTO>();
-            var connectionString = _configuration.GetConnectionString("con");
+			return result; // Trả về danh sách các sách
+		}
+		public List<SachDTO> Timsachtheotheloai(string TenTheLoai)
+		{
+			List<SachDTO> list = new List<SachDTO>();
+			var connectionString = _configuration.GetConnectionString("con");
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                using (SqlCommand cmd = new SqlCommand("GetSachTheoTheLoai", conn))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@TenTheLoai", TenTheLoai);
+			using (SqlConnection conn = new SqlConnection(connectionString))
+			{
+				using (SqlCommand cmd = new SqlCommand("GetSachTheoTheLoai", conn))
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
+					cmd.Parameters.AddWithValue("@TenTheLoai", TenTheLoai);
 
-                    conn.Open();
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            SachDTO sach = new SachDTO
-                            {
-                                MaSach = Convert.ToInt32(reader["MaSach"]),
-                                TenSach = reader["TenSach"].ToString(),
-                                GiaBan = reader["GiaBan"] != DBNull.Value ? (int?)reader["GiaBan"] : null,
-                                HinhAnh = reader["HinhAnh"].ToString()
-                            };
-                            list.Add(sach);
-                        }
-                    }
-                }
-            }
+					conn.Open();
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							SachDTO sach = new SachDTO
+							{
+								MaSach = Convert.ToInt32(reader["MaSach"]),
+								TenSach = reader["TenSach"].ToString(),
+								GiaBan = reader["GiaBan"] != DBNull.Value ? (int?)reader["GiaBan"] : null,
+								HinhAnh = reader["HinhAnh"].ToString()
+							};
+							list.Add(sach);
+						}
+					}
+				}
+			}
 
-            return list;
-        }
-        public List<SachDTO> Timsachtheothongtinnhap(string tenSach = null, int? khoangGia = null, string doTuoi = null, string tacGia = null, List<string> theLoai = null)
-        {
-            List<SachDTO> danhSachSach = new List<SachDTO>();
-            var connectionString = _configuration.GetConnectionString("con");
+			return list;
+		}
+		public List<SachDTO> Timsachtheothongtinnhap(string tenSach = null, int? khoangGia = null, string doTuoi = null, string tacGia = null, List<string> theLoai = null)
+		{
+			List<SachDTO> danhSachSach = new List<SachDTO>();
+			var connectionString = _configuration.GetConnectionString("con");
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                using (SqlCommand cmd = new SqlCommand("TimKiemSach", conn))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
+			using (SqlConnection conn = new SqlConnection(connectionString))
+			{
+				using (SqlCommand cmd = new SqlCommand("TimKiemSach", conn))
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
 
-                    // Truyền tham số
-                    cmd.Parameters.AddWithValue("@TenSach", (object)tenSach ?? DBNull.Value);
-                    cmd.Parameters.AddWithValue("@KhoangGia", (object)khoangGia ?? DBNull.Value);
-                    cmd.Parameters.AddWithValue("@DoTuoi", (object)doTuoi ?? DBNull.Value);
-                    cmd.Parameters.AddWithValue("@TacGia", (object)tacGia ?? DBNull.Value);
+					// Truyền tham số
+					cmd.Parameters.AddWithValue("@TenSach", (object)tenSach ?? DBNull.Value);
+					cmd.Parameters.AddWithValue("@KhoangGia", (object)khoangGia ?? DBNull.Value);
+					cmd.Parameters.AddWithValue("@DoTuoi", (object)doTuoi ?? DBNull.Value);
+					cmd.Parameters.AddWithValue("@TacGia", (object)tacGia ?? DBNull.Value);
 
-                    // Chuyển List<string> thể loại thành chuỗi
-                    var theLoaiString = theLoai != null && theLoai.Any() ? string.Join(",", theLoai) : null;
-                    cmd.Parameters.AddWithValue("@TheLoai", (object)theLoaiString ?? DBNull.Value);
+					// Chuyển List<string> thể loại thành chuỗi
+					var theLoaiString = theLoai != null && theLoai.Any() ? string.Join(",", theLoai) : null;
+					cmd.Parameters.AddWithValue("@TheLoai", (object)theLoaiString ?? DBNull.Value);
 
-                    conn.Open();
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            string? theLoaiChuoi = reader.IsDBNull(reader.GetOrdinal("TheLoai"))
-                                ? null
-                                : reader.GetString(reader.GetOrdinal("TheLoai"));
+					conn.Open();
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							string? theLoaiChuoi = reader.IsDBNull(reader.GetOrdinal("TheLoai"))
+								? null
+								: reader.GetString(reader.GetOrdinal("TheLoai"));
 
-                            var sach = new SachDTO
-                            {
-                                MaSach = reader.IsDBNull(reader.GetOrdinal("MaSach")) ? 0 : reader.GetInt32(reader.GetOrdinal("MaSach")),
-                                TenSach = reader.IsDBNull(reader.GetOrdinal("TenSach")) ? null : reader.GetString(reader.GetOrdinal("TenSach")),
-                                TacGia = reader.IsDBNull(reader.GetOrdinal("TacGia")) ? null : reader.GetString(reader.GetOrdinal("TacGia")),
-                                HinhAnh = reader.IsDBNull(reader.GetOrdinal("HinhAnh")) ? null : reader.GetString(reader.GetOrdinal("HinhAnh")),
-                                GiaBan = reader.IsDBNull(reader.GetOrdinal("GiaBan")) ? 0 : reader.GetInt32(reader.GetOrdinal("GiaBan")),
-                                DoTuoi = reader.IsDBNull(reader.GetOrdinal("DoTuoi")) ? null : reader.GetString(reader.GetOrdinal("DoTuoi")),
-                                TheLoais = string.IsNullOrWhiteSpace(theLoaiChuoi)
-                                    ? new List<string>()
-                                    : theLoaiChuoi.Split(',').Select(t => t.Trim()).ToList()
-                            };
+							var sach = new SachDTO
+							{
+								MaSach = reader.IsDBNull(reader.GetOrdinal("MaSach")) ? 0 : reader.GetInt32(reader.GetOrdinal("MaSach")),
+								TenSach = reader.IsDBNull(reader.GetOrdinal("TenSach")) ? null : reader.GetString(reader.GetOrdinal("TenSach")),
+								TacGia = reader.IsDBNull(reader.GetOrdinal("TacGia")) ? null : reader.GetString(reader.GetOrdinal("TacGia")),
+								HinhAnh = reader.IsDBNull(reader.GetOrdinal("HinhAnh")) ? null : reader.GetString(reader.GetOrdinal("HinhAnh")),
+								GiaBan = reader.IsDBNull(reader.GetOrdinal("GiaBan")) ? 0 : reader.GetInt32(reader.GetOrdinal("GiaBan")),
+								DoTuoi = reader.IsDBNull(reader.GetOrdinal("DoTuoi")) ? null : reader.GetString(reader.GetOrdinal("DoTuoi")),
+								TheLoais = string.IsNullOrWhiteSpace(theLoaiChuoi)
+									? new List<string>()
+									: theLoaiChuoi.Split(',').Select(t => t.Trim()).ToList()
+							};
 
-                            danhSachSach.Add(sach);
-                        }
-                    }
-                }
-            }
+							danhSachSach.Add(sach);
+						}
+					}
+				}
+			}
 
-            return danhSachSach;
-        }
-        public GioHang Themgiohang(int masach)
-        {
-            GioHang sach = null;
+			return danhSachSach;
+		}
 
-            var connectionString = _configuration.GetConnectionString("con");
+		public async Task<List<Sach>> GetAllAsync()
+		{
+			return await _context.Sach
+				.Select(s => new Sach
+				{
+					MaSach = s.MaSach,
+					TenSach = s.TenSach,
+					TacGia = s.TacGia,
+					HinhAnh = s.HinhAnh,
+					TrangThai = s.TrangThai
+				})
+				.ToListAsync();
+		}
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                using (SqlCommand cmd = new SqlCommand("GetBookDetailsByMaSach", conn))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@MaSach", masach);
+		public async Task<bool> ThemSachAsync(ThemSachDto dto)
+		{
+			try
+			{
+				var sql = "EXEC sp_ThemSach @MaSach, @TenSach, @TacGia, @HinhAnh, @NgonNgu, @KichThuoc, @TrongLuong, @SoTrang, @HinhThuc, @MoTa, @DanhSachTheLoai";
 
+<<<<<<< HEAD
                     conn.Open();
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -226,35 +235,127 @@ namespace DATN_API.Service
                 })
                 .ToList();
         }
+=======
+				var parameters = new[]
+				{
+			new SqlParameter("@MaSach", dto.MaSach),
+			new SqlParameter("@TenSach", dto.TenSach),
+			new SqlParameter("@TacGia", dto.TacGia),
+			new SqlParameter("@HinhAnh", dto.HinhAnh),
+			new SqlParameter("@NgonNgu", dto.NgonNgu),
+			new SqlParameter("@KichThuoc", dto.KichThuoc),
+			new SqlParameter("@TrongLuong", dto.TrongLuong),
+			new SqlParameter("@SoTrang", dto.SoTrang),
+			new SqlParameter("@HinhThuc", dto.HinhThuc),
+			new SqlParameter("@MoTa", dto.MoTa),
+			new SqlParameter("@DanhSachTheLoai", dto.DanhSachTheLoai),
+		};
+>>>>>>> 51d004671a7640d6a441416d66b1d59435708bc8
 
-        public async Task<bool> ThemSachAsync(ThemSachDto dto)
-        {
-            try
-            {
-                var sql = "EXEC sp_ThemSach @MaSach, @TenSach, @TacGia, @HinhAnh, @NgonNgu, @KichThuoc, @TrongLuong, @SoTrang, @HinhThuc, @MoTa, @DanhSachTheLoai";
+				await _context.Database.ExecuteSqlRawAsync(sql, parameters);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+		// thêm giỏ hàng khi chưa đăng nhập
+		public GioHangDTO Themgiohang(int masach)
+		{
+			GioHangDTO sach = null;
 
-                var parameters = new[]
-                {
-            new SqlParameter("@MaSach", dto.MaSach),
-            new SqlParameter("@TenSach", dto.TenSach),
-            new SqlParameter("@TacGia", dto.TacGia),
-            new SqlParameter("@HinhAnh", dto.HinhAnh),
-            new SqlParameter("@NgonNgu", dto.NgonNgu),
-            new SqlParameter("@KichThuoc", dto.KichThuoc),
-            new SqlParameter("@TrongLuong", dto.TrongLuong),
-            new SqlParameter("@SoTrang", dto.SoTrang),
-            new SqlParameter("@HinhThuc", dto.HinhThuc),
-            new SqlParameter("@MoTa", dto.MoTa),
-            new SqlParameter("@DanhSachTheLoai", dto.DanhSachTheLoai),
-        };
+			var connectionString = _configuration.GetConnectionString("con");
 
-                await _context.Database.ExecuteSqlRawAsync(sql, parameters);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-    }
+			using (SqlConnection conn = new SqlConnection(connectionString))
+			{
+				using (SqlCommand cmd = new SqlCommand("GetBookDetailsByMaSach", conn))
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
+					cmd.Parameters.AddWithValue("@MaSach", masach);
+
+					conn.Open();
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						if (reader.Read()) // Lấy duy nhất 1 dòng
+						{
+							sach = new GioHangDTO
+							{
+								MaSach = reader.GetInt32(reader.GetOrdinal("MaSach")),
+								TenSach = reader.GetString(reader.GetOrdinal("TenSach")),
+								GiaBan = reader.GetInt32(reader.GetOrdinal("GiaBan")),
+								HinhAnh = reader.GetString(reader.GetOrdinal("HinhAnh"))
+							};
+						}
+					}
+				}
+			}
+			return sach; // Trả về đối tượng SachDTO duy nhất
+		}
+		// thêm vào giỏ hàng khi đã đăng nhập
+		public async Task<bool> ThemgiohangDN(int masach, int id, int soluong)
+		{
+			try
+			{
+				var sql = "INSERT INTO GioHang (MaNguoiDung, MaSach, SoLuong, ThoiGian) VALUES (@id, @masach, @soluong, GETDATE())";
+				var parameters = new[]
+				{
+			new SqlParameter("@id", id),
+			new SqlParameter("@masach", masach),
+			new SqlParameter("@soluong", soluong),
+		};
+
+				int result = await _context.Database.ExecuteSqlRawAsync(sql, parameters);
+
+				// Nếu thêm thành công, ExecuteSqlRawAsync trả về số dòng ảnh hưởng > 0
+				return result > 0;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message); // Ghi log nếu cần
+				return false;
+			}
+		}
+		// cập nhật giỏ hàng
+		public async Task<bool> CapNhatGioHang(int masach, int id, int soluong)
+		{
+			try
+			{
+				var sql = "UPDATE GioHang SET SoLuong = @soluong, ThoiGian = GETDATE() WHERE MaNguoiDung = @id AND MaSach = @masach";
+
+				var parameters = new[]
+				{
+			new SqlParameter("@id", id),
+			new SqlParameter("@masach", masach),
+			new SqlParameter("@soluong", soluong)
+		};
+
+				// Thực thi câu lệnh SQL để cập nhật
+				int result = await _context.Database.ExecuteSqlRawAsync(sql, parameters);
+
+				// Nếu cập nhật thành công, ExecuteSqlRawAsync sẽ trả về số dòng ảnh hưởng > 0
+				return result > 0;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message); // Ghi log nếu cần
+				return false;
+			}
+		}
+
+		//kiểm tra giỏ hàng 
+		public GioHang KiemTra(int masach)
+		{
+			var sach = _context.GioHang.FirstOrDefault(s => s.MaSach == masach);
+			return sach;
+		}
+		// Lấy Giỏ hàng theo MaNguoiDung
+		public List<GioHang> Laygiohnagtheoid(int manguoidung)
+		{
+			var gioHangs = _context.GioHang
+		.Where(s => s.MaNguoiDung == manguoidung)
+		.ToList();
+			return gioHangs;
+		}
+	}
 }

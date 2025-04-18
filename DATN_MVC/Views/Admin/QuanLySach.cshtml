@@ -125,12 +125,14 @@
             .switch input:checked + .slider:before {
                 transform: translateX(26px);
             }
+
     </style>
 }
 
 <div class="header-bar">
     <h2>📘 Danh Sách Sách</h2>
-    <button class="add-btn" onclick="alert('Thêm sản phẩm mới')">➕ Thêm Sản Phẩm</button>
+    <button class="add-btn" onclick="window.location.href='@Url.Action("ThemSach", "Admin")'">➕ Thêm Sản Phẩm</button>
+
 </div>
 
 <table>
@@ -145,6 +147,7 @@
         </tr>
     </thead>
     <tbody>
+<<<<<<< HEAD
         @foreach (var item in Model.Saches)
         {
             <tr>
@@ -161,5 +164,24 @@
                 </td>
             </tr>
         }
+=======
+        <tr>
+            <td>S001</td>
+            <td>Lập trình C#</td>
+            <td>Nguyễn Văn A</td>
+            <td><img src="" alt="Lập trình C#"></td>
+            <td>
+                <a class="update-btn" href="@Url.Action("CapNhatSach", "Admin")>Cập nhật</a>
+            </td>
+
+            <td>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </td>
+        </tr>
+        
+>>>>>>> 51d004671a7640d6a441416d66b1d59435708bc8
     </tbody>
 </table>
