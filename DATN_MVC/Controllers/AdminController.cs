@@ -59,16 +59,31 @@ namespace DATN_MVC.Controllers
         }
         public async Task<IActionResult> DanhSach()
         {
-            var modele = new Modeltong();
-            var rebom = await _httpClient.GetAsync("Sachs/Laysach");
-            if (rebom.IsSuccessStatusCode)
+            var model = new Modeltong();
+            var response = await _httpClient.GetAsync("Sachs/getOnlySach");
+            if (response.IsSuccessStatusCode)
             {
-                var json= await rebom.Content.ReadAsStringAsync();
-                modele.Saches = JsonConvert.DeserializeObject<List<Sach>>(json)?? new List<Sach>();
-                return View(modele);
+                var json= await response.Content.ReadAsStringAsync();
+                model.Saches = JsonConvert.DeserializeObject<List<Sach>>(json)?? new List<Sach>();
+                return View(model);
             }
             return View();
         }
+
+        public async Task<IActionResult> DanhSachPartial()
+        {
+            var response = await _httpClient.GetAsync("Sachs/getOnlySach");
+            var data = new List<Sach>();
+
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                data = JsonConvert.DeserializeObject<List<Sach>>(json) ?? new List<Sach>();
+            }
+
+            return PartialView("_DanhSachPartial", data);
+        }
+
         [HttpPost]
         public async Task<IActionResult> ThemSach(ThemSachDto dto)
         {
@@ -91,8 +106,16 @@ namespace DATN_MVC.Controllers
 
             return View(dto);
         }
-        public IActionResult QuanLySach()
+        public async Task<IActionResult> QuanLySach()
         {
+            var model = new Modeltong();
+            var response = await _httpClient.GetAsync("Sachs/getOnlySach");
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                model.Saches = JsonConvert.DeserializeObject<List<Sach>>(json) ?? new List<Sach>();
+                return View(model);
+            }
             return View();
         }
     }

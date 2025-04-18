@@ -1,4 +1,5 @@
-﻿@{
+﻿@model DATN_MVC.Models.Modeltong
+@{
     Layout = "~/Views/Shared/Admin.cshtml";
 }
 
@@ -144,31 +145,21 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>S001</td>
-            <td>Lập trình C#</td>
-            <td>Nguyễn Văn A</td>
-            <td><img src="https://via.placeholder.com/80x100?text=Sach+C%23" alt="Lập trình C#"></td>
-            <td><button class="update-btn" onclick="alert('Cập nhật S001')">Cập nhật</button></td>
-            <td>
-                <label class="switch">
-                    <input type="checkbox" checked>
-                    <span class="slider"></span>
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <td>S002</td>
-            <td>HTML & CSS</td>
-            <td>Trần Thị B</td>
-            <td><img src="https://via.placeholder.com/80x100?text=HTML+CSS" alt="HTML & CSS"></td>
-            <td><button class="update-btn" onclick="alert('Cập nhật S002')">Cập nhật</button></td>
-            <td>
-                <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider"></span>
-                </label>
-            </td>
-        </tr>
+        @foreach (var item in Model.Saches)
+        {
+            <tr>
+                <td>@item.MaSach</td>
+                <td>@item.TenSach</td>
+                <td>@item.TacGia</td>
+                <td><img src="@Url.Content(item.HinhAnh)" alt="Lập trình C#"></td>
+                <td><button class="update-btn" onclick="alert('Cập nhật S001')">Cập nhật</button></td>
+                <td>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

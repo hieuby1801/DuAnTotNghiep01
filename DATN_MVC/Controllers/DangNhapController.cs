@@ -68,7 +68,7 @@ namespace DATN_MVC.Controllers
 						return vaitro switch
 						{
 							"User" => RedirectToAction("Index", "TrangChu"), // User chuyển đến TrangChu
-							"Admin" => RedirectToAction("Admin", "Admin"),  // Admin chuyển đến Admin
+							"Admin" => RedirectToAction("DanhSach", "Admin"),  // Admin chuyển đến Admin
 							"admin" => RedirectToAction("DanhSach", "Admin"),  // admin chuyển đến Admin
 							_ => RedirectToAction("DefaultPage")            // Default chuyển đến DefaultPage
 						};

@@ -87,9 +87,21 @@ namespace DATN_API.Controllers
 			{
 				return BadRequest(new { Message = "Khong co sach" });
 			}
-
 		}
 
+        [HttpGet("getOnlySach")]
+        public IActionResult GetAll()
+        {
+            var result = _sachservice.GetOnlySach();
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(new { Message = "Khong co sach" });
+            }
+        }
 
         [HttpPost("them")]
         public async Task<IActionResult> ThemSach([FromBody] ThemSachDto dto)

@@ -1,7 +1,26 @@
-﻿@{
+﻿@model DATN_MVC.Models.Modeltong
+
+@{
     Layout = "~/Views/Shared/Admin.cshtml";
 }
-
+<section class="stats">
+    <div class="stat-card">
+        <h3>📚 Tổng số sách</h3>
+        <p>0</p>
+    </div>
+    <div class="stat-card">
+        <h3>👥 Người dùng</h3>
+        <p>0</p>
+    </div>
+    <div class="stat-card">
+        <h3>🛒 Đơn hàng</h3>
+        <p>98</p>
+    </div>
+    <div class="stat-card">
+        <h3>💰 Doanh thu</h3>
+        <p>25,000,000đ</p>
+    </div>
+</section>
 <section class="table-section">
     <div class="section-header">
         <h2>📘 Danh sách Sách</h2>
@@ -23,30 +42,28 @@
                 <th>Mã sách</th>
                 <th>Tên sách</th>
                 <th>Tác giả</th>
-                <th>Giá</th>
-                <th>Kho</th>
-                <th>Nhập</th>
+               
                 <th>Hình ảnh</th>
                 <th>Hành động</th>
             </tr>
         </thead>
         <tbody>
             <!-- Dữ liệu sách mẫu -->
-            <tr>
-                <td>MS001</td>
-                <td>Sách Mẫu</td>
-                <td>Nguyễn Văn A</td>
-                <td>100,000</td>
-                <td>20</td>
-                <td>50</td>
-                <td>
-                    <img src="~/images/sample.jpg" alt="Ảnh sách" width="100" height="150" />
-                </td>
-                <td>
-                    <a href="#" class="btn btn-sm btn-warning">Sửa</a>
-                    <button class="delete-btn">Xóa</button>
-                </td>
+            @foreach (var item in Model.Saches)
+            {
+                <tr>
+                    <td>@item.MaSach</td>
+                    <td>@item.TenSach</td>
+                    <td>@item.TacGia</td>                    
+                    <td>
+                        <img src="@Url.Content(item.HinhAnh)" alt="Ảnh sách" width="100" height="150" />
+                    </td>
+                    <td>
+                        <a href="#" class="btn btn-sm btn-warning">Sửa</a>
+                        <button class="delete-btn">Xóa</button>
+                    </td>              
             </tr>
+            }
         </tbody>
     </table>
 </section>
