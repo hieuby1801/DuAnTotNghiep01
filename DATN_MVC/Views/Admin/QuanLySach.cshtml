@@ -125,6 +125,7 @@
             .switch input:checked + .slider:before {
                 transform: translateX(26px);
             }
+
     </style>
 }
 
@@ -150,8 +151,11 @@
             <td>S001</td>
             <td>Lập trình C#</td>
             <td>Nguyễn Văn A</td>
-            <td><img src="https://via.placeholder.com/80x100?text=Sach+C%23" alt="Lập trình C#"></td>
-            <td><button class="update-btn" onclick="alert('Cập nhật S001')">Cập nhật</button></td>
+            <td><img src="" alt="Lập trình C#"></td>
+            <td>
+                <a class="update-btn" href="@Url.Action("CapNhatSach", "Admin")>Cập nhật</a>
+            </td>
+
             <td>
                 <label class="switch">
                     <input type="checkbox" checked>
@@ -159,18 +163,6 @@
                 </label>
             </td>
         </tr>
-        <tr>
-            <td>S002</td>
-            <td>HTML & CSS</td>
-            <td>Trần Thị B</td>
-            <td><img src="https://via.placeholder.com/80x100?text=HTML+CSS" alt="HTML & CSS"></td>
-            <td><button class="update-btn" onclick="alert('Cập nhật S002')">Cập nhật</button></td>
-            <td>
-                <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider"></span>
-                </label>
-            </td>
-        </tr>
+        
     </tbody>
 </table>
