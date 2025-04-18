@@ -90,6 +90,12 @@ namespace DATN_API.Controllers
 
 		}
 
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _sachservice.GetAllAsync();
+            return Ok(result);
+        }
 
         [HttpPost("them")]
         public async Task<IActionResult> ThemSach([FromBody] ThemSachDto dto)

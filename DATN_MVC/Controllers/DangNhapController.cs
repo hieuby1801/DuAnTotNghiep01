@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
@@ -34,6 +35,8 @@ namespace DATN_MVC.Controllers
 			// Kiểm tra trạng thái thành công của phản hồi
 			if (response.IsSuccessStatusCode)
 			{
+				// Lấy giỏ hàng từ cookie
+				
 				if (result.TryGetProperty("value", out JsonElement valueElement) &&
 					valueElement.TryGetProperty("token", out JsonElement tokenElement))
 				{
@@ -55,7 +58,17 @@ namespace DATN_MVC.Controllers
 						HttpContext.Session.SetString("VaiTro", vaitro);
 						HttpContext.Session.SetString("NguoiDungId", id);
 						HttpContext.Session.SetString("JWT_Token", token); // Lưu token vào session
+						var gioHangCookie = HttpContext.Request.Cookies["GioHang"];
+                        if (!string.IsNullOrEmpty(gioHangCookie))
+                        {
+							var gioHangData = JsonConvert.DeserializeObject<List<GioHang>>(gioHangCookie);
+							foreach (var item in gioHangData)
+							{
+								var responses = await _httpClient.PostAsync(
+									$"GioHangs/ThemGioHang?masach={item.MaSach}&id={id}&soluong={item.Soluong}", null);// vì bạn đang truyền qua query string
 
+							}
+						}
 						// Thiết lập cookie
 						Response.Cookies.Append("access_token", token, new CookieOptions
 						{
@@ -116,12 +129,12 @@ namespace DATN_MVC.Controllers
                     }
                     else
                     {
-                        TempData["ErrorMessage1"] = "Đăng ký thất bại. Vui lòng thử lại.1";// 
+                        TempData["ErrorMessage1"] = $"Không xác định lỗi từ API. field: {errorField}, message: {errorMessage}";
                     }
                 }
                 else
                 {
-                    TempData["ErrorMessage1"] = "Đăng ký thất bại. Vui lòng thử lại1.";
+                    TempData["ErrorMessage1"] = $"Không xác định lỗi từ API. field:";
                 }
 
                 return RedirectToAction("Index", "TrangChu");
