@@ -8,7 +8,7 @@ namespace DATN_MVC.Models
 		public string? Email { get; set; }
 		public string? Saft { get; set; }
 		public string MatKhau { get; set; }
-		public NguoiDung NguoiDung { get; set; } = new NguoiDung();
+		public NguoiDung NguoiDung { get; set; }
 
         public Sach Sachs { get; set; }
 		public SachDTO? sachDTOs { get; set; }

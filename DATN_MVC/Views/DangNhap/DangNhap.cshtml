@@ -1,6 +1,6 @@
 ﻿@model DATN_MVC.Models.Modeltong
 @{
-    ViewData["Title"] = "LaySach";
+    ViewData["Title"] = "DangNhap";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
     <title>Đăng Nhập / Đăng Ký</title>
@@ -74,14 +74,16 @@
                         {
                             <div class="text-danger">@ViewBag.ErrorMessage</div>
                         }
+                      
                     </form>
                 </div>
 
                 <!-- Đăng Ký -->
 
                 <div class="tab-pane fade" id="nav-register" role="tabpanel" aria-labelledby="nav-register-tab">
-                    @Html.AntiForgeryToken()
+                 
                     <form asp-action="DangKy" asp-controller="DangNhap" method="post">
+                        @Html.AntiForgeryToken()
                         <div class="form-group py-3">
                             <label asp-for="NguoiDung.Email" class="mb-2">Email *</label>
                             <input asp-for="NguoiDung.Email"  type="email" class="form-control" placeholder="Email" required>
@@ -115,7 +117,7 @@
         </div>
         
     </div>
-
+   
   
 </body>
 
