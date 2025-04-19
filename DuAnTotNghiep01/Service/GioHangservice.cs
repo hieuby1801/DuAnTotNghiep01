@@ -78,13 +78,12 @@ namespace DATN_API.Service
 				// Nếu thêm thành công, ExecuteSqlRawAsync trả về số dòng ảnh hưởng > 0
 				return result > 0;
 			}
-			catch (Exception ex)
+			catch 
 			{
-				Console.WriteLine(ex.Message); // Ghi log nếu cần
+				
 				return false;
 			}
 		}
-
 		// cập nhật giỏ hàng
 		public GioHang CapNhatGioHang(CapNhatGioHangRequest request)
 		{

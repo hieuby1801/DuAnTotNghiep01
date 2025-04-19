@@ -170,34 +170,30 @@ namespace DATN_MVC.Controllers
 
 			return gioHangList.FirstOrDefault(x => x.MaSach == maSach);
 		}
-		public async Task<IActionResult> ThayDoiGio(int MaSach, int Soluong)
+		[HttpPost]
+		public async Task<IActionResult> ThayDoiGio(int MaSach, int SoLuong)
 		{
 			var model = new Modeltong();
 			var idnd = HttpContext.Session.GetString("NguoiDungId");
+
 			if (idnd == null)
 			{
 				// Lấy giỏ hàng từ cookie nếu chưa đăng nhập
 				model.GioHangs = LayGioHangTuCookie() ?? new List<GioHang>(); // Khởi tạo giỏ hàng nếu null
 
 				// Kiểm tra và cập nhật giỏ hàng
-				bool isItemFound = false;
-				foreach (var mas in model.GioHangs)
+				var existingItem = model.GioHangs.FirstOrDefault(g => g.MaSach == MaSach);
+				if (existingItem != null)
 				{
-					if (mas.MaSach == MaSach)
-					{
-						mas.Soluong = Soluong;
-						isItemFound = true;
-						break;
-					}
+					existingItem.Soluong = SoLuong; // Cập nhật số lượng nếu có
 				}
-
-				// Nếu không tìm thấy sản phẩm trong giỏ hàng
-				if (!isItemFound)
+				else
 				{
+					// Nếu không tìm thấy sản phẩm trong giỏ hàng, thêm mới
 					model.GioHangs.Add(new GioHang
 					{
 						MaSach = MaSach,
-						Soluong = Soluong
+						Soluong = SoLuong
 					});
 				}
 
@@ -211,33 +207,28 @@ namespace DATN_MVC.Controllers
 				{
 					MaSach = MaSach,
 					MaNguoiDung = int.Parse(idnd), // Chuyển đổi idnd thành int
-					SoLuong = Soluong
+					SoLuong = SoLuong
 				};
 
 				// Gọi API bất đồng bộ với await
-
 				var json = JsonConvert.SerializeObject(model.gioHangDTO);
 				var content = new StringContent(json, Encoding.UTF8, "application/json");
 
 				var response = await _httpClient.PutAsync("GioHangs/Capnhapgiohang", content);
 
 				// Kiểm tra nếu API trả về thành công
-				if (response.IsSuccessStatusCode)
-				{
-
-					return RedirectToAction("XemGioHang");
-					// Xử lý dữ liệu trả về từ API nếu cần
-				}
-				else
+				if (!response.IsSuccessStatusCode)
 				{
 					var errorContent = await response.Content.ReadAsStringAsync();
-					return BadRequest($"Không thể thêm giỏ hàng qua API. Mã lỗi: {(int)response.StatusCode}, Nội dung lỗi: {errorContent}");
+					return BadRequest($"Không thể cập nhật giỏ hàng qua API. Mã lỗi: {(int)response.StatusCode}, Nội dung lỗi: {errorContent}");
 				}
 			}
 
 			// Sau khi thao tác thành công, chuyển hướng đến trang giỏ hàng
 			return RedirectToAction("XemGioHang");
 		}
+
+
 		public IActionResult GioHang()
 		{
 			return View();
