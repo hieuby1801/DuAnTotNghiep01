@@ -103,7 +103,6 @@ namespace DATN_MVC.Controllers
 				}
 				else
 				{
-					// Xử lý khi không thể lấy giỏ hàng từ cơ sở dữ liệu
 					return View("NotFound");
 				}
 			}
