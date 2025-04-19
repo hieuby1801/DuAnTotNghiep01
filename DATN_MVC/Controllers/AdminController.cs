@@ -52,10 +52,17 @@ namespace DATN_MVC.Controllers
         }
 
         [HttpGet]
-        public IActionResult ThemSach()
+        public async Task<IActionResult> ThemSach()
         {
-
-            return View();
+            var modeltong = new Modeltong();
+            // Lấy thể loại
+            var resTheLoai = await _httpClient.GetAsync("Sachs/LayTatCaTheLoai");
+            if (resTheLoai.IsSuccessStatusCode)
+            {
+                var theLoaiJson = await resTheLoai.Content.ReadAsStringAsync();
+                modeltong.TheLoais = JsonConvert.DeserializeObject<List<TheLoai>>(theLoaiJson) ?? new List<TheLoai>();
+            }
+            return View(modeltong);
         }
         public async Task<IActionResult> DanhSach()
         {
