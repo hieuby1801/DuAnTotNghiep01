@@ -147,14 +147,14 @@
         </tr>
     </thead>
     <tbody>
-<<<<<<< HEAD
+
         @foreach (var item in Model.Saches)
         {
             <tr>
                 <td>@item.MaSach</td>
                 <td>@item.TenSach</td>
                 <td>@item.TacGia</td>
-                <td><img src="@Url.Content(item.HinhAnh)" alt="Lập trình C#"></td>
+                <td><img src="@Url.Content(item.HinhAnh)" alt="@Url.Content(item.HinhAnh)"></td>
                 <td><button class="update-btn" onclick="alert('Cập nhật S001')">Cập nhật</button></td>
                 <td>
                     <label class="switch">
@@ -163,25 +163,7 @@
                     </label>
                 </td>
             </tr>
-        }
-=======
-        <tr>
-            <td>S001</td>
-            <td>Lập trình C#</td>
-            <td>Nguyễn Văn A</td>
-            <td><img src="" alt="Lập trình C#"></td>
-            <td>
-                <a class="update-btn" href="@Url.Action("CapNhatSach", "Admin")>Cập nhật</a>
-            </td>
+        }        
 
-            <td>
-                <label class="switch">
-                    <input type="checkbox" checked>
-                    <span class="slider"></span>
-                </label>
-            </td>
-        </tr>
-        
->>>>>>> 51d004671a7640d6a441416d66b1d59435708bc8
     </tbody>
 </table>
