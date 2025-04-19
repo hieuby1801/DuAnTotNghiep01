@@ -12,5 +12,8 @@ namespace DATN_API.Service
 		public GioHang KiemTra(int masach, int maNguoiDung);
 
 		public List<GioHang> Laygiohnagtheoid(int manguoidung);
-    }
+		public List<GioHang> ThemdangsachGiohangck(List<CapNhatGioHangRequest> requests);
+
+		public GioHang XoaGiohangDN(int masach, int idnd);
+	}
 }

@@ -1,5 +1,4 @@
-﻿using Azure;
-using DATN_MVC.Models;
+﻿using DATN_MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
@@ -55,7 +54,7 @@ namespace DATN_MVC.Controllers
 								item.TenSach = sach.TenSach;
 								item.GiaBan = sach.GiaBan;
 								item.HinhAnh = sach.HinhAnh;
-								
+
 							}
 						}
 					}
@@ -96,57 +95,34 @@ namespace DATN_MVC.Controllers
 					}
 
 					// Lưu giỏ hàng vào cookie
-					_= LuuGioHangVaoCookie(gioHangList);
+					_ = LuuGioHangVaoCookie(gioHangList);
 				}
 				return RedirectToAction("XemGioHang");
 			}
 			else
-			{
+			{   
 				
-				model.gioHangDTO = new DTOs.GioHangDTO
+				// 4. Thêm sản phẩm vừa chọn
+				var newDTO = new DTOs.GioHangDTO
 				{
-					MaSach = masach,
+					MaSach = model.GioHang.MaSach,
 					SoLuong = 1,
-					MaNguoiDung = int.Parse(idnd) // Chuyển đổi idnd thành int
+					MaNguoiDung = int.Parse(idnd)
 				};
+
+				var newJson = JsonConvert.SerializeObject(newDTO);
+				var newContent = new StringContent(newJson, Encoding.UTF8, "application/json");
+
+				await _httpClient.PostAsync("GioHangs/ThemGioHang", newContent);
 				
-				var json = JsonConvert.SerializeObject(model.gioHangDTO);
-				var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-				var response = await _httpClient.PostAsync("GioHangs/ThemGioHang", content);
-
-				if (response.IsSuccessStatusCode)
-				{
-					var repon = await _httpClient.GetAsync($"GioHangs/ThemGioHangck/{masach}");
-
-					if (repon.IsSuccessStatusCode)
-					{
-						var sacht = await repon.Content.ReadAsStringAsync();
-						model.GioHang = JsonConvert.DeserializeObject<GioHang>(sacht);
-
-						var gioHangList = LayGioHangTuCookie() ?? new List<GioHang>();
-						var existingItem = gioHangList.Find(x => x.MaSach == model.GioHang.MaSach);
-
-						if (existingItem != null)
-						{
-							existingItem.Soluong += 1;
-						}
-						else
-						{
-							model.GioHang.Soluong = 1;
-							gioHangList.Add(model.GioHang);
-						}
-
-						_= LuuGioHangVaoCookie(gioHangList);
-					}
-					return RedirectToAction("XemGioHang");
-				}
-				else
-				{
-					// Xử lý khi không thành công, ví dụ: chuyển sang trang báo lỗi
-					return RedirectToAction("XemGioHang");
-				}
+				// 6. Trả về view giỏ hàng mới
+				return RedirectToAction("XemGioHang");
 			}
+
+
+
+
 		}
 		public GioHang? LayMotGioHangTheoMaSach(int maSach)
 		{
@@ -208,7 +184,7 @@ namespace DATN_MVC.Controllers
 				// Kiểm tra nếu API trả về thành công
 				if (response.IsSuccessStatusCode)
 				{
-					
+
 					return RedirectToAction("XemGioHang");
 					// Xử lý dữ liệu trả về từ API nếu cần
 				}

@@ -71,5 +71,38 @@ namespace DATN_API.Controllers
 			}
 			return BadRequest("Không tìm thấy sản phẩm");
 		}
+		[HttpDelete("Xoagiohang/{masach}/{idnd}")]
+		public IActionResult Xoagiohang(int masach, int idnd)
+		{
+			var result = _gioHnagservice.XoaGiohangDN(masach, idnd);
+			if (result != null)
+			{
+				return Ok("Xóa thành công");
+			}
+			else
+			{
+				return NotFound("Không tìm thấy mục cần xóa");
+			}
+		}
+
+		[HttpPost("ThemdsGioHang")]
+		public IActionResult ThemdsGioHang([FromBody] List<CapNhatGioHangRequest> requests)
+		{
+			var result = _gioHnagservice.ThemdangsachGiohangck(requests);
+
+			if (result != null && result.Any())
+			{
+				return Ok(new
+				{
+					message = "Thêm/cập nhật giỏ hàng thành công",
+					data = result
+				});
+			}
+			else
+			{
+				return BadRequest("Không thể thêm sách vào giỏ hàng (sách không tồn tại hoặc dữ liệu không hợp lệ)");
+			}
+		}
+
 	}
 }

@@ -3,9 +3,9 @@
 	ViewData["Title"] = "Giỏ Hàng";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 	var nguoiDungId = Context.Session.GetString("NguoiDungId");
-	var id = TempData["mand"];
-	var soluong = TempData["soluong"];
-	var masach = TempData["masach"];
+	var id = TempData["nd"];
+	var soluong = TempData["s"];
+	var masach = TempData["m"];
 
 }
 <!DOCTYPE html>
@@ -140,9 +140,9 @@
 		<h4 class="mb-4 fw-bold">🛒 GIỎ HÀNG</h4>
 		<div class="row g-4">
 			<!-- Cột trái: Sản phẩm -->
-			@if (id!=null || soluong!= null || masach !=null)
+			@if (masach != null || soluong != null || id != null)
 			{
-				<p>Tài khoản của bạn: @id , @masach ,@soluong</p>
+				<p>Tài khoản của bạn:  @masach ,@soluong,@id </p>
 			}
 			else
 			{
@@ -193,12 +193,12 @@
 			<!-- Cột phải: Thanh toán -->
 			<div class="col-lg-4">
 				<div class="bg-white rounded-4 p-3 shadow-sm border">
-					<div class="d-flex justify-content-between mb-2">
-						<span>Thành tiền</span>
-						<strong>@Model.GioHangs.Sum(g => g.GiaBan * g.Soluong) đ</strong>
-					</div>
+				@* 	<div class="d-flex justify-content-between mb-2"> *@
+						@* <span>Thành tiền</span> *@
+						@* <strong>@Model.GioHangs.Sum(g => g.GiaBan * g.Soluong) đ</strong> *@
+				@* 	</div> *@
 					<div class="d-flex justify-content-between mb-3">
-						<strong class="fs-6">Tổng Số Tiền (gồm VAT)</strong>
+						<strong class="fs-6">Tổng Số Tiền</strong>
 						<strong class="tong-tien">@Model.GioHangs.Sum(g => g.GiaBan * g.Soluong) đ</strong>
 					</div>
 					<form asp-controller="ThanhToan" asp-action="ThanhToan" method="post" id="payment-form">
