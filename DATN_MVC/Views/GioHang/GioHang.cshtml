@@ -3,9 +3,9 @@
 	ViewData["Title"] = "Giỏ Hàng";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 	var nguoiDungId = Context.Session.GetString("NguoiDungId");
-	var id = TempData["mand"];
-	var soluong = TempData["soluong"];
-	var masach = TempData["masach"];
+	var id = TempData["nd"];
+	var soluong = TempData["s"];
+	var masach = TempData["m"];
 
 }
 <!DOCTYPE html>
@@ -140,9 +140,9 @@
 		<h4 class="mb-4 fw-bold">🛒 GIỎ HÀNG</h4>
 		<div class="row g-4">
 			<!-- Cột trái: Sản phẩm -->
-			@if (id!=null || soluong!= null || masach !=null)
+			@if (masach != null || soluong != null || id != null)
 			{
-				<p>Tài khoản của bạn: @id , @masach ,@soluong</p>
+				<p>Tài khoản của bạn:  @masach ,@soluong,@id </p>
 			}
 			else
 			{
@@ -159,33 +159,34 @@
 					@for (int i = 0; i < Model.GioHangs.Count; i++)
 					{
 						var item = Model.GioHangs[i];
-						
-							<div class="d-flex align-items-start border-top pt-3">
-							<form  asp-action="ThayDoiGio" asp-controller="GioHang" method="post" class="quantity-form" id="form-@item.MaSach">
+						<div class="d-flex align-items-start border-top pt-3">
+							<form asp-action="ThayDoiGio" asp-controller="GioHang" method="post" class="quantity-form" id="form-@item.MaSach">
 								<!-- Checkbox để chọn sản phẩm -->
 								<input class="form-check-input mt-2 me-3 item-checkbox product-checkbox" id="checkbox-@item.MaSach" data-masach="@item.MaSach" type="checkbox" checked>
+
 								<img src="@Url.Content(item.HinhAnh)" class="me-3 rounded-3" width="80" alt="@item.TenSach" />
+
 								<div class="flex-grow-1">
 									<h6 class="mb-1 fw-medium">@item.TenSach</h6>
-							
+
 									<div class="quantity-wrapper mt-2">
-								
-										<button type="button" class="quantity-btn" onclick="updateQuantity('@item.MaSach', -1)">−</button>
+										<!-- Thay đổi số lượng -->
+										<button type="submit" name="SoLuong" value="@Math.Max(item.Soluong - 1, 1)" class="quantity-btn">−</button>
 										<span class="quantity-number" id="quantity-@item.MaSach">@item.Soluong</span>
-										<button type="button" class="quantity-btn" onclick="updateQuantity('@item.MaSach', 1)">+</button>
-										
-									
+										<button type="submit" name="SoLuong" value="@Math.Min(item.Soluong + 1, 100)" class="quantity-btn">+</button>
+
 										<input type="hidden" name="MaSach" value="@item.MaSach" />
 										<input type="hidden" name="SoLuong" id="input-quantity-@item.MaSach" value="@item.Soluong" />
 									</div>
-							
 								</div>
+
+								<!-- Giá của sản phẩm -->
+								<div class="text-danger fw-bold fs-6" id="price-@item.MaSach">@item.GiaBan đ</div>
 							</form>
-								<!-- Thêm phần hiển thị giá -->
-								<div class="text-danger fw-bold fs-6" id="price-@item.MaSach">@item.GiaBan đ</div> <!-- Giá của sản phẩm -->
-							</div>
-						
+						</div>
 					}
+
+
 
 				</div>
 			</div>
@@ -193,12 +194,9 @@
 			<!-- Cột phải: Thanh toán -->
 			<div class="col-lg-4">
 				<div class="bg-white rounded-4 p-3 shadow-sm border">
-					<div class="d-flex justify-content-between mb-2">
-						<span>Thành tiền</span>
-						<strong>@Model.GioHangs.Sum(g => g.GiaBan * g.Soluong) đ</strong>
-					</div>
+				
 					<div class="d-flex justify-content-between mb-3">
-						<strong class="fs-6">Tổng Số Tiền (gồm VAT)</strong>
+						<strong class="fs-6">Tổng Số Tiền</strong>
 						<strong class="tong-tien">@Model.GioHangs.Sum(g => g.GiaBan * g.Soluong) đ</strong>
 					</div>
 					<form asp-controller="ThanhToan" asp-action="ThanhToan" method="post" id="payment-form">
@@ -209,47 +207,43 @@
 			</div>
 		</div>
 	</div>
-	<button id="clear-cart" class="btn btn-danger">Xóa giỏ hàng</button>
-	@*Script cập nhật số lượng sản phẩm (updateQuantity *@
+		<form asp-controller="GioHang" asp-action="XoaGioHang" method="post" id="clear-cart-form">
+			<input type="hidden" name="NguoiDungId" value="@Context.Session.GetString("NguoiDungId")" />
+			<input type="hidden" name="DanhSachMaSach" id="DanhSachMaSach" /> <!-- Gộp tại đây -->
+			<button type="submit" id="clear-cart" class="btn btn-danger">Xóa giỏ hàng</button>
+		</form>
+@* 	xóa giỏ hàng *@
 	<script>
-		function updateQuantity(maSach, change) {
-			var quantityInput = document.getElementById('input-quantity-' + maSach);
-			var quantitySpan = document.getElementById('quantity-' + maSach);
+			document.getElementById('clear-cart-form').addEventListener('submit', function (e) {
+				// Lấy tất cả checkbox được chọn
+				const selectedMasach = Array.from(document.querySelectorAll('.product-checkbox:checked'))
+					.map(cb => cb.dataset.masach);
 
-			var newQuantity = parseInt(quantityInput.value) + change;
-
-			if (newQuantity >= 1) {
-				quantityInput.value = newQuantity;
-				quantitySpan.textContent = newQuantity;
-
-				var form = document.getElementById('form-' + maSach);
-				form.submit();
-			}
-		}
-	</script>
-	@* Script xóa giỏ hàng (clear-cart) *@
+				// Đưa danh sách vào input ẩn dưới dạng JSON chuỗi
+				document.getElementById('DanhSachMaSach').value = JSON.stringify(selectedMasach);
+			});
+		</script>
 	<script>
-		document.getElementById("clear-cart").addEventListener("click", async function () {
-			try {
-				const response = await fetch("/GioHang/XoaGioHang", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json"
-					}
-				});
-				const data = await response.json();
-				if (data.success) {
-					location.reload();
-				} else {
-					alert("Xóa giỏ hàng thất bại!");
-				}
-			} catch (error) {
-				console.error("Lỗi:", error);
+		document.getElementById('clear-cart-form').addEventListener('submit', function (e) {
+			// Lấy tất cả checkbox được chọn
+			const selectedMasach = Array.from(document.querySelectorAll('.product-checkbox:checked'))
+				.map(cb => cb.dataset.masach); // Lấy danh sách mã sách từ data-masach
+
+			// Nếu không có sản phẩm nào được chọn, ngừng form submit
+			if (selectedMasach.length === 0) {
+				alert('Vui lòng chọn ít nhất một sản phẩm để xóa.');
+				e.preventDefault();
+				return;
 			}
+
+			// Đưa danh sách vào input ẩn dưới dạng chuỗi JSON
+			document.getElementById('DanhSachMaSach').value = JSON.stringify(selectedMasach);
 		});
+
 	</script>
 
-	@*  Script cập nhật tổng tiền theo checkbox (updateTotalPrice) *@
+	
+@*  Script cập nhật tổng tiền theo checkbox (updateTotalPrice) *@
 	<script>
 		function updateTotalPrice() {
 			var total = 0;

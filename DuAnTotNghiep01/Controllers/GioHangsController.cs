@@ -1,4 +1,5 @@
 ﻿using DATN_API.DTOs;
+using DATN_API.Models;
 using DATN_API.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,12 @@ namespace DATN_API.Controllers
 			else
 			{
 				// Nếu giỏ hàng không có sản phẩm, thêm mới
-				var result = await _gioHnagservice.ThemgiohangDN(req.MaSach, req.MaNguoiDung, req.SoLuong);
+				var list = new List<(int masach, int soluong)>
+				{
+					(req.MaSach, req.SoLuong)
+				};
+
+				var result = await _gioHnagservice.ThemgiohangDN(list, req.MaNguoiDung);
 				if (!result)
 				{
 					return BadRequest("Thêm giỏ hàng thất bại.");
@@ -71,5 +77,43 @@ namespace DATN_API.Controllers
 			}
 			return BadRequest("Không tìm thấy sản phẩm");
 		}
+		[HttpPost("Xoagiohang")]
+		public List<GioHang> XoaGiohangDN(XoaGioHangRequest res)
+		{
+			var result = _gioHnagservice.XoaGiohangDN(res.DanhSachMaSach, res.MaNguoiDung);
+			if (result != null)
+			{
+				return result;
+			}
+			else
+			{
+				return result;
+			}
+		}
+		public class XoaGioHangRequest
+		{
+			public List<int> DanhSachMaSach { get; set; }
+			public int MaNguoiDung { get; set; }
+		}
+
+		[HttpPost("ThemdsGioHang")]
+		public IActionResult ThemdsGioHang([FromBody] List<CapNhatGioHangRequest> requests)
+		{
+			var result = _gioHnagservice.ThemdangsachGiohangck(requests);
+
+			if (result != null && result.Any())
+			{
+				return Ok(new
+				{
+					message = "Thêm/cập nhật giỏ hàng thành công",
+					data = result
+				});
+			}
+			else
+			{
+				return BadRequest("Không thể thêm sách vào giỏ hàng (sách không tồn tại hoặc dữ liệu không hợp lệ)");
+			}
+		}
+
 	}
 }

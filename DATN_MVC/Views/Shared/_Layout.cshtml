@@ -1,6 +1,7 @@
 ﻿@model DATN_MVC.Models.Modeltong
 @{
 	var token = Context.Session.GetString("JWT_Token");// để lên đầu trang chủ
+	var nguoiDungId = Context.Session.GetString("NguoiDungId");
 
 }
 
@@ -364,12 +365,26 @@
 									</a>
 								</li>
 								<li class="pe-3">
-									<a href="@Url.Action("DangNhap","DangNhap")" role="button">
-										<svg class="user">
-											<use xlink:href="#user"></use>
-										</svg>
-									</a>
-									
+									@if (nguoiDungId != null)
+									{
+										// Người dùng đã đăng nhập, hiển thị nút Đăng xuất
+										<a href="@Url.Action("DangXuat", "DangNhap")" role="button">
+											<svg class="logout-icon">
+												<use xlink:href="#logout"></use>
+											</svg>
+											<span>Đăng xuất</span>
+										</a>
+									}
+									else
+									{
+										// Người dùng chưa đăng nhập, hiển thị nút Đăng nhập
+										<a href="@Url.Action("DangNhap", "DangNhap")" role="button">
+											<svg class="user">
+												<use xlink:href="#user"></use>
+											</svg>
+											<span>Đăng nhập</span>
+										</a>
+									}
 
 								</li>
 								<li class="wishlist-dropdown dropdown pe-3">

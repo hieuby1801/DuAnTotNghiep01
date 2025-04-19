@@ -1,4 +1,4 @@
-﻿using Azure;
+﻿using DATN_MVC.DTOs;
 using DATN_MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -16,11 +16,51 @@ namespace DATN_MVC.Controllers
 		}
 		public const string CookieName = "GioHang";
 		[HttpPost]
-		public IActionResult XoaGioHang()
+		public async Task< IActionResult> XoaGioHang(string NguoiDungId, string DanhSachMaSach)
 		{
-			Response.Cookies.Delete("GioHang");
-			return Json(new { success = true });
+			
+			// Chuyển chuỗi JSON thành List<int>
+			var danhSachMaSach = JsonConvert.DeserializeObject<List<int>>(DanhSachMaSach);
+			var idnd = HttpContext.Session.GetString("NguoiDungId");
+			if (idnd != null) 
+			{
+				var request = new XoaGioHangRequest
+				{
+					MaNguoiDung = int.Parse(idnd),
+					DanhSachMaSach = danhSachMaSach
+				};
+
+				var response = await _httpClient.PostAsJsonAsync("GioHangs/Xoagiohang", request);
+
+				if (response.IsSuccessStatusCode)
+				{
+					// Nếu xóa thành công, chuyển hướng hoặc thông báo thành công
+					return RedirectToAction("XemGioHang");
+				}
+				else
+				{
+					TempData["m"] = string.Join(",",danhSachMaSach);
+					TempData["nd"] = idnd;
+					// Nếu thất bại, xử lý lỗi
+					return RedirectToAction("XemGioHang");
+				}
+			}
+			else
+			{
+				Response.Cookies.Delete("GioHang");
+			}
+			return RedirectToAction("XemGioHang");
+
+			// Tạo đối tượng yêu cầu (Request Object)
+
+
 		}
+		public class XoaGioHangRequest
+		{
+			public List<int> DanhSachMaSach { get; set; }
+			public int MaNguoiDung { get; set; }
+		}
+
 		public async Task<IActionResult> XemGioHang()
 		{
 			var modeltong = new Modeltong();
@@ -55,7 +95,7 @@ namespace DATN_MVC.Controllers
 								item.TenSach = sach.TenSach;
 								item.GiaBan = sach.GiaBan;
 								item.HinhAnh = sach.HinhAnh;
-								
+
 							}
 						}
 					}
@@ -63,7 +103,6 @@ namespace DATN_MVC.Controllers
 				}
 				else
 				{
-					// Xử lý khi không thể lấy giỏ hàng từ cơ sở dữ liệu
 					return View("NotFound");
 				}
 			}
@@ -96,57 +135,34 @@ namespace DATN_MVC.Controllers
 					}
 
 					// Lưu giỏ hàng vào cookie
-					_= LuuGioHangVaoCookie(gioHangList);
+					_ = LuuGioHangVaoCookie(gioHangList);
 				}
 				return RedirectToAction("XemGioHang");
 			}
 			else
 			{
-				
-				model.gioHangDTO = new DTOs.GioHangDTO
+
+				// 4. Thêm sản phẩm vừa chọn
+				model.gioHangDTO = new GioHangDTO
 				{
 					MaSach = masach,
 					SoLuong = 1,
-					MaNguoiDung = int.Parse(idnd) // Chuyển đổi idnd thành int
+					MaNguoiDung = int.Parse(idnd)
 				};
-				
-				var json = JsonConvert.SerializeObject(model.gioHangDTO);
-				var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-				var response = await _httpClient.PostAsync("GioHangs/ThemGioHang", content);
+				var newJson = JsonConvert.SerializeObject(model.gioHangDTO);
+				var newContent = new StringContent(newJson, Encoding.UTF8, "application/json");
 
-				if (response.IsSuccessStatusCode)
-				{
-					var repon = await _httpClient.GetAsync($"GioHangs/ThemGioHangck/{masach}");
+				await _httpClient.PostAsync("GioHangs/ThemGioHang", newContent);
 
-					if (repon.IsSuccessStatusCode)
-					{
-						var sacht = await repon.Content.ReadAsStringAsync();
-						model.GioHang = JsonConvert.DeserializeObject<GioHang>(sacht);
 
-						var gioHangList = LayGioHangTuCookie() ?? new List<GioHang>();
-						var existingItem = gioHangList.Find(x => x.MaSach == model.GioHang.MaSach);
-
-						if (existingItem != null)
-						{
-							existingItem.Soluong += 1;
-						}
-						else
-						{
-							model.GioHang.Soluong = 1;
-							gioHangList.Add(model.GioHang);
-						}
-
-						_= LuuGioHangVaoCookie(gioHangList);
-					}
-					return RedirectToAction("XemGioHang");
-				}
-				else
-				{
-					// Xử lý khi không thành công, ví dụ: chuyển sang trang báo lỗi
-					return RedirectToAction("XemGioHang");
-				}
+				// 6. Trả về view giỏ hàng mới
+				return RedirectToAction("XemGioHang");
 			}
+
+
+
+
 		}
 		public GioHang? LayMotGioHangTheoMaSach(int maSach)
 		{
@@ -154,34 +170,30 @@ namespace DATN_MVC.Controllers
 
 			return gioHangList.FirstOrDefault(x => x.MaSach == maSach);
 		}
-		public async Task<IActionResult> ThayDoiGio(int MaSach, int Soluong)
+		[HttpPost]
+		public async Task<IActionResult> ThayDoiGio(int MaSach, int SoLuong)
 		{
 			var model = new Modeltong();
 			var idnd = HttpContext.Session.GetString("NguoiDungId");
+
 			if (idnd == null)
 			{
 				// Lấy giỏ hàng từ cookie nếu chưa đăng nhập
 				model.GioHangs = LayGioHangTuCookie() ?? new List<GioHang>(); // Khởi tạo giỏ hàng nếu null
 
 				// Kiểm tra và cập nhật giỏ hàng
-				bool isItemFound = false;
-				foreach (var mas in model.GioHangs)
+				var existingItem = model.GioHangs.FirstOrDefault(g => g.MaSach == MaSach);
+				if (existingItem != null)
 				{
-					if (mas.MaSach == MaSach)
-					{
-						mas.Soluong = Soluong;
-						isItemFound = true;
-						break;
-					}
+					existingItem.Soluong = SoLuong; // Cập nhật số lượng nếu có
 				}
-
-				// Nếu không tìm thấy sản phẩm trong giỏ hàng
-				if (!isItemFound)
+				else
 				{
+					// Nếu không tìm thấy sản phẩm trong giỏ hàng, thêm mới
 					model.GioHangs.Add(new GioHang
 					{
 						MaSach = MaSach,
-						Soluong = Soluong
+						Soluong = SoLuong
 					});
 				}
 
@@ -195,33 +207,28 @@ namespace DATN_MVC.Controllers
 				{
 					MaSach = MaSach,
 					MaNguoiDung = int.Parse(idnd), // Chuyển đổi idnd thành int
-					SoLuong = Soluong
+					SoLuong = SoLuong
 				};
 
 				// Gọi API bất đồng bộ với await
-
 				var json = JsonConvert.SerializeObject(model.gioHangDTO);
 				var content = new StringContent(json, Encoding.UTF8, "application/json");
 
 				var response = await _httpClient.PutAsync("GioHangs/Capnhapgiohang", content);
 
 				// Kiểm tra nếu API trả về thành công
-				if (response.IsSuccessStatusCode)
-				{
-					
-					return RedirectToAction("XemGioHang");
-					// Xử lý dữ liệu trả về từ API nếu cần
-				}
-				else
+				if (!response.IsSuccessStatusCode)
 				{
 					var errorContent = await response.Content.ReadAsStringAsync();
-					return BadRequest($"Không thể thêm giỏ hàng qua API. Mã lỗi: {(int)response.StatusCode}, Nội dung lỗi: {errorContent}");
+					return BadRequest($"Không thể cập nhật giỏ hàng qua API. Mã lỗi: {(int)response.StatusCode}, Nội dung lỗi: {errorContent}");
 				}
 			}
 
 			// Sau khi thao tác thành công, chuyển hướng đến trang giỏ hàng
 			return RedirectToAction("XemGioHang");
 		}
+
+
 		public IActionResult GioHang()
 		{
 			return View();

@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pag
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
@@ -65,16 +66,31 @@ namespace DATN_MVC.Controllers
 						HttpContext.Session.SetString("JWT_Token", token);
 
 						var gioHangCookie = HttpContext.Request.Cookies["GioHang"];
-                        if (!string.IsNullOrEmpty(gioHangCookie))
-                        {
-                            var gioHangData = JsonConvert.DeserializeObject<List<GioHang>>(gioHangCookie);
-                            foreach (var item in gioHangData)
-                            {
-                                await _httpClient.PostAsync($"GioHangs/ThemGioHang?masach={item.MaSach}&id={id}&soluong={item.Soluong}", null);
-                            }
-                        }
+						if (!string.IsNullOrEmpty(gioHangCookie))
+						{
+							var gioHangData = JsonConvert.DeserializeObject<List<GioHang>>(gioHangCookie);
+							if (gioHangData != null)
+							{
+								foreach(var item in gioHangData)
+								{
+									item.MaNguoiDung = int.Parse(id);
+								}
+							}
 
-                        Response.Cookies.Append("access_token", token, new CookieOptions
+							// Thay đổi tên biến từ 'json' thành 'gioHangJson'
+							var gioHangJson = JsonConvert.SerializeObject(gioHangData);
+							var content = new StringContent(gioHangJson, Encoding.UTF8, "application/json");
+
+							// Gửi yêu cầu POST đến API với dữ liệu giỏ hàng
+							var response1 = await _httpClient.PostAsync("GioHangs/ThemdsGioHang", content);
+
+							// Kiểm tra kết quả trả về từ API
+							if (response1.IsSuccessStatusCode)
+							{
+								Response.Cookies.Delete("GioHang");
+							}
+						}
+						Response.Cookies.Append("access_token", token, new CookieOptions
                         {
                             HttpOnly = true,
                             Secure = false,
@@ -96,8 +112,19 @@ namespace DATN_MVC.Controllers
             TempData["ErrorMessage"] = errorMessage ?? "Đăng nhập thất bại.";
             return View("DangNhap", loginguser); // <-- Quan trọng
         }
+		public IActionResult DangXuat()
+		{
+			// Xóa toàn bộ session
+			HttpContext.Session.Clear();
+			// Xóa các cookies
+			Response.Cookies.Delete("JWT_Token");
+			Response.Cookies.Delete("Email");
+			Response.Cookies.Delete("VaiTro");
+			Response.Cookies.Delete("NguoiDungId");
+			return RedirectToAction("Index", "TrangChu");
+		} 
 
-        [HttpPost]
+		[HttpPost]
         public async Task<IActionResult> DangKy(Modeltong modeltong)
         {
             // Kiểm tra dữ liệu người dùng
