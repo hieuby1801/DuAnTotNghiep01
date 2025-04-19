@@ -193,10 +193,7 @@
 			<!-- Cột phải: Thanh toán -->
 			<div class="col-lg-4">
 				<div class="bg-white rounded-4 p-3 shadow-sm border">
-				@* 	<div class="d-flex justify-content-between mb-2"> *@
-						@* <span>Thành tiền</span> *@
-						@* <strong>@Model.GioHangs.Sum(g => g.GiaBan * g.Soluong) đ</strong> *@
-				@* 	</div> *@
+				
 					<div class="d-flex justify-content-between mb-3">
 						<strong class="fs-6">Tổng Số Tiền</strong>
 						<strong class="tong-tien">@Model.GioHangs.Sum(g => g.GiaBan * g.Soluong) đ</strong>
@@ -209,8 +206,40 @@
 			</div>
 		</div>
 	</div>
-	<button id="clear-cart" class="btn btn-danger">Xóa giỏ hàng</button>
-	@*Script cập nhật số lượng sản phẩm (updateQuantity *@
+		<form asp-controller="GioHang" asp-action="XoaGioHang" method="post" id="clear-cart-form">
+			<input type="hidden" name="NguoiDungId" value="@Context.Session.GetString("NguoiDungId")" />
+			<input type="hidden" name="DanhSachMaSach" id="DanhSachMaSach" /> <!-- Gộp tại đây -->
+			<button type="submit" id="clear-cart" class="btn btn-danger">Xóa giỏ hàng</button>
+		</form>
+
+		<script>
+			document.getElementById('clear-cart-form').addEventListener('submit', function (e) {
+				// Lấy tất cả checkbox được chọn
+				const selectedMasach = Array.from(document.querySelectorAll('.product-checkbox:checked'))
+					.map(cb => cb.dataset.masach);
+
+				// Đưa danh sách vào input ẩn dưới dạng JSON chuỗi
+				document.getElementById('DanhSachMaSach').value = JSON.stringify(selectedMasach);
+			});
+		</script>
+	<script>
+		document.getElementById('clear-cart-form').addEventListener('submit', function (e) {
+			// Lấy tất cả checkbox được chọn
+			const selectedMasach = Array.from(document.querySelectorAll('.product-checkbox:checked'))
+				.map(cb => cb.dataset.masach); // Lấy danh sách mã sách từ data-masach
+
+			// Nếu không có sản phẩm nào được chọn, ngừng form submit
+			if (selectedMasach.length === 0) {
+				alert('Vui lòng chọn ít nhất một sản phẩm để xóa.');
+				e.preventDefault();
+				return;
+			}
+
+			// Đưa danh sách vào input ẩn dưới dạng chuỗi JSON
+			document.getElementById('DanhSachMaSach').value = JSON.stringify(selectedMasach);
+		});
+
+	</script>
 	<script>
 		function updateQuantity(maSach, change) {
 			var quantityInput = document.getElementById('input-quantity-' + maSach);
@@ -227,27 +256,7 @@
 			}
 		}
 	</script>
-	@* Script xóa giỏ hàng (clear-cart) *@
-	<script>
-		document.getElementById("clear-cart").addEventListener("click", async function () {
-			try {
-				const response = await fetch("/GioHang/XoaGioHang", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json"
-					}
-				});
-				const data = await response.json();
-				if (data.success) {
-					location.reload();
-				} else {
-					alert("Xóa giỏ hàng thất bại!");
-				}
-			} catch (error) {
-				console.error("Lỗi:", error);
-			}
-		});
-	</script>
+	
 
 	@*  Script cập nhật tổng tiền theo checkbox (updateTotalPrice) *@
 	<script>

@@ -1,4 +1,5 @@
-﻿using DATN_MVC.Models;
+﻿using DATN_MVC.DTOs;
+using DATN_MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
@@ -15,11 +16,51 @@ namespace DATN_MVC.Controllers
 		}
 		public const string CookieName = "GioHang";
 		[HttpPost]
-		public IActionResult XoaGioHang()
+		public async Task< IActionResult> XoaGioHang(string NguoiDungId, string DanhSachMaSach)
 		{
-			Response.Cookies.Delete("GioHang");
-			return Json(new { success = true });
+			
+			// Chuyển chuỗi JSON thành List<int>
+			var danhSachMaSach = JsonConvert.DeserializeObject<List<int>>(DanhSachMaSach);
+			var idnd = HttpContext.Session.GetString("NguoiDungId");
+			if (idnd != null) 
+			{
+				var request = new XoaGioHangRequest
+				{
+					MaNguoiDung = int.Parse(idnd),
+					DanhSachMaSach = danhSachMaSach
+				};
+
+				var response = await _httpClient.PostAsJsonAsync("GioHangs/Xoagiohang", request);
+
+				if (response.IsSuccessStatusCode)
+				{
+					// Nếu xóa thành công, chuyển hướng hoặc thông báo thành công
+					return RedirectToAction("XemGioHang");
+				}
+				else
+				{
+					TempData["m"] = string.Join(",",danhSachMaSach);
+					TempData["nd"] = idnd;
+					// Nếu thất bại, xử lý lỗi
+					return RedirectToAction("XemGioHang");
+				}
+			}
+			else
+			{
+				Response.Cookies.Delete("GioHang");
+			}
+			return RedirectToAction("XemGioHang");
+
+			// Tạo đối tượng yêu cầu (Request Object)
+
+
 		}
+		public class XoaGioHangRequest
+		{
+			public List<int> DanhSachMaSach { get; set; }
+			public int MaNguoiDung { get; set; }
+		}
+
 		public async Task<IActionResult> XemGioHang()
 		{
 			var modeltong = new Modeltong();
@@ -100,21 +141,21 @@ namespace DATN_MVC.Controllers
 				return RedirectToAction("XemGioHang");
 			}
 			else
-			{   
-				
+			{
+
 				// 4. Thêm sản phẩm vừa chọn
-				var newDTO = new DTOs.GioHangDTO
+				model.gioHangDTO = new GioHangDTO
 				{
-					MaSach = model.GioHang.MaSach,
+					MaSach = masach,
 					SoLuong = 1,
 					MaNguoiDung = int.Parse(idnd)
 				};
 
-				var newJson = JsonConvert.SerializeObject(newDTO);
+				var newJson = JsonConvert.SerializeObject(model.gioHangDTO);
 				var newContent = new StringContent(newJson, Encoding.UTF8, "application/json");
 
 				await _httpClient.PostAsync("GioHangs/ThemGioHang", newContent);
-				
+
 
 				// 6. Trả về view giỏ hàng mới
 				return RedirectToAction("XemGioHang");

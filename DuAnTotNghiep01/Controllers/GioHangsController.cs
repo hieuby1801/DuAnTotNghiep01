@@ -1,4 +1,5 @@
 ﻿using DATN_API.DTOs;
+using DATN_API.Models;
 using DATN_API.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -71,18 +72,23 @@ namespace DATN_API.Controllers
 			}
 			return BadRequest("Không tìm thấy sản phẩm");
 		}
-		[HttpDelete("Xoagiohang/{masach}/{idnd}")]
-		public IActionResult Xoagiohang(int masach, int idnd)
+		[HttpPost("Xoagiohang")]
+		public List<GioHang> XoaGiohangDN(XoaGioHangRequest res)
 		{
-			var result = _gioHnagservice.XoaGiohangDN(masach, idnd);
+			var result = _gioHnagservice.XoaGiohangDN(res.DanhSachMaSach, res.MaNguoiDung);
 			if (result != null)
 			{
-				return Ok("Xóa thành công");
+				return result;
 			}
 			else
 			{
-				return NotFound("Không tìm thấy mục cần xóa");
+				return result;
 			}
+		}
+		public class XoaGioHangRequest
+		{
+			public List<int> DanhSachMaSach { get; set; }
+			public int MaNguoiDung { get; set; }
 		}
 
 		[HttpPost("ThemdsGioHang")]

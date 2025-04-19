@@ -151,6 +151,7 @@ namespace DATN_API.Service
 					{
 						item.SoLuong += request.SoLuong;
 						item.ThoiGian = DateTime.Now;
+						
 					}
 					dsGioHangKetQua.AddRange(gioHangs);
 				}
@@ -179,19 +180,21 @@ namespace DATN_API.Service
 
 
 		// xoa gio hang dang nhap
-		public GioHang XoaGiohangDN(int masach, int idnd)
+		public List<GioHang> XoaGiohangDN(List<int> danhSachMaSach, int idnd)
 		{
-			var giohang = _context.Giohang.FirstOrDefault(x => x.MaSach == masach && x.MaNguoiDung == idnd);
-			if (giohang != null)
+			var gioHangs = _context.Giohang
+				.Where(x => danhSachMaSach.Contains(x.MaSach) && x.MaNguoiDung == idnd)
+				.ToList();
+
+			if (gioHangs.Any())
 			{
-				_context.Giohang.Remove(giohang);
+				_context.Giohang.RemoveRange(gioHangs);
 				_context.SaveChanges();
-				return giohang;
+				return gioHangs;
 			}
-			else
-			{
-				return null; // Hoặc xử lý theo cách khác nếu không tìm thấy giỏ hàng
-			}
+
+			return new List<GioHang>(); // Trả về danh sách rỗng nếu không tìm thấy
 		}
+
 	}
 }
