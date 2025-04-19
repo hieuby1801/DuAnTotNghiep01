@@ -48,19 +48,31 @@ namespace DATN_API.Service
 			}
 			return sach; // Trả về đối tượng SachDTO duy nhất
 		}
-		// thêm vào giỏ hàng khi đã đăng nhập
-		public async Task<bool> ThemgiohangDN(int masach, int id, int soluong)
+		public async Task<bool> ThemgiohangDN(List<(int masach, int soluong)> products, int id)
 		{
 			try
 			{
-				var sql = "INSERT INTO GioHang (MaNguoiDung, MaSach, SoLuong, ThoiGian) VALUES (@id, @masach, @soluong, GETDATE())";
-				var parameters = new[]
-				{
-			new SqlParameter("@id", id),
-			new SqlParameter("@masach", masach),
-			new SqlParameter("@soluong", soluong),
-		};
+				// Tạo truy vấn SQL với nhiều giá trị
+				var sql = "INSERT INTO GioHang (MaNguoiDung, MaSach, SoLuong, ThoiGian) VALUES ";
 
+				// Tạo danh sách các tham số cho mỗi sản phẩm
+				var parameters = new List<SqlParameter>();
+				var values = new List<string>();
+
+				foreach (var product in products)
+				{
+					// Thêm các giá trị vào danh sách values và thêm tham số vào parameters
+					values.Add("(@id, @masach" + product.masach + ", @soluong" + product.masach + ", GETDATE())");
+
+					parameters.Add(new SqlParameter($"@id", id));
+					parameters.Add(new SqlParameter($"@masach{product.masach}", product.masach));
+					parameters.Add(new SqlParameter($"@soluong{product.masach}", product.soluong));
+				}
+
+				// Nối tất cả các giá trị vào câu SQL
+				sql += string.Join(", ", values);
+
+				// Thực hiện truy vấn batch insert
 				int result = await _context.Database.ExecuteSqlRawAsync(sql, parameters);
 
 				// Nếu thêm thành công, ExecuteSqlRawAsync trả về số dòng ảnh hưởng > 0
@@ -72,6 +84,7 @@ namespace DATN_API.Service
 				return false;
 			}
 		}
+
 		// cập nhật giỏ hàng
 		public GioHang CapNhatGioHang(CapNhatGioHangRequest request)
 		{

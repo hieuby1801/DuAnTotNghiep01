@@ -29,7 +29,12 @@ namespace DATN_API.Controllers
 			else
 			{
 				// Nếu giỏ hàng không có sản phẩm, thêm mới
-				var result = await _gioHnagservice.ThemgiohangDN(req.MaSach, req.MaNguoiDung, req.SoLuong);
+				var list = new List<(int masach, int soluong)>
+				{
+					(req.MaSach, req.SoLuong)
+				};
+
+				var result = await _gioHnagservice.ThemgiohangDN(list, req.MaNguoiDung);
 				if (!result)
 				{
 					return BadRequest("Thêm giỏ hàng thất bại.");
