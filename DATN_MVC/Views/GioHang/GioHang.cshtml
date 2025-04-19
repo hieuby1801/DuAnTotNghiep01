@@ -211,7 +211,7 @@
 			<input type="hidden" name="DanhSachMaSach" id="DanhSachMaSach" /> <!-- Gộp tại đây -->
 			<button type="submit" id="clear-cart" class="btn btn-danger">Xóa giỏ hàng</button>
 		</form>
-
+@* 	xóa giỏ hàng *@
 		<script>
 			document.getElementById('clear-cart-form').addEventListener('submit', function (e) {
 				// Lấy tất cả checkbox được chọn
@@ -240,6 +240,7 @@
 		});
 
 	</script>
+@* 	điều chỉnh số lượng *@
 	<script>
 		function updateQuantity(maSach, change) {
 			var quantityInput = document.getElementById('input-quantity-' + maSach);
@@ -256,9 +257,7 @@
 			}
 		}
 	</script>
-	
-
-	@*  Script cập nhật tổng tiền theo checkbox (updateTotalPrice) *@
+@*  Script cập nhật tổng tiền theo checkbox (updateTotalPrice) *@
 	<script>
 		function updateTotalPrice() {
 			var total = 0;
