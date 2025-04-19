@@ -112,8 +112,19 @@ namespace DATN_MVC.Controllers
             TempData["ErrorMessage"] = errorMessage ?? "Đăng nhập thất bại.";
             return View("DangNhap", loginguser); // <-- Quan trọng
         }
+		public IActionResult DangXuat()
+		{
+			// Xóa toàn bộ session
+			HttpContext.Session.Clear();
+			// Xóa các cookies
+			Response.Cookies.Delete("JWT_Token");
+			Response.Cookies.Delete("Email");
+			Response.Cookies.Delete("VaiTro");
+			Response.Cookies.Delete("NguoiDungId");
+			return RedirectToAction("Index", "TrangChu");
+		} 
 
-        [HttpPost]
+		[HttpPost]
         public async Task<IActionResult> DangKy(Modeltong modeltong)
         {
             // Kiểm tra dữ liệu người dùng
