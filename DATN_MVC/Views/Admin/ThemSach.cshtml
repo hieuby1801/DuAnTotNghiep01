@@ -46,78 +46,95 @@
 
     <div class="form-container">
         <h2>📚 Thêm Sách Mới</h2>
-        <form action="/them-sach" method="post" enctype="multipart/form-data">
+        <form asp-action="ThemSach" asp-controller="Admin" method="post" enctype="multipart/form-data">
             <div class="row mb-4">
                 <div class="col-md-2">
-                    <label for="MaSach" class="form-label">Mã Sách</label>
-                    <input type="number" class="form-control rounded-3" id="MaSach" name="MaSach" required>
+                    <label asp-for="ThemSachDto.MaSach" class="form-label">Mã sách</label>
+                    <input asp-for="ThemSachDto.MaSach" class="form-control rounded-3" required />
                 </div>
                 <div class="col-md-6">
-                    <label for="TenSach" class="form-label">Tên Sách</label>
-                    <input type="text" class="form-control rounded-3" id="TenSach" name="TenSach" required>
+                    <label asp-for="ThemSachDto.TenSach" class="form-label">Tên sách</label>
+                    <input asp-for="ThemSachDto.TenSach" class="form-control rounded-3" required />
                 </div>
                 <div class="col-md-4">
-                    <label for="TacGia" class="form-label">Tác Giả</label>
-                    <input type="text" class="form-control rounded-3" id="TacGia" name="TacGia" required>
+                    <label asp-for="ThemSachDto.TacGia" class="form-label">Tác giả</label>
+                    <input asp-for="ThemSachDto.TacGia" class="form-control rounded-3" required />
                 </div>
             </div>
 
             <div class="row mb-4">
                 <div class="col-md-8">
-                    <label for="HinhAnh" class="form-label">Hình Ảnh</label>
-                    <input type="file" class="form-control rounded-3" id="HinhAnh" name="HinhAnh" accept="image/*" required>
+                    <label class="form-label">Hình Ảnh</label>
+                    <input class="form-control rounded-3" type="file" name="HinhAnhFile" accept="image/*" required />
                 </div>
                 <div class="col-md-4">
-                    <label for="TrangThai" class="form-label">Trạng Thái</label>
-                    <select class="form-select rounded-3" id="TrangThai" name="TrangThai" required>
+                    <label asp-for="ThemSachDto.TrangThai" class="form-label">Trạng thái</label>
+                    <select asp-for="ThemSachDto.TrangThai" class="form-select rounded-3" required>
                         <option value="on">ON</option>
                         <option value="off">OFF</option>
                     </select>
                 </div>
             </div>
+
             <div class="row mb-4">
                 <div class="col-md-4">
-                    <label for="MaSach" class="form-label">Ngôn Ngữ</label>
-                    <input type="number" class="form-control rounded-3" id="NgonNgu" name="NgonNgu" required>
+                    <label asp-for="ThemSachDto.NgonNgu" class="form-label">Ngôn ngữ</label>
+                    <input asp-for="ThemSachDto.NgonNgu" class="form-control rounded-3" required />
                 </div>
                 <div class="col-md-4">
-                    <label for="TenSach" class="form-label">Kích Thước</label>
-                    <input type="text" class="form-control rounded-3" id="KichThuoc" name="KichThuoc" required>
+                    <label asp-for="ThemSachDto.KichThuoc" class="form-label">Kích thước</label>
+                    <input asp-for="ThemSachDto.KichThuoc" class="form-control rounded-3" required />
                 </div>
                 <div class="col-md-4">
-                    <label for="TacGia" class="form-label">Trọng Lượng</label>
-                    <input type="text" class="form-control rounded-3" id="TrongLuong" name="TrongLuong" required>
+                    <label asp-for="ThemSachDto.TrongLuong" class="form-label">Trọng lượng</label>
+                    <input asp-for="ThemSachDto.TrongLuong" class="form-control rounded-3" required />
                 </div>
             </div>
+
             <div class="row mb-4">
                 <div class="col-md-4">
-                    <label for="MaSach" class="form-label">Số Trang</label>
-                    <input type="number" class="form-control rounded-3" id="SoTrang" name="SoTrang" required>
+                    <label asp-for="ThemSachDto.SoTrang" class="form-label">Số trang</label>
+                    <input asp-for="ThemSachDto.SoTrang" class="form-control rounded-3" required />
                 </div>
                 <div class="col-md-4">
-                    <label for="TenSach" class="form-label">Hình Thức</label>
-                    <input type="text" class="form-control rounded-3" id="HinhThuc" name="HinhThuc" required>
+                    <label asp-for="ThemSachDto.HinhThuc" class="form-label">Hình thức</label>
+                    <select asp-for="ThemSachDto.HinhThuc" class="form-select rounded-3" required>
+                        <option value="">-- Chọn Hình Thức --</option>
+                        <option value="Bìa mềm">Bìa mềm</option>
+                        <option value="Bìa cứng">Bìa cứng</option>
+                    </select>
                 </div>
                 <div class="col-md-4">
-                    <label for="TacGia" class="form-label">Độ Tuổi</label>
-                    <input type="text" class="form-control rounded-3" id="DoTuoi" name="DoTuoi" required>
+                    <label asp-for="ThemSachDto.DoTuoi" class="form-label">Độ tuổi</label>
+                    <select asp-for="ThemSachDto.DoTuoi" class="form-select rounded-3" required>
+                        <option value="">-- Chọn độ tuổi --</option>
+                        <option value="1-5">1-5</option>
+                        <option value="6-10">6-10</option>
+                        <option value="11-15">11-15</option>
+                        <option value="16-18">16-18</option>
+                        <option value="18+">18+</option>
+                    </select>
                 </div>
             </div>
+
             <div class="row">
-                <label for="TacGia" class="form-label">Thể Loại</label>
+                <label class="form-label">Thể Loại</label>
                 <ul class="row list-unstyled">
                     @foreach (var item in Model.TheLoais)
                     {
                         <li class="col-md-4">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="theloai" value="@item.TenTheLoai" />
+                                <input class="form-check-input" type="checkbox" name="TheLoaiDuocChon" value="@item.MaTheLoai" />
                                 <label class="form-check-label">@item.TenTheLoai</label>
                             </div>
                         </li>
                     }
                 </ul>
             </div>
-
+            <div class="row">
+                <label asp-for="ThemSachDto.MoTa" class="form-label">Mô Tả</label>
+                <textarea asp-for="ThemSachDto.MoTa" class="form-control" required></textarea>
+            </div>
             <div class="text-center">
                 <button type="submit" class="btn btn-primary px-5">➕ Thêm Sách</button>
             </div>

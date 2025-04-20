@@ -199,43 +199,34 @@ namespace DATN_API.Service
 
         public async Task<bool> ThemSachAsync(ThemSachDto dto)
         {
+            var parameters = new[]
+            {
+            new SqlParameter("@MaSach", dto.MaSach),
+            new SqlParameter("@TenSach", dto.TenSach ?? ""),
+            new SqlParameter("@TacGia", dto.TacGia ?? ""),
+            new SqlParameter("@HinhAnh", dto.HinhAnh ?? ""),
+            new SqlParameter("@TrangThai", dto.TrangThai ?? ""),
+            new SqlParameter("@NgonNgu", dto.NgonNgu ?? ""),
+            new SqlParameter("@KichThuoc", dto.KichThuoc ?? ""),
+            new SqlParameter("@TrongLuong", dto.TrongLuong),
+            new SqlParameter("@SoTrang", dto.SoTrang),
+            new SqlParameter("@HinhThuc", dto.HinhThuc ?? ""),
+            new SqlParameter("@MoTa", dto.MoTa ?? ""),
+            new SqlParameter("@DoTuoi", dto.DoTuoi ?? ""),
+            new SqlParameter("@ListTheLoai", dto.ListTheLoai ?? "")
+        };
+
             try
             {
-                var sql = "EXEC sp_ThemSach @MaSach, @TenSach, @TacGia, @HinhAnh, @NgonNgu, @KichThuoc, @TrongLuong, @SoTrang, @HinhThuc, @MoTa, @DanhSachTheLoai";
-
-                using (var conn = new SqlConnection("con"))
-                using (var cmd = new SqlCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@MaSach", dto.MaSach);
-                    cmd.Parameters.AddWithValue("@TenSach", dto.TenSach);
-                    cmd.Parameters.AddWithValue("@TacGia", dto.TacGia ?? (object)DBNull.Value);
-                    cmd.Parameters.AddWithValue("@HinhAnh", dto.HinhAnh ?? (object)DBNull.Value);
-                    cmd.Parameters.AddWithValue("@NgonNgu", dto.NgonNgu ?? (object)DBNull.Value);
-                    cmd.Parameters.AddWithValue("@KichThuoc", dto.KichThuoc ?? (object)DBNull.Value);
-                    cmd.Parameters.AddWithValue("@TrongLuong", dto.TrongLuong);
-                    cmd.Parameters.AddWithValue("@SoTrang", dto.SoTrang);
-                    cmd.Parameters.AddWithValue("@HinhThuc", dto.HinhThuc ?? (object)DBNull.Value);
-                    cmd.Parameters.AddWithValue("@MoTa", dto.MoTa ?? (object)DBNull.Value);
-                    cmd.Parameters.AddWithValue("@DanhSachTheLoai", dto.DanhSachTheLoai ?? (object)DBNull.Value);
-
-                    await conn.OpenAsync();
-                    using (var reader = await cmd.ExecuteReaderAsync())
-                    {
-                        if (await reader.ReadAsync())
-                        {
-                            // Nếu cần đọc dữ liệu từ SP, xử lý ở đây
-                            return true;
-                        }
-                    }
-                }
+                await _context.Database.ExecuteSqlRawAsync(
+                    "EXEC ThemSach @MaSach, @TenSach, @TacGia, @HinhAnh, @TrangThai, @NgonNgu, @KichThuoc, @TrongLuong, @SoTrang, @HinhThuc, @MoTa, @DoTuoi, @ListTheLoai",
+                    parameters);
+                return true;
             }
-            catch (Exception ex)
+            catch
             {
-                // Ghi log nếu cần: _logger.LogError(ex, "Lỗi khi thêm sách");
                 return false;
             }
-
-            return false;
         }
         public List<SachDto> GetOnlySach()
         {

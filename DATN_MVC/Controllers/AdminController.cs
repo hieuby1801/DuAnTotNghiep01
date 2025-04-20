@@ -92,25 +92,36 @@ namespace DATN_MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ThemSach(ThemSachDto dto)
+        public async Task<IActionResult> ThemSach(Modeltong dto, [FromForm] IFormFile HinhAnhFile, [FromForm] string[] TheLoaiDuocChon)
         {
-            if (!ModelState.IsValid)
+            dto.ThemSachDto.ListTheLoai = string.Join(",", TheLoaiDuocChon);
+            if (HinhAnhFile != null && HinhAnhFile.Length > 0)
             {
-                return View(dto);
-            }
+                // Tạo tên file duy nhất
+                var fileName = Path.GetFileName(HinhAnhFile.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
 
-            var response = await _httpClient.PostAsJsonAsync("sach/themsach", dto);
+                // Lưu file vào wwwroot/images
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await HinhAnhFile.CopyToAsync(stream);
+                }
+
+                // Gán tên file vào model
+                dto.ThemSachDto.HinhAnh = "~/images/" + fileName;
+            }
+            var response = await _httpClient.PostAsJsonAsync("Sachs/ThemSach", dto.ThemSachDto);
 
             if (response.IsSuccessStatusCode)
             {
                 TempData["ThongBao"] = "Thêm sách thành công";
-                return RedirectToAction("DanhSachSach"); // hoặc trang nào em muốn
+                return RedirectToAction("QuanLySach"); // hoặc trang nào em muốn
             }
 
             // Có thể đọc lỗi từ API nếu cần
             var errorContent = await response.Content.ReadAsStringAsync();
             ModelState.AddModelError(string.Empty, $"Thêm sách thất bại: {errorContent}");
-
+            
             return View(dto);
         }
         public async Task<IActionResult> QuanLySach()
