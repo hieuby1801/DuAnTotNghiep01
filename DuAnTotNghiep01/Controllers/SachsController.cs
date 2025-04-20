@@ -98,19 +98,15 @@ namespace DATN_API.Controllers
             var result = _sachservice.GetOnlySach();
             return Ok(result);
         }
-        [HttpPost("them")]
+        [HttpPost("ThemSach")]
         public async Task<IActionResult> ThemSach([FromBody] ThemSachDto dto)
         {
             if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState); // kiểm tra model hợp lệ
-            }
+                return BadRequest(ModelState);
 
-            var ketQua = await _sachservice.ThemSachAsync(dto);
-            if (ketQua)
-            {
+            var result = await _sachservice.ThemSachAsync(dto);
+            if (result)
                 return Ok(new { message = "Thêm sách thành công" });
-            }
 
             return BadRequest(new { message = "Thêm sách thất bại" });
         }
