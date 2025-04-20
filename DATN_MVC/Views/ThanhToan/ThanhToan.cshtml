@@ -119,13 +119,27 @@
        
         <label>
             Địa chỉ nhận hàng
-            <input type="text" value="@Model.NguoiDung.DiaChi">
+            <input type="text" name="Diachi" value="@Model.NguoiDung.DiaChi">
         </label>
         
         <label>
-            Số lượng
-                <input type="text" value="@Model.GioHang.Soluong">
-           
+            Mã sách
+                <input type="text" value="@Model.GioHang.MaSach">
+        </label>
+        <label>
+            Gía sách 1 quyển
+            @if(Model.sachDTOss != null)
+			{
+				@foreach(var sach in Model.sachDTOss)
+				{
+					<input type="text" value="@sach.GiaBan">
+				}
+			}
+			else
+			{
+				<input type="text" value="0">
+			})
+            <input type="text" value="@Model.Saches">
         </label>
 
     </div>
