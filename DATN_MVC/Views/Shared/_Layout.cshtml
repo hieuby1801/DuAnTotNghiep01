@@ -2,7 +2,7 @@
 @{
 	var token = Context.Session.GetString("JWT_Token");// để lên đầu trang chủ
 	var nguoiDungId = Context.Session.GetString("NguoiDungId");
-
+	var Tengnuoidung = Context.Session.GetString("Ten");
 }
 
 <!DOCTYPE html>
@@ -192,6 +192,85 @@
 		}
 
 	</style>
+	<!-- css DropMenu -->
+<style>
+		.user-menu {
+			position: relative;
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		}
+
+		.user-dropdown-trigger {
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+		}
+
+			.user-dropdown-trigger img,
+			.user-dropdown-trigger svg.user {
+				width: 32px;
+				height: 32px;
+				border-radius: 50%;
+				background-color: #f0f0f0;
+				padding: 4px;
+			}
+
+		.user-menu .dropdown-menu {
+			display: none;
+			position: absolute;
+			top: 120%;
+			right: 0;
+			min-width: 250px;
+			background-color: white;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+			border-radius: 10px;
+			padding: 10px 0;
+			z-index: 1000;
+			opacity: 0;
+			visibility: hidden;
+			transition: opacity 0.3s ease, top 0.3s ease;
+		}
+
+		.user-menu:hover .dropdown-menu {
+			display: block;
+			top: 100%;
+			opacity: 1;
+			visibility: visible;
+		}
+
+		.dropdown-header {
+			padding: 12px 20px;
+			border-bottom: 1px solid #eee;
+			font-size: 14px;
+			color: #333;
+		}
+
+			.dropdown-header strong {
+				display: block;
+				font-size: 15px;
+				color: #111;
+			}
+
+		.dropdown-menu ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+
+			.dropdown-menu ul li a {
+				display: block;
+				padding: 12px 20px;
+				color: #333;
+				text-decoration: none;
+				transition: background-color 0.2s, color 0.2s;
+			}
+
+				.dropdown-menu ul li a:hover {
+					background-color: #f0f0f0;
+					color: #007bff;
+				}
+
+</style>
 
 </head>
 
@@ -364,29 +443,43 @@
 										</svg>
 									</a>
 								</li>
-								<li class="pe-3">
-									@if (nguoiDungId != null)
+								<li class="user-menu pe-3 position-relative">
+									@if (Tengnuoidung != null)
 									{
-										// Người dùng đã đăng nhập, hiển thị nút Đăng xuất
-										<a href="@Url.Action("DangXuat", "DangNhap")" role="button">
-											<svg class="logout-icon">
-												<use xlink:href="#logout"></use>
-											</svg>
-											<span>Đăng xuất</span>
-										</a>
-									}
-									else
-									{
-										// Người dùng chưa đăng nhập, hiển thị nút Đăng nhập
-										<a href="@Url.Action("DangNhap", "DangNhap")" role="button">
+										<!-- Đã đăng nhập: icon mở dropdown -->
+										<a href="#" class="user-dropdown-trigger" data-bs-toggle="dropdown">
 											<svg class="user">
 												<use xlink:href="#user"></use>
 											</svg>
-											<span>Đăng nhập</span>
+										</a>
+										<div class="dropdown-menu">
+											<div class="dropdown-header">
+												<strong>@Tengnuoidung</strong>
+												
+											</div>
+											<ul>
+												<li><a href="@Url.Action("DonHang", "NguoiDung")">📦 Đơn hàng của tôi</a></li>
+												<li><a href="@Url.Action("YeuThich", "NguoiDung")">❤️ Sản phẩm yêu thích</a></li>
+												<li><a href="#">🎁 Wallet Voucher</a></li>
+												<li><a href="#">⭐ Tài khoản F-point</a></li>
+												<li><a href="@Url.Action("DangXuat", "DangNhap")">🚪 Thoát tài khoản</a></li>
+											</ul>
+										</div>
+
+									}
+									else
+									{
+										<!-- Chưa đăng nhập: icon là link sang trang đăng nhập -->
+										<a href="@Url.Action("DangNhap", "DangNhap")" class="login-link">
+											<svg class="user">
+												<use xlink:href="#user"></use>
+											</svg>
 										</a>
 									}
-
 								</li>
+
+
+
 								<li class="wishlist-dropdown dropdown pe-3">
 									<a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
 										<svg class="wishlist">
