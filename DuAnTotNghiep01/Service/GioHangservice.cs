@@ -115,7 +115,7 @@ namespace DATN_API.Service
 				{
 					// Ngược lại, cập nhật số lượng và thời gian
 					gioHang.SoLuong = request.SoLuong;
-					gioHang.ThoiGian = DateTime.Now;
+					
 					_context.Giohang.Update(gioHang);
 				}
 
@@ -162,7 +162,7 @@ namespace DATN_API.Service
 					foreach (var item in gioHangs)
 					{
 						item.SoLuong += request.SoLuong;
-						item.ThoiGian = DateTime.Now;
+						
 						
 					}
 					dsGioHangKetQua.AddRange(gioHangs);
@@ -177,7 +177,7 @@ namespace DATN_API.Service
 							MaSach = request.MaSach,
 							MaNguoiDung = request.MaNguoiDung,
 							SoLuong = request.SoLuong,
-							ThoiGian = DateTime.Now
+							
 						};
 
 						_context.Giohang.Add(gioHangMoi);

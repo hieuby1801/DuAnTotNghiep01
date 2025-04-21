@@ -1,7 +1,9 @@
-﻿@model DATN_MVC.Models.Modeltong
+﻿@using Newtonsoft.Json
+@model DATN_MVC.Models.Modeltong
 @{
     ViewData["Title"] = "ThanhToan";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var ma = TempData["n"];
 }
 <!DOCTYPE html>
 <html lang="vi">
@@ -121,24 +123,32 @@
             Địa chỉ nhận hàng
             <input type="text" name="Diachi" value="@Model.NguoiDung.DiaChi">
         </label>
-        
+
         <label>
-            Mã sách
-                <input type="text" value="@Model.GioHang.MaSach">
+            <select name="magiohang" class="form-control">
+                @if(ma != null)
+				{
+					<p>@ma</p>
+				}
+				else
+				{
+					<option value="">-- Chọn giỏ hàng --</option>
+				})
+                @foreach (var item in Model.GioHangs)
+                {
+                    <option value="@item.MaGioHang">@item.MaGioHang</option>
+                }
+            </select>
+           
         </label>
         <label>
-            Gía sách 1 quyển
-            @if(Model.sachDTOss != null)
-			{
-				@foreach(var sach in Model.sachDTOss)
-				{
-					<input type="text" value="@sach.GiaBan">
-				}
-			}
-			else
-			{
-				<input type="text" value="0">
-			})
+            @foreach (var sach in Model.GioHangs)
+            {
+                <label>
+                    Giá bán của sách @sach.TenSach:
+                    <input type="text" value="@(sach.GiaBan.HasValue ? sach.GiaBan.Value.ToString("N0") : "0")" />
+                </label>
+            }
             <input type="text" value="@Model.Saches">
         </label>
 
@@ -166,7 +176,7 @@
         <h5>Tóm Tắt Đơn Hàng</h5>
         <span>Thành tiền: 172.500 đ</span>
         <span>Phí vận chuyển: 32.000 đ</span>
-        <strong>Tổng Số Tiền (gồm VAT): 204.500 đ</strong>
+        <strong>Tổng Số Tiền (gồm VAT): 210.500 đ</strong>
         <br><br>
         <button class="btn-pay" onclick="showQR()">Xác nhận thanh toán</button>
         <div id="qr-container" style="display:none; margin-top: 20px;">

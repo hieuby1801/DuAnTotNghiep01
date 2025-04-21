@@ -7,9 +7,9 @@ namespace DATN_API.Models
 		[JsonIgnore]
 		public int MaGioHang { get; set; }
 		public int MaNguoiDung { get; set; }
-		public int MaSach { get; set; }
+		public int? MaSach { get; set; }
 		public int SoLuong { get; set; }
-		public DateTime ThoiGian { get; set; } = DateTime.Now;
+
 		public string? TenSach { get; set; }
 		public string? GiaTien { get; set; }
 		public int? GiaBan { get; set; }
