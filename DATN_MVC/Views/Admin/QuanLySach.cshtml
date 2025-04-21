@@ -142,8 +142,8 @@
             <th>Tên Sách</th>
             <th>Tác Giả</th>
             <th>Hình Ảnh</th>
-            <th>Cập nhật</th>
             <th>Trạng thái</th>
+            <th>Cập nhật</th>
         </tr>
     </thead>
     <tbody>
@@ -154,16 +154,15 @@
                 <td>@item.MaSach</td>
                 <td>@item.TenSach</td>
                 <td>@item.TacGia</td>
-                <td><img src="@Url.Content(item.HinhAnh)" alt="@Url.Content(item.HinhAnh)"></td>
-                <td><button class="update-btn" onclick="alert('Cập nhật S001')">Cập nhật</button></td>
+                <td><img src="@Url.Content(item.HinhAnh)" alt="Ảnh sách" style="max-height: 80px;" /></td>
+                <td>@item.TrangThai</td>
                 <td>
-                    <label class="switch">
-                        <input type="checkbox" checked>
-                        <span class="slider"></span>
-                    </label>
+                    <a asp-action="CapNhatSach" asp-route-maSach="@item.MaSach" class="add-btn" style="text-decoration: none;">
+                        Cập nhật
+                    </a>
                 </td>
             </tr>
-        }        
+        }
 
     </tbody>
 </table>

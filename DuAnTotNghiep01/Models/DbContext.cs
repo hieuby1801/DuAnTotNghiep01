@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using DATN_API.DTOs;
 
 namespace DATN_API.Models
 {
@@ -18,12 +19,13 @@ namespace DATN_API.Models
 		public DbSet<NhaCungCap> nhaCungCaps { get; set; }
 		public DbSet<PhieuTraHang> phieuTraHangs { get; set; }
 		public DbSet<PhuongThucThanhToan> phuongThucThanhToans { get; set; }
-		public DbSet<SachChiTiet> sachChiTiets { get; set; }
-		public DbSet<SachTheLoai> sachTheLoais { get; set; }
+		public DbSet<SachChiTiet> SachChiTiet { get; set; }
+		public DbSet<SachTheLoai> SachTheLoai { get; set; }
 		public DbSet<ThanhToan> thanhToans { get; set; }
 		public  DbSet<TheLoai> TheLoai { get; set;}
 		public DbSet<TonKho> tonKhos { get; set; }
 		public DbSet<VanChuyen>	vanChuyens { get; set; }
 		public DbSet<GioHang> Giohang { get; set; }
-	}
+
+    }
 }
