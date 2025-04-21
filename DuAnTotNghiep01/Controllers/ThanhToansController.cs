@@ -15,22 +15,20 @@ namespace DATN_API.Controllers
 		{
 			_thanhToanService = thanhToanService;
 		}
-        [HttpGet("LayTTGioHang")]
-        public List<GioHangDTO> LayThongTinGioHang([FromQuery] List<int> maGioHang, [FromQuery] int maNguoiDung)
+        [HttpGet("LayGioHang")]
+        public IActionResult LayTTGioHang([FromQuery] string maGioHang, [FromQuery] int maNguoiDung)
         {
-            var giohangList = _thanhToanService.LayThongTinGioHang(maGioHang, maNguoiDung);
+            if (string.IsNullOrEmpty(maGioHang))
+                return BadRequest("Thiếu mã giỏ hàng.");
 
-            if (giohangList != null && giohangList.Any())
-            {
-                foreach (var item in giohangList)
-                {
-                    item.MaNguoiDung = maNguoiDung;
-                }
-                return giohangList.ToList();
-            }
+            var listMa = maGioHang.Split(',').Select(int.Parse).ToList();
 
-            return null;
+            var gioHang = _thanhToanService.LayThongTinGioHang(listMa, maNguoiDung);
+
+            if (gioHang == null || gioHang.Count == 0)
+                return NotFound("Không tìm thấy giỏ hàng.");
+
+            return Ok(gioHang);
         }
-
     }
 }

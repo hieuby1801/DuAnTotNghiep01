@@ -1,9 +1,9 @@
-﻿@using Newtonsoft.Json
+﻿
 @model DATN_MVC.Models.Modeltong
 @{
     ViewData["Title"] = "ThanhToan";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var ma = TempData["n"];
+   
 }
 <!DOCTYPE html>
 <html lang="vi">
@@ -76,7 +76,7 @@
 </head>
 <body>
 
-    <form action="/" method="post"></form>
+
     <div class="section">
 
         <h5>Địa Chỉ Giao Hàng</h5>
@@ -124,36 +124,11 @@
             <input type="text" name="Diachi" value="@Model.NguoiDung.DiaChi">
         </label>
 
-        <label>
-            <select name="magiohang" class="form-control">
-                @if(ma != null)
-				{
-					<p>@ma</p>
-				}
-				else
-				{
-					<option value="">-- Chọn giỏ hàng --</option>
-				})
-                @foreach (var item in Model.GioHangs)
-                {
-                    <option value="@item.MaGioHang">@item.MaGioHang</option>
-                }
-            </select>
-           
-        </label>
-        <label>
-            @foreach (var sach in Model.GioHangs)
-            {
-                <label>
-                    Giá bán của sách @sach.TenSach:
-                    <input type="text" value="@(sach.GiaBan.HasValue ? sach.GiaBan.Value.ToString("N0") : "0")" />
-                </label>
-            }
-            <input type="text" value="@Model.Saches">
-        </label>
+       
 
     </div>
 
+ 
     <div class="section">
         <h5>Phương Thức Vận Chuyển</h5>
         <p><strong>Giao hàng tiêu chuẩn:</strong> 32.000 đ (Dự kiến giao: Thứ Bảy - 19/04)</p>
@@ -171,7 +146,7 @@
             <label><input type="radio" name="payment"> Thanh toán bằng tiền mặt khi nhận hàng</label>
         </div>
     </div>
-
+ 
     <div class="section summary">
         <h5>Tóm Tắt Đơn Hàng</h5>
         <span>Thành tiền: 172.500 đ</span>
@@ -247,6 +222,21 @@
         // Gọi khi trang load
         loadProvinces();
     </script>
+    @if (Model.ThongTins.Count > 0)
+    {
+        @foreach (var item in Model.ThongTins)
+        {
+            <div >
+                <p><strong>Mã sách:</strong> @item.MaSach</p>
+                <p><strong>Số lượng:</strong> @item.SoLuong</p>
+                <p><strong>Giá:</strong> @item.GiaBan </p>
+            </div>
+        }
+    }
+    else
+    {
+        <p>Không có sản phẩm nào trong giỏ hàng.</p>
+    }
 </body>
 
 </html>

@@ -25,7 +25,9 @@ namespace DATN_MVC.Models
 		public List<GioHang> GioHangs { get; set;} = new List<GioHang>();
 		public GioHang GioHang { get; set; }
 		public ThemSachDto ThemSachDto { get; set; }
-	}
+		public ThongTin ThongTin {  get; set; }
+		public List<ThongTin> ThongTins { get; set; } = new List<ThongTin>();
+    }
 
     }
 

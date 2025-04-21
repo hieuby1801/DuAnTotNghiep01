@@ -14,54 +14,54 @@ namespace DATN_API.Service
 			_context = context;
 			_configuration = configuration;
 		}
-		public List<GioHangDTO> LayThongTinGioHang(List<int> danhSachMaGioHang, int maNguoiDung)
-		{
-			var gioHangList = new List<GioHangDTO>();
-			var connectionString = _configuration.GetConnectionString("con");
-
-			using (SqlConnection conn = new SqlConnection(connectionString))
+			public List<GioHangDTO> LayThongTinGioHang(List<int> danhSachMaGioHang, int maNguoiDung)
 			{
-				try
+				var gioHangList = new List<GioHangDTO>();
+				var connectionString = _configuration.GetConnectionString("con");
+
+				using (SqlConnection conn = new SqlConnection(connectionString))
 				{
-					conn.Open();
-
-					using (SqlCommand cmd = new SqlCommand("LayThongTinGioHang", conn))
+					try
 					{
-						cmd.CommandType = CommandType.StoredProcedure;
+						conn.Open();
 
-						// Chuyển danh sách mã giỏ hàng thành chuỗi
-						var danhSachMaGioHangString = string.Join(",", danhSachMaGioHang);
-
-						// Thêm tham số vào câu lệnh
-						cmd.Parameters.Add(new SqlParameter("@MaNguoiDung", maNguoiDung));
-						cmd.Parameters.Add(new SqlParameter("@DanhSachMaGioHang", danhSachMaGioHangString));
-
-						using (SqlDataReader reader = cmd.ExecuteReader())
+						using (SqlCommand cmd = new SqlCommand("LayThongTinGioHang", conn))
 						{
-							while (reader.Read())
-							{
-								var gioHang = new GioHangDTO
-								{
-									MaSach = reader.GetInt32(reader.GetOrdinal("MaSach")),
-									TenSach = reader.GetString(reader.GetOrdinal("TenSach")),
-									SoLuong = reader.GetInt32(reader.GetOrdinal("SoLuong")),
-									GiaBan = reader.GetInt32(reader.GetOrdinal("GiaBan")),
-									HinhAnh = reader.GetString(reader.GetOrdinal("HinhAnh")),
-								};
+							cmd.CommandType = CommandType.StoredProcedure;
 
-								gioHangList.Add(gioHang);
+							// Chuyển danh sách mã giỏ hàng thành chuỗi
+							var danhSachMaGioHangString = string.Join(",", danhSachMaGioHang);
+
+							// Thêm tham số vào câu lệnh
+							cmd.Parameters.Add(new SqlParameter("@MaNguoiDung", maNguoiDung));
+							cmd.Parameters.Add(new SqlParameter("@DanhSachMaGioHang", danhSachMaGioHangString));
+
+							using (SqlDataReader reader = cmd.ExecuteReader())
+							{
+								while (reader.Read())
+								{
+									var gioHang = new GioHangDTO
+									{
+										MaSach = reader.GetInt32(reader.GetOrdinal("MaSach")),
+										TenSach = reader.GetString(reader.GetOrdinal("TenSach")),
+										SoLuong = reader.GetInt32(reader.GetOrdinal("SoLuong")),
+										GiaBan = reader.GetInt32(reader.GetOrdinal("GiaBan")),
+										HinhAnh = reader.GetString(reader.GetOrdinal("HinhAnh")),
+									};
+
+									gioHangList.Add(gioHang);
+								}
 							}
 						}
 					}
+					catch (Exception ex)
+					{
+						Console.WriteLine("Lỗi khi lấy thông tin giỏ hàng: " + ex.Message);
+					}
 				}
-				catch (Exception ex)
-				{
-					Console.WriteLine("Lỗi khi lấy thông tin giỏ hàng: " + ex.Message);
-				}
-			}
 
-			return gioHangList;
-		}
+				return gioHangList;
+        }
 
 
 
