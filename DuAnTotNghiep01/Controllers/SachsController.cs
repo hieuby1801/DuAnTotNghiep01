@@ -110,5 +110,30 @@ namespace DATN_API.Controllers
 
             return BadRequest(new { message = "Thêm sách thất bại" });
         }
+
+        [HttpGet("SachChiTiet/{maSach}")]
+        public async Task<IActionResult> GetSachChiTiet(int maSach)
+        {            
+            var sach = await _sachservice.GetSachChiTiet(maSach);
+            if (sach != null)
+            {
+                return Ok(sach);
+            }
+            return BadRequest(new { Message = "Không có sách nào" });
+        }
+
+        [HttpPost("CapNhat")]
+        public async Task<IActionResult> CapNhatSach([FromBody] ThemSachDto model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _sachservice.CapNhatSachAsync(model);
+
+            if (result)
+                return Ok(new { Message = "Cập nhật sách thành công" });
+
+            return BadRequest(new { Message = "Cập nhật sách thất bại" });
+        }
     }
 }

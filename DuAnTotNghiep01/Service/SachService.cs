@@ -241,7 +241,69 @@ namespace DATN_API.Service
                 })
                 .ToList();
         }
+        public async Task<ThemSachDto> GetSachChiTiet(int maSach)
+        {			
+            Sach sach = await _context.Sach.FirstOrDefaultAsync(s => s.MaSach == maSach);
+			SachChiTiet chiTiet = await _context.SachChiTiet.FirstOrDefaultAsync(s => s.MaSach == maSach);
+			var theLoai = await _context.SachTheLoai
+                .Where(stl => stl.MaSach == maSach)
+				.Select(stl => stl.MaTheLoai)
+				.ToListAsync();
+            string theLoaiString = string.Join(",", theLoai);
+            var sachChiTiet = new ThemSachDto
+            {
+                MaSach = maSach,
+                TenSach = sach.TenSach,
+                TacGia = sach.TacGia,
+                HinhAnh = sach.HinhAnh,
+                TrangThai = sach.TrangThai,
+                NgonNgu = chiTiet.NgonNgu,
+                KichThuoc = chiTiet.KichThuoc,
+                TrongLuong = chiTiet.TrongLuong,
+                SoTrang = chiTiet.SoTrang,
+                HinhThuc = chiTiet.HinhThuc,
+                MoTa = chiTiet.MoTa,
+                DoTuoi = chiTiet.DoTuoi,
+                ListTheLoai = theLoaiString
+            };
 
-  
-	}
+            return sachChiTiet;
+        }
+        public async Task<bool> CapNhatSachAsync(ThemSachDto sach)
+        {
+            var parameters = new[]
+            {
+				new SqlParameter("@MaSach", sach.MaSach),
+				new SqlParameter("@TenSach", sach.TenSach ?? (object)DBNull.Value),
+				new SqlParameter("@TacGia", sach.TacGia ?? (object)DBNull.Value),
+				new SqlParameter("@HinhAnh", sach.HinhAnh ?? (object)DBNull.Value),
+				new SqlParameter("@TrangThai", sach.TrangThai ?? (object)DBNull.Value),
+				new SqlParameter("@NgonNgu", sach.NgonNgu ?? (object)DBNull.Value),
+				new SqlParameter("@KichThuoc", sach.KichThuoc ?? (object)DBNull.Value),
+				new SqlParameter("@TrongLuong", sach.TrongLuong),
+				new SqlParameter("@SoTrang", sach.SoTrang),
+				new SqlParameter("@HinhThuc", sach.HinhThuc ?? (object)DBNull.Value),
+				new SqlParameter("@DoTuoi", sach.DoTuoi ?? (object)DBNull.Value),
+				new SqlParameter("@MoTa", sach.MoTa ?? (object)DBNull.Value),
+				new SqlParameter("@ListTheLoai", sach.ListTheLoai ?? (object)DBNull.Value)
+			};
+
+            try
+            {
+                var rows = await _context.Database.ExecuteSqlRawAsync("EXEC UpdateSach " +
+                "@MaSach, @TenSach, @TacGia, @HinhAnh, @TrangThai, @NgonNgu, @KichThuoc, " +
+                "@TrongLuong, @SoTrang, @HinhThuc, @DoTuoi, @MoTa, @ListTheLoai", parameters);
+
+				return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
+
+
+    }
 }
