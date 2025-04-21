@@ -152,10 +152,10 @@
                  <img src="https://cdn0.fahasa.com/media/catalog/product/t/r/truong_ca_achilles_1_2022_bia_1.jpg" alt="Trường Ca Achilles" class="img-fluid border mb-2">
                 <img src="@Url.Content(Model.sachDTOs.HinhAnh)" alt="Trường Ca Achilles" class="img-fluid border mb-2">           
                 <div class="button-group">
-                    <a href="@Url.Action("ThemVaoGio", "GioHang", new { masach = Model.sachDTOs.MaSach, soluong = 1 })" class="custom-button btn-cart">
+                    <a href="@Url.Action("ThemVaoGio", "GioHang", new { masach = @Model.sachDTOs.MaSach, soluong = 1 })" class="custom-button btn-cart">
                         Thêm vào giỏ hàng
                     </a>
-                    <p>Model.sachDTOs.MaSach</p>
+                    <p>@Model.sachDTOs.MaSach</p>
                     <button class="custom-button btn-buy">
                         Mua ngay
                     </button>

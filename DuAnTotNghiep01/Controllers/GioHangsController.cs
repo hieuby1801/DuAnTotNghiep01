@@ -15,7 +15,12 @@ namespace DATN_API.Controllers
 		{
 			_gioHnagservice = gioHnagservice;
 		}
-		[HttpPost("ThemGioHang")]
+        public class ServiceResult
+        {
+            public bool Success { get; set; }
+            public string Message { get; set; } = string.Empty;
+        }
+        [HttpPost("ThemGioHang")]
 		public async Task<IActionResult> ThemGioHang([FromBody] CapNhatGioHangRequest req)
 		{
 			var giohangck = _gioHnagservice.KiemTra(req.MaSach, req.MaNguoiDung);
@@ -28,20 +33,25 @@ namespace DATN_API.Controllers
 			}
 			else
 			{
-				// Nếu giỏ hàng không có sản phẩm, thêm mới
-				var list = new List<(int masach, int soluong)>
-				{
-					(req.MaSach, req.SoLuong)
-				};
+                // Nếu giỏ hàng không có sản phẩm, thêm mới
+                var list = new List<(int masach, int soluong)>
+        {
+            (req.MaSach, req.SoLuong)
+        };
 
-				var result = await _gioHnagservice.ThemgiohangDN(list, req.MaNguoiDung);
-				if (!result)
-				{
-					return BadRequest("Thêm giỏ hàng thất bại.");
-				}
-				return Ok("Thêm giỏ hàng thành công.");
-			}
-		}
+                // Giả sử ThemgiohangDN trả về kiểu ServiceResult
+                ServiceResult result = await _gioHnagservice.ThemgiohangDN(list, req.MaNguoiDung);
+
+                if (!result.Success)
+                {
+                    return BadRequest($"Lỗi khi thêm giỏ hàng: {result.Message}");
+                }
+
+                return Ok("Thêm giỏ hàng thành công.");
+            }
+        }
+
+		
 		[HttpGet("LayGioHang/{id}")]
 		public IActionResult LayGioHang(int id)
 		{
