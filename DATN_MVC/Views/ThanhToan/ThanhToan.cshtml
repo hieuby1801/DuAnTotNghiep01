@@ -123,7 +123,22 @@
             Địa chỉ nhận hàng
             <input type="text" name="Diachi" value="@Model.NguoiDung.DiaChi">
         </label>
-
+        @if (Model.ThongTins.Count > 0)
+        {
+            @foreach (var item in Model.ThongTins)
+            {
+                <div>
+                    <p><strong>Mã sách:</strong> @item.MaSach</p>
+                    <p><strong>Số lượng:</strong> @item.SoLuong</p>
+                    <p><strong>Giá:</strong> @item.GiaBan </p>
+                    <img src="@Url.Content(item.HinhAnh)" alt="Alternate Text" />
+                </div>
+            }
+        }
+        else
+        {
+            <p>Không có sản phẩm nào trong giỏ hàng.</p>
+        }
        
 
     </div>
@@ -222,21 +237,7 @@
         // Gọi khi trang load
         loadProvinces();
     </script>
-    @if (Model.ThongTins.Count > 0)
-    {
-        @foreach (var item in Model.ThongTins)
-        {
-            <div >
-                <p><strong>Mã sách:</strong> @item.MaSach</p>
-                <p><strong>Số lượng:</strong> @item.SoLuong</p>
-                <p><strong>Giá:</strong> @item.GiaBan </p>
-            </div>
-        }
-    }
-    else
-    {
-        <p>Không có sản phẩm nào trong giỏ hàng.</p>
-    }
+   
 </body>
 
 </html>
