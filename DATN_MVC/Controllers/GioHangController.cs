@@ -126,11 +126,11 @@ namespace DATN_MVC.Controllers
 
 					if (existingItem != null)
 					{
-						existingItem.Soluong += 1;  // Cập nhật số lượng
+						existingItem.SoLuong += 1;  // Cập nhật số lượng
 					}
 					else
 					{
-						gioHangInfo.Soluong = 1;
+						gioHangInfo.SoLuong = 1;
 						gioHangList.Add(gioHangInfo);
 					}
 
@@ -185,7 +185,7 @@ namespace DATN_MVC.Controllers
 				var existingItem = model.GioHangs.FirstOrDefault(g => g.MaSach == MaSach);
 				if (existingItem != null)
 				{
-					existingItem.Soluong = SoLuong; // Cập nhật số lượng nếu có
+					existingItem.SoLuong = SoLuong; // Cập nhật số lượng nếu có
 				}
 				else
 				{
@@ -193,7 +193,7 @@ namespace DATN_MVC.Controllers
 					model.GioHangs.Add(new GioHang
 					{
 						MaSach = MaSach,
-						Soluong = SoLuong
+						SoLuong = SoLuong
 					});
 				}
 
@@ -255,7 +255,7 @@ namespace DATN_MVC.Controllers
 				foreach (var item in gioHang)
 				{
 					var response = await _httpClient.PostAsync(
-						$"GioHangs/ThemGioHang?masach={item.MaSach}&id={idnd}&soluong={item.Soluong}", null);
+						$"GioHangs/ThemGioHang?masach={item.MaSach}&id={idnd}&soluong={item.SoLuong}", null);
 					if (response.IsSuccessStatusCode)
 					{
 						// Xóa cookie sau khi giỏ hàng được lưu vào cơ sở dữ liệu

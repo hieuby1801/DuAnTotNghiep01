@@ -1,7 +1,9 @@
-﻿@model DATN_MVC.Models.Modeltong
+﻿
+@model DATN_MVC.Models.Modeltong
 @{
     ViewData["Title"] = "ThanhToan";
     Layout = "~/Views/Shared/_Layout.cshtml";
+   
 }
 <!DOCTYPE html>
 <html lang="vi">
@@ -74,7 +76,7 @@
 </head>
 <body>
 
-    <form action="/" method="post"></form>
+
     <div class="section">
 
         <h5>Địa Chỉ Giao Hàng</h5>
@@ -121,29 +123,12 @@
             Địa chỉ nhận hàng
             <input type="text" name="Diachi" value="@Model.NguoiDung.DiaChi">
         </label>
-        
-        <label>
-            Mã sách
-                <input type="text" value="@Model.GioHang.MaSach">
-        </label>
-        <label>
-            Gía sách 1 quyển
-            @if(Model.sachDTOss != null)
-			{
-				@foreach(var sach in Model.sachDTOss)
-				{
-					<input type="text" value="@sach.GiaBan">
-				}
-			}
-			else
-			{
-				<input type="text" value="0">
-			})
-            <input type="text" value="@Model.Saches">
-        </label>
+
+       
 
     </div>
 
+ 
     <div class="section">
         <h5>Phương Thức Vận Chuyển</h5>
         <p><strong>Giao hàng tiêu chuẩn:</strong> 32.000 đ (Dự kiến giao: Thứ Bảy - 19/04)</p>
@@ -161,12 +146,12 @@
             <label><input type="radio" name="payment"> Thanh toán bằng tiền mặt khi nhận hàng</label>
         </div>
     </div>
-
+ 
     <div class="section summary">
         <h5>Tóm Tắt Đơn Hàng</h5>
         <span>Thành tiền: 172.500 đ</span>
         <span>Phí vận chuyển: 32.000 đ</span>
-        <strong>Tổng Số Tiền (gồm VAT): 204.500 đ</strong>
+        <strong>Tổng Số Tiền (gồm VAT): 210.500 đ</strong>
         <br><br>
         <button class="btn-pay" onclick="showQR()">Xác nhận thanh toán</button>
         <div id="qr-container" style="display:none; margin-top: 20px;">
@@ -237,6 +222,21 @@
         // Gọi khi trang load
         loadProvinces();
     </script>
+    @if (Model.ThongTins.Count > 0)
+    {
+        @foreach (var item in Model.ThongTins)
+        {
+            <div >
+                <p><strong>Mã sách:</strong> @item.MaSach</p>
+                <p><strong>Số lượng:</strong> @item.SoLuong</p>
+                <p><strong>Giá:</strong> @item.GiaBan </p>
+            </div>
+        }
+    }
+    else
+    {
+        <p>Không có sản phẩm nào trong giỏ hàng.</p>
+    }
 </body>
 
 </html>

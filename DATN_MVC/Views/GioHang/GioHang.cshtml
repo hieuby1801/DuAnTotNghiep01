@@ -3,9 +3,7 @@
 	ViewData["Title"] = "Giỏ Hàng";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 	var nguoiDungId = Context.Session.GetString("NguoiDungId");
-	var id = TempData["nd"];
-	var soluong = TempData["s"];
-	var masach = TempData["m"];
+
 
 }
 <!DOCTYPE html>
@@ -139,15 +137,7 @@
 	<div class="container py-4">
 		<h4 class="mb-4 fw-bold">🛒 GIỎ HÀNG</h4>
 		<div class="row g-4">
-			<!-- Cột trái: Sản phẩm -->
-			@if (masach != null || soluong != null || id != null)
-			{
-				<p>Tài khoản của bạn:  @masach ,@soluong,@id </p>
-			}
-			else
-			{
-				<p>Bạn chưa đăng nhập.</p>
-			}
+		
 			<div class="col-lg-8">
 				<div class="bg-white rounded-4 p-3 shadow-sm border">
 					<div class="d-flex align-items-center mb-3">
@@ -162,7 +152,7 @@
 						<div class="d-flex align-items-start border-top pt-3">
 							<form asp-action="ThayDoiGio" asp-controller="GioHang" method="post" class="quantity-form" id="form-@item.MaSach">
 								<!-- Checkbox để chọn sản phẩm -->
-								<input class="form-check-input mt-2 me-3 item-checkbox product-checkbox" id="checkbox-@item.MaSach" data-masach="@item.MaSach" type="checkbox" checked>
+								<input class="form-check-input mt-2 me-3 item-checkbox product-checkbox" id="checkbox-@item.MaSach" data-masach="@item.MaSach" data-magiohang="@item.MaGioHang" type="checkbox" checked>
 
 								<img src="@Url.Content(item.HinhAnh)" class="me-3 rounded-3" width="80" alt="@item.TenSach" />
 
@@ -171,11 +161,12 @@
 
 									<div class="quantity-wrapper mt-2">
 										<!-- Thay đổi số lượng -->
-										<button type="submit" name="SoLuong" value="@Math.Max(item.Soluong - 1, 1)" class="quantity-btn">−</button>
-										<span class="quantity-number" id="quantity-@item.MaSach">@item.Soluong</span>
-										<button type="submit" name="SoLuong" value="@Math.Min(item.Soluong + 1, 100)" class="quantity-btn">+</button>
+										<button type="submit" name="SoLuong" value="@Math.Max(item.SoLuong - 1, 1)" class="quantity-btn">−</button>
+										<span class="quantity-number" id="quantity-@item.MaSach">@item.SoLuong</span>
+										<button type="submit" name="SoLuong" value="@Math.Min(item.SoLuong + 1, 100)" class="quantity-btn">+</button>
 										<input type="hidden" name="MaSach" value="@item.MaSach" />
-										<input type="hidden" name="SoLuong" id="input-quantity-@item.MaSach" value="@item.Soluong" />
+										<input type="hidden" name="magiohang" value="@item.MaGioHang" />
+										<input type="hidden" name="SoLuong" id="input-quantity-@item.MaSach" value="@item.SoLuong" />
 									</div>
 								</div>
 
@@ -184,9 +175,6 @@
 							</form>
 						</div>
 					}
-
-
-
 				</div>
 			</div>
 
@@ -196,10 +184,11 @@
 				
 					<div class="d-flex justify-content-between mb-3">
 						<strong class="fs-6">Tổng Số Tiền</strong>
-						<strong class="tong-tien" name="tongtien">@Model.GioHangs.Sum(g => g.GiaBan * g.Soluong) đ</strong>
+						<strong class="tong-tien" name="tongtien">@Model.GioHangs.Sum(g => g.GiaBan * g.SoLuong) đ</strong>
 					</div>
 					<form asp-controller="ThanhToan" asp-action="ThanhToan" method="post" id="payment-form">
-						<input type="hidden" name="NguoiDungId" value="@Context.Session.GetString("NguoiDungId")" />
+						
+						<div  id="selected-magiohangs"></div>
 						<button type="submit" class="btn-pay w-100">THANH TOÁN</button>
 					</form>
 				</div>
@@ -272,19 +261,40 @@
 
 	@*   Script xử lý thanh toán với checkbox được chọn (updateSelectedBooks) *@
 	<script>
-		function updateSelectedBooks() {
-			const form = document.getElementById('payment-form');
-			form.querySelectorAll('input[name="masach"]').forEach(el => el.remove());
-			document.querySelectorAll('.product-checkbox:checked').forEach(cb => {
-				form.insertAdjacentHTML('beforeend', `<input type="hidden" name="masach" value="${cb.dataset.masach}">`);
-			});
-		}
+		document.getElementById("payment-form").addEventListener("submit", function (e) {
+			const checkedCheckboxes = document.querySelectorAll(".product-checkbox:checked");
+			const container = document.getElementById("selected-magiohangs");
 
-		document.addEventListener('DOMContentLoaded', updateSelectedBooks);
-		document.querySelectorAll('.product-checkbox').forEach(cb => {
-			cb.addEventListener('change', updateSelectedBooks);
+			// Xoá các input cũ nếu có
+			container.innerHTML = "";
+
+			if (checkedCheckboxes.length === 0) {
+				alert("Vui lòng chọn ít nhất 1 sản phẩm để thanh toán!");
+				e.preventDefault();
+				return;
+			}
+
+			const uniqueMaGioHang = new Set(); // Để không bị trùng
+
+			checkedCheckboxes.forEach(cb => {
+				const maSach = cb.dataset.masach;
+				const form = document.getElementById("form-" + maSach);
+				const maGioHang = form.querySelector('input[name="magiohang"]').value;
+				uniqueMaGioHang.add(maGioHang); // Lưu MaGioHang duy nhất
+			});
+
+			// Tạo input cho mỗi MaGioHang duy nhất
+			uniqueMaGioHang.forEach(mg => {
+				const input = document.createElement("input");
+				input.type = "hidden";
+				input.name = "MaGioHang"; // Đây là tên list trong controller
+				input.value = mg;
+				container.appendChild(input);
+			});
 		});
 	</script>
+
+
 	@* Kiểm tra phải chọn sản phẩm mới cho phép thanh toán *@
 	<script>
 		document.getElementById('payment-form').addEventListener('submit', function (e) {

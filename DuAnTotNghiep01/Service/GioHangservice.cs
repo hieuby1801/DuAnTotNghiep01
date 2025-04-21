@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using static DATN_API.Controllers.GioHangsController;
 
 namespace DATN_API.Service
 {
@@ -48,44 +49,51 @@ namespace DATN_API.Service
 			}
 			return sach; // Trả về đối tượng SachDTO duy nhất
 		}
-		public async Task<bool> ThemgiohangDN(List<(int masach, int soluong)> products, int id)
-		{
-			try
-			{
-				// Tạo truy vấn SQL với nhiều giá trị
-				var sql = "INSERT INTO GioHang (MaNguoiDung, MaSach, SoLuong, ThoiGian) VALUES ";
+        public async Task<ServiceResult> ThemgiohangDN(List<(int masach, int soluong)> products, int id)
+        {
+            try
+            {
+                // Tạo truy vấn SQL với nhiều giá trị
+                var sql = "INSERT INTO GioHang (MaNguoiDung, MaSach, SoLuong) VALUES ";
 
-				// Tạo danh sách các tham số cho mỗi sản phẩm
-				var parameters = new List<SqlParameter>();
-				var values = new List<string>();
+                var parameters = new List<SqlParameter>();
+                var values = new List<string>();
 
-				foreach (var product in products)
-				{
-					// Thêm các giá trị vào danh sách values và thêm tham số vào parameters
-					values.Add("(@id, @masach" + product.masach + ", @soluong" + product.masach + ", GETDATE())");
+                int index = 0;
+                foreach (var product in products)
+                {
+                    // Dùng index để tạo tên tham số duy nhất
+                    values.Add($"(@id{index}, @masach{index}, @soluong{index})");
 
-					parameters.Add(new SqlParameter($"@id", id));
-					parameters.Add(new SqlParameter($"@masach{product.masach}", product.masach));
-					parameters.Add(new SqlParameter($"@soluong{product.masach}", product.soluong));
-				}
+                    parameters.Add(new SqlParameter($"@id{index}", id));
+                    parameters.Add(new SqlParameter($"@masach{index}", product.masach));
+                    parameters.Add(new SqlParameter($"@soluong{index}", product.soluong));
 
-				// Nối tất cả các giá trị vào câu SQL
-				sql += string.Join(", ", values);
+                    index++;
+                }
 
-				// Thực hiện truy vấn batch insert
-				int result = await _context.Database.ExecuteSqlRawAsync(sql, parameters);
+                sql += string.Join(", ", values);
 
-				// Nếu thêm thành công, ExecuteSqlRawAsync trả về số dòng ảnh hưởng > 0
-				return result > 0;
-			}
-			catch 
-			{
-				
-				return false;
-			}
-		}
-		// cập nhật giỏ hàng
-		public GioHang CapNhatGioHang(CapNhatGioHangRequest request)
+                int result = await _context.Database.ExecuteSqlRawAsync(sql, parameters);
+
+                return new ServiceResult
+                {
+                    Success = result > 0,
+                    Message = result > 0 ? "Thêm giỏ hàng thành công." : "Không có dữ liệu nào được thêm."
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult
+                {
+                    Success = false,
+                    Message = $"Lỗi khi thêm giỏ hàng: {ex.Message}"
+                };
+            }
+        }
+
+        // cập nhật giỏ hàng
+        public GioHang CapNhatGioHang(CapNhatGioHangRequest request)
 		{
 			try
 			{
@@ -115,7 +123,7 @@ namespace DATN_API.Service
 				{
 					// Ngược lại, cập nhật số lượng và thời gian
 					gioHang.SoLuong = request.SoLuong;
-					gioHang.ThoiGian = DateTime.Now;
+					
 					_context.Giohang.Update(gioHang);
 				}
 
@@ -162,7 +170,7 @@ namespace DATN_API.Service
 					foreach (var item in gioHangs)
 					{
 						item.SoLuong += request.SoLuong;
-						item.ThoiGian = DateTime.Now;
+						
 						
 					}
 					dsGioHangKetQua.AddRange(gioHangs);
@@ -177,7 +185,7 @@ namespace DATN_API.Service
 							MaSach = request.MaSach,
 							MaNguoiDung = request.MaNguoiDung,
 							SoLuong = request.SoLuong,
-							ThoiGian = DateTime.Now
+							
 						};
 
 						_context.Giohang.Add(gioHangMoi);

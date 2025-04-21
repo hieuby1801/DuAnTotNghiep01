@@ -1,8 +1,8 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
-namespace DATN_API.Models
+namespace DATN_MVC.DTOs
 {
-	public class GioHangDTO
+    public class ThongTin
 	{
 		[JsonIgnore]
 		public int MaGioHang { get; set; }

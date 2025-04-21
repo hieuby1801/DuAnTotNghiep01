@@ -2,6 +2,7 @@
 using DATN_MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 
@@ -122,7 +123,7 @@ namespace DATN_MVC.Controllers
             var errorContent = await response.Content.ReadAsStringAsync();
             ModelState.AddModelError(string.Empty, $"Thêm sách thất bại: {errorContent}");
             
-            return View(dto);
+            return RedirectToAction("ThemSach");
         }
         public async Task<IActionResult> QuanLySach()
         {
@@ -136,9 +137,70 @@ namespace DATN_MVC.Controllers
             }
             return View();
         }
-        public IActionResult CapNhatSach()
+        public async Task<IActionResult> CapNhatSach(int maSach)
         {
-            return View() ;
+            var modeltong = new Modeltong
+            {
+                ThemSachDto = new ThemSachDto()
+            };
+            // Lấy thể loại
+            var resTheLoai = await _httpClient.GetAsync("Sachs/LayTatCaTheLoai");
+            if (resTheLoai.IsSuccessStatusCode)
+            {
+                var theLoaiJson = await resTheLoai.Content.ReadAsStringAsync();
+                modeltong.TheLoais = JsonConvert.DeserializeObject<List<TheLoai>>(theLoaiJson) ?? new List<TheLoai>();
+            }
+
+            var response = await _httpClient.GetAsync($"Sachs/SachChiTiet/{maSach}");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                modeltong.ThemSachDto = JsonConvert.DeserializeObject<ThemSachDto>(content);                
+            }
+
+            return View(modeltong);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CapNhatSach(Modeltong dto, [FromForm] IFormFile? HinhAnhFile, [FromForm] string[] TheLoaiDuocChon)
+        {
+            dto.ThemSachDto.ListTheLoai = string.Join(",", TheLoaiDuocChon);
+            if (HinhAnhFile != null && HinhAnhFile.Length > 0)
+            {
+                // Tạo tên file duy nhất
+                var fileName = Path.GetFileName(HinhAnhFile.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+
+                // Lưu file vào wwwroot/images
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await HinhAnhFile.CopyToAsync(stream);
+                }
+
+                // Gán tên file vào model
+                if (fileName.Contains("~/images/"))
+                {
+                    // Đã chứa chuỗi "~/images/"
+                    dto.ThemSachDto.HinhAnh = fileName;
+                }
+                else
+                {
+                    dto.ThemSachDto.HinhAnh = "~/images/" + fileName;
+                }                
+            }
+            var response = await _httpClient.PostAsJsonAsync("Sachs/CapNhat", dto.ThemSachDto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["ThongBao"] = "Cập nhật sách thành công";
+                return RedirectToAction("QuanLySach"); // hoặc trang nào em muốn
+            }
+
+            // Có thể đọc lỗi từ API nếu cần
+            var errorContent = await response.Content.ReadAsStringAsync();
+            ModelState.AddModelError(string.Empty, $"Thêm sách thất bại: {errorContent}");
+
+            return RedirectToAction();
         }
     }
 }
