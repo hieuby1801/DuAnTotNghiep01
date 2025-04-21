@@ -13,10 +13,10 @@
             public string? HinhThuc { get; set; }
             public string? MoTa { get; set; }
             public string? TheLoai { get; set; }
-		public int? TongSoLuongDaBan { get; set; }
-		public int? GiaBan { get; set; }
-        public string? TenNhaCungCap { get; set; }
-        public string? NhaXuatBan { get; set; }
+		    public int? TongSoLuongDaBan { get; set; }
+		    public int? GiaBan { get; set; }
+            public string? TenNhaCungCap { get; set; }
+            public string? NhaXuatBan { get; set; }
         public List<string>? TheLoais { get; set; } = new List<string>();
 	}
     }

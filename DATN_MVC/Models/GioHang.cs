@@ -2,7 +2,9 @@
 {
     public class GioHang
     {
-        public int MaSach { get; set; }
+        public int MaGioHang { get; set; }
+
+		public int MaSach { get; set; }
 		public int? MaNguoiDung { get; set; }
 		public string? TenSach { get; set; }
         public int Soluong { get; set; }

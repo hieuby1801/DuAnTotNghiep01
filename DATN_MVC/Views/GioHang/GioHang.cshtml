@@ -174,7 +174,6 @@
 										<button type="submit" name="SoLuong" value="@Math.Max(item.Soluong - 1, 1)" class="quantity-btn">−</button>
 										<span class="quantity-number" id="quantity-@item.MaSach">@item.Soluong</span>
 										<button type="submit" name="SoLuong" value="@Math.Min(item.Soluong + 1, 100)" class="quantity-btn">+</button>
-
 										<input type="hidden" name="MaSach" value="@item.MaSach" />
 										<input type="hidden" name="SoLuong" id="input-quantity-@item.MaSach" value="@item.Soluong" />
 									</div>
@@ -197,7 +196,7 @@
 				
 					<div class="d-flex justify-content-between mb-3">
 						<strong class="fs-6">Tổng Số Tiền</strong>
-						<strong class="tong-tien">@Model.GioHangs.Sum(g => g.GiaBan * g.Soluong) đ</strong>
+						<strong class="tong-tien" name="tongtien">@Model.GioHangs.Sum(g => g.GiaBan * g.Soluong) đ</strong>
 					</div>
 					<form asp-controller="ThanhToan" asp-action="ThanhToan" method="post" id="payment-form">
 						<input type="hidden" name="NguoiDungId" value="@Context.Session.GetString("NguoiDungId")" />
