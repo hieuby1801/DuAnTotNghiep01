@@ -52,6 +52,7 @@ namespace DATN_MVC.Controllers
                         var Sdt = jwtToken.Claims.FirstOrDefault(x => x.Type == "Sdt")?.Value;
                         var id = jwtToken.Claims.FirstOrDefault(x => x.Type == "Id")?.Value;
                         var Email = jwtToken.Claims.FirstOrDefault(x => x.Type == "Email")?.Value;
+                        var Ten = jwtToken.Claims.FirstOrDefault(x => x.Type == "Ten")?.Value;
 
 						if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(vaitro))
 						{
@@ -64,6 +65,7 @@ namespace DATN_MVC.Controllers
 						HttpContext.Session.SetString("VaiTro", vaitro);
 						HttpContext.Session.SetString("NguoiDungId", id);
 						HttpContext.Session.SetString("JWT_Token", token);
+						HttpContext.Session.SetString("Ten", Ten);
 
 						var gioHangCookie = HttpContext.Request.Cookies["GioHang"];
 						if (!string.IsNullOrEmpty(gioHangCookie))

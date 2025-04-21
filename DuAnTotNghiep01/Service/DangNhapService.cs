@@ -90,7 +90,8 @@ namespace DATN_API.Service
                         new Claim("VaiTro", user.VaiTro ?? ""),
                         new Claim("Sdt", user.SoDienThoai?? ""),
                         new Claim("Email",user.Email ?? ""),
-                        new Claim("Id", user.MaNguoiDung.ToString())
+                        new Claim("Id", user.MaNguoiDung.ToString()),
+                        new Claim("Ten",user.TenNguoiDung?? ""),
 
                     }),
                     Issuer = "YourIssuer",
