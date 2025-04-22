@@ -76,7 +76,7 @@
 </head>
 <body>
 
-
+   
     <div class="section">
 
         <h5>Địa Chỉ Giao Hàng</h5>
@@ -151,22 +151,35 @@
 
     <div class="section">
         <h5>Phương Thức Thanh Toán</h5>
-        <div class="radio-group">
-            <label><input type="radio" name="payment"> Ví ZaloPay - Giảm 15K cho đơn hàng từ 300K (Nhập mã: ZLPFAHASA)</label>
-            <label><input type="radio" name="payment"> VNPay</label>
-            <label><input type="radio" name="payment"> Ví ShopeePay - Giảm 20K cho đơn hàng từ 30K</label>
-            <label><input type="radio" name="payment"> Ví Momo</label>
-            <label><input type="radio" name="payment"> ATM / Internet Banking</label>
-            <label><input type="radio" name="payment"> Visa / Master / JCB</label>
-            <label><input type="radio" name="payment"> Thanh toán bằng tiền mặt khi nhận hàng</label>
+        <div class="section">
+            <h5>Phương Thức Thanh Toán</h5>
+            <div class="radio-group">
+                <label><input type="radio" name="payment" value="COD"> Thanh toán khi nhận hàng (COD)</label>
+                <label><input type="radio" name="payment" value="BankTransfer"> Chuyển khoản ngân hàng</label>
+            </div>
         </div>
     </div>
  
     <div class="section summary">
         <h5>Tóm Tắt Đơn Hàng</h5>
-        <span>Thành tiền: 172.500 đ</span>
-        <span>Phí vận chuyển: 32.000 đ</span>
-        <strong>Tổng Số Tiền (gồm VAT): 210.500 đ</strong>
+
+        <strong>
+            Tổng Số Tiền :
+           
+            @foreach (var item in Model.ThongTins)
+            {
+                var thanhTien = (item.GiaBan ?? 0) * (item.SoLuong ?? 0);
+                <p>@item.TenSach - SL: @item.SoLuong - Giá: @item.GiaBan đ → Thành tiền: @thanhTien đ</p>
+            }
+
+            @{
+                var tongTien = Model.ThongTins.Sum(item => (item.GiaBan ?? 0) * (item.SoLuong ?? 0));
+            }
+            <p><strong>Tổng Số Tiền : @tongTien đ</strong></p>
+
+            <p>Thành tiền: @tongTien đ</p>
+        </strong>
+
         <br><br>
         <button class="btn-pay" onclick="showQR()">Xác nhận thanh toán</button>
         <div id="qr-container" style="display:none; margin-top: 20px;">
