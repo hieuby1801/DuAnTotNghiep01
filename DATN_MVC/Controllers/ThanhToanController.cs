@@ -1,4 +1,5 @@
-﻿using DATN_MVC.DTOs;
+﻿using Azure.Core;
+using DATN_MVC.DTOs;
 using DATN_MVC.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -50,5 +51,52 @@ namespace DATN_MVC.Controllers
             }
             return View(modeltong);
         }
+<<<<<<< HEAD
     }
+=======
+
+
+		public async Task<IActionResult> Xacnhanthanhtoan(string Phuongthuc,List<int> soluong, List<int> masach)
+        {
+			var idnd = HttpContext.Session.GetString("NguoiDungId");
+
+			if (Phuongthuc == "COD")
+            {
+                return RedirectToAction("TienMat");
+			}
+            else
+            {
+
+				var donHangData = new ChiTietDonHangGui
+				{
+					manguoidung = int.Parse(idnd),
+					MaSach = masach,
+					SoLuong = soluong
+				};
+
+				var repom = await _httpClient.PostAsJsonAsync("ThanhToans/ThemdonhangQR", donHangData);
+
+				if (repom.IsSuccessStatusCode)
+				{
+                    var xoagio = new XoaGioHangDTOs
+                    {
+                        MaNguoiDung = int.Parse(idnd),
+                        DanhSachMaSach = masach,
+
+                    };
+					var response = await _httpClient.PostAsJsonAsync("GioHangs/Xoagiohang", xoagio);
+                    if (repom.IsSuccessStatusCode)
+                    {
+						return RedirectToAction("ThanhCong");
+					}
+					return BadRequest("Lỗi khi xóa giỏ .");
+				}
+				else
+				{
+					return BadRequest("Lỗi khi tạo đơn hàng QR.");
+				}
+			}
+        }
+	}
+>>>>>>> d399b9da1cd249c5f30e1b5db89c127cd6b65b39
 }

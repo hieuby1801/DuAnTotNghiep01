@@ -295,16 +295,7 @@
 	</script>
 
 
-	@* Kiểm tra phải chọn sản phẩm mới cho phép thanh toán *@
-	<script>
-		document.getElementById('payment-form').addEventListener('submit', function (e) {
-			const kiemtracheckbox = document.querySelectorAll('.product-checkbox:checked');
-			if (kiemtracheckbox.length === 0) {
-				e.preventDefault(); // Ngăn form submit
-				alert('Vui lòng chọn ít nhất một sản phẩm để thanh toán!');
-			}
-		});
-	</script>
+
 </body>
 
 </html>
