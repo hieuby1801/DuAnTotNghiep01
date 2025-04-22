@@ -52,10 +52,35 @@ namespace DATN_MVC.Controllers
         }
 
 
-        /*public async Task<IActionResult> XacNhan()
-		{
+		public async Task<IActionResult> Xacnhanthanhtoan(string Phuongthuc,List<int> soluong, List<int> masach)
+        {
+			var idnd = HttpContext.Session.GetString("NguoiDungId");
 
+			if (Phuongthuc == "COD")
+            {
+                return RedirectToAction("TienMat");
+			}
+            else
+            {
 
-		}*/
-    }
+				var donHangData = new ChiTietDonHangGui
+				{
+					manguoidung = int.Parse(idnd),
+					MaSach = masach,
+					SoLuong = soluong
+				};
+
+				var repom = await _httpClient.PostAsJsonAsync("ThanhToans/ThemdonhangQR", donHangData);
+
+				if (repom.IsSuccessStatusCode)
+				{
+					return RedirectToAction("ThanhCong");
+				}
+				else
+				{
+					return BadRequest("Lỗi khi tạo đơn hàng QR.");
+				}
+			}
+        }
+	}
 }

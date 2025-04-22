@@ -1,4 +1,5 @@
-﻿using DATN_API.Models;
+﻿using DATN_API.DTOs;
+using DATN_API.Models;
 using DATN_API.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,5 +31,37 @@ namespace DATN_API.Controllers
 
             return Ok(gioHang);
         }
-    }
+		// Khi khác hàng chọn phương thức là thanh toán chuyển khoản 
+		[HttpPost("ThemdonhangQR")]
+		public IActionResult ChuyenKhoan([FromBody] DonHangQRRequest request)
+		{
+			if (request.masach.Count != request.soluong.Count)
+				return BadRequest("Số lượng sách và số lượng không khớp.");
+
+			// Tạo đơn hàng mới
+			var maDonHangMoi = _thanhToanService.Themdonhang(request.manguoidung);
+			if (maDonHangMoi == null)
+			{
+				return BadRequest("Lỗi tạo đơn hàng mới.");
+			}
+
+			// Tạo chi tiết đơn hàng (danh sách)
+			var chiTiet = new DonHangChiTietDTOs
+			{
+				MaDonHang = maDonHangMoi,
+				MaSach = request.masach,
+				SoLuong = request.soluong
+			};
+
+			var ketQuaChiTiet = _thanhToanService.ThemChiTietDonHang(chiTiet);
+			if (ketQuaChiTiet == null)
+			{
+				return BadRequest("Lỗi tạo chi tiết đơn hàng.");
+			}
+
+			return Ok(ketQuaChiTiet);
+		}
+
+
+	}
 }

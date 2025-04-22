@@ -1,255 +1,261 @@
-﻿
-@model DATN_MVC.Models.Modeltong
+﻿@model DATN_MVC.Models.Modeltong
 @{
-    ViewData["Title"] = "ThanhToan";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-   
+	ViewData["Title"] = "ThanhToan";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+
+
 }
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Thông tin Giao hàng và Thanh toán</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background-color: #f9f9f9;
-        }
+	<meta charset="UTF-8">
+	<title>Thông tin Giao hàng và Thanh toán</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 40px;
+			background-color: #f9f9f9;
+		}
 
-        h2 {
-            color: #333;
-        }
+		h2 {
+			color: #333;
+		}
 
-        .section {
-            background-color: #fff;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px #ddd;
-        }
+		.section {
+			background-color: #fff;
+			padding: 20px;
+			margin-bottom: 20px;
+			border-radius: 10px;
+			box-shadow: 0 0 10px #ddd;
+		}
 
-        label {
-            display: block;
-            margin-top: 10px;
-        }
+		label {
+			display: block;
+			margin-top: 10px;
+		}
 
-        input, select {
-            width: 100%;
-            padding: 8px;
-            margin-top: 4px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-        }
+		input, select {
+			width: 100%;
+			padding: 8px;
+			margin-top: 4px;
+			border: 1px solid #ccc;
+			border-radius: 6px;
+		}
 
-        .radio-group {
-            margin-top: 10px;
-        }
+		.radio-group {
+			margin-top: 10px;
+		}
 
-            .radio-group label {
-                display: block;
-            }
+			.radio-group label {
+				display: block;
+			}
 
-        .summary {
-            margin-top: 20px;
-        }
+		.summary {
+			margin-top: 20px;
+		}
 
-            .summary span {
-                display: block;
-                margin: 5px 0;
-            }
+			.summary span {
+				display: block;
+				margin: 5px 0;
+			}
 
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #c90000;
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
+		button {
+			padding: 10px 20px;
+			font-size: 16px;
+			background-color: #c90000;
+			color: #fff;
+			border: none;
+			border-radius: 6px;
+			cursor: pointer;
+		}
 
-            button:hover {
-                background-color: #a30000;
-            }
+			button:hover {
+				background-color: #a30000;
+			}
 
-        .btn-pay {
-            background-color: red;
-            color: white;
-            padding: 10px 20px;
-            font-size: 18px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-    </style>
-  
+		.btn-pay {
+			background-color: red;
+			color: white;
+			padding: 10px 20px;
+			font-size: 18px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+	</style>
+
 </head>
 <body>
-    <form action="/" method="post">
-    <div class="section">
+	<div id="thongbao" style="margin-top: 10px; color: red;"></div>
+	<form asp-action="Xacnhanthanhtoan" method="post">
+		<div class="section">
 
-        <h5>Địa Chỉ Giao Hàng</h5>
-        <label>
-            Họ và tên người nhận
-            <input type="text" value="@Model.NguoiDung.TenNguoiDung">
-        </label>
-        <label>
-            Email
-            <input type="email" value="@Model.NguoiDung.Email">
-        </label>
-        <label>
-            Số điện thoại
-            <input type="text" value="@Model.NguoiDung.SoDienThoai">
-        </label>
-        <label>
-            Quốc gia
-            <select>
-                <option selected>Việt Nam</option>
-            </select>
-        </label>
-        <label>
-            Tỉnh/Thành phố
-            <select id="province" onchange="loadDistricts()">
-                <option>-- Chọn tỉnh --</option>
-            </select>
-        </label>
+			<h5>Địa Chỉ Giao Hàng</h5>
+			<label>
+				Họ và tên người nhận
+				<input type="text" value="@Model.NguoiDung.TenNguoiDung">
+			</label>
+			<label>
+				Email
+				<input type="email" value="@Model.NguoiDung.Email">
+			</label>
+			<label>
+				Số điện thoại
+				<input type="text" value="@Model.NguoiDung.SoDienThoai">
+			</label>
+			
+				<label>
+					Quốc gia
+					<select required>
+						<option value="Vietnam" selected>Việt Nam</option>
+					</select>
+				</label>
 
-        <label>
-            Quận/Huyện
-            <select id="district" onchange="loadWards()">
-                <option>-- Chọn huyện --</option>
-            </select>
-        </label>
+				<label>
+					Tỉnh/Thành phố
+					<select id="province" name="Province" onchange="loadDistricts()" required>
+						<option value="">-- Chọn tỉnh --</option>
+					</select>
+				</label>
 
-        <label>
-            Phường/Xã
-            <select id="ward">
-                <option>-- Chọn xã --</option>
-            </select>
-        </label>
-       
-        <label>
-            Địa chỉ nhận hàng
-            <input type="text" name="Diachi" value="@Model.NguoiDung.DiaChi">
-        </label>
-        @if (Model.ThongTins.Count > 0)
-        {
-            @foreach (var item in Model.ThongTins)
-            {
-                <div>
-                    <p><strong>Mã sách:</strong> @item.MaSach</p>
-                    <p><strong>Số lượng:</strong> @item.SoLuong</p>
-                    <p><strong>Giá:</strong> @item.GiaBan </p>
-                    <img src="@Url.Content(item.HinhAnh)" alt="Alternate Text" style="width: 100px; height: auto;" />
-                </div>
-            }
-        }
-        else
-        {
-            <p>Không có sản phẩm nào trong giỏ hàng.</p>
-        }
-       
+				<label>
+					Quận/Huyện
+					<select id="district" name="District" onchange="loadWards()" required>
+						<option value="">-- Chọn huyện --</option>
+					</select>
+				</label>
 
-    </div>
+				<label>
+					Phường/Xã
+					<select id="ward" name="Ward" required>
+						<option value="">-- Chọn xã --</option>
+					</select>
+				</label>
 
- 
-    <div class="section">
-        <h5>Phương Thức Vận Chuyển</h5>
-        <p><strong>Giao hàng tiêu chuẩn:</strong> 32.000 đ (Dự kiến giao: Thứ Bảy - 19/04)</p>
-    </div>
+				<label>
+					Địa chỉ nhận hàng
+					<input type="text" name="Diachi" required>
+				</label>
 
-    <div class="section">
-        <h5>Phương Thức Thanh Toán</h5>
-        <div class="section">
-            <h5>Phương Thức Thanh Toán</h5>
-            <div class="radio-group">
-                <label><input type="radio" name="Phuongthuc" value="COD"> Thanh toán khi nhận hàng (COD)</label>
-                <label><input type="radio" name="Phuongthuc" value="BankTransfer"> Chuyển khoản ngân hàng</label>
-            </div>
-        </div>
-    </div>
- 
-    <div class="section summary">
-        <h5>Tóm Tắt Đơn Hàng</h5>
+			@if (Model.ThongTins.Count > 0)
+			{
+				@for (int i = 0; i < Model.ThongTins.Count; i++)
+				{
+					<div>
+						<input type="hidden" name="masach[@i]" value="@Model.ThongTins[i].MaSach" />
+						<p><strong>Tên sách:</strong> @Model.ThongTins[i].TenSach</p>
 
-        <strong>
-            Tổng Số Tiền :
-           
-            @foreach (var item in Model.ThongTins)
-            {
-                var thanhTien = (item.GiaBan ?? 0) * (item.SoLuong ?? 0);
-                <p>@item.TenSach - SL: @item.SoLuong - Giá: @item.GiaBan đ → Thành tiền: @thanhTien đ</p>
-            }
+						<p><strong>Số lượng:</strong> @Model.ThongTins[i].SoLuong</p>
+						<input type="hidden" name="soluong[@i]" value="@Model.ThongTins[i].SoLuong" />
 
-            @{
-                var tongTien = Model.ThongTins.Sum(item => (item.GiaBan ?? 0) * (item.SoLuong ?? 0));
-            }
-            <p><strong>Tổng Số Tiền : @tongTien đ</strong></p>
+						<p><strong>Giá:</strong> @Model.ThongTins[i].GiaBan</p>
+						<img src="@Url.Content(Model.ThongTins[i].HinhAnh)" alt="Alternate Text" style="width: 100px; height: auto;" />
+					</div>
+				}
+			}
+			else
+			{
+				<p>Không có sản phẩm nào trong giỏ hàng.</p>
+			}
+		</div>
+		<div class="section">
+			
+			<h5>Phương Thức Thanh Toán</h5>
 
-            <p>Thành tiền: @tongTien đ</p>
-        </strong>
+			<div class="radio-group">
+				<label>
+					<input type="radio" name="Phuongthuc" value="COD" required>
+					Thanh toán khi nhận hàng (COD)
+				</label>
+				<label>
+					<input type="radio" name="Phuongthuc" value="BankTransfer">
+					Chuyển khoản ngân hàng
+				</label>
+			</div>
+		</div>
 
-        <br><br>
-        <button class="btn-pay" onclick="showQR()">Xác nhận thanh toán</button>
-        <div id="qr-container" style="display:none; margin-top: 20px;">
-            <h3>Quét mã QR để thanh toán bằng MB Bank</h3>
-            <img src="https://img.vietqr.io/image/970422-05205418042004-compact2.png?amount=204500&addInfo=Thanh%20toan%20don%20hang%20%23123"
-                 alt="QR Code MB Bank"
-                 width="200" height="200" />
-        </div>
-    </div>
-    </form>
-    <script>
-        function showQR() {
-            document.getElementById("qr-container").style.display = "block";
-        }
-    </script>
-    <script>
-        async function loadProvinces() {
-            const res = await fetch("https://provinces.open-api.vn/api/p/");
-            const provinces = await res.json();
-            const select = document.getElementById("province");
-            provinces.forEach(p => {
-                const opt = document.createElement("option");
-                opt.value = p.code;
-                opt.text = p.name;
-                select.appendChild(opt);
-            });
-        }
+		<div class="section summary">
+			<h5>Tóm Tắt Đơn Hàng</h5>
 
-        async function loadDistricts() {
-            const provinceCode = document.getElementById("province").value;
-            const res = await fetch(`https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`);
-            const data = await res.json();
-            const districtSelect = document.getElementById("district");
-            districtSelect.innerHTML = '<option>-- Chọn huyện --</option>';
-            document.getElementById("ward").innerHTML = '<option>-- Chọn xã --</option>';
+			<strong>
+				Tổng Số Tiền :
 
-            data.districts.forEach(d => {
-                const opt = document.createElement("option");
-                opt.value = d.code;
-                opt.text = d.name;
-                districtSelect.appendChild(opt);
-            });
-        }
+				@foreach (var item in Model.ThongTins)
+				{
+					var thanhTien = (item.GiaBan ?? 0) * (item.SoLuong ?? 0);
+					<p>@item.TenSach - SL: @item.SoLuong - Giá: @item.GiaBan đ → Thành tiền: @thanhTien đ</p>
+					
+				}
 
-        async function loadWards() {
-            const districtCode = document.getElementById("district").value;
-            const res = await fetch(`https://provinces.open-api.vn/api/d/${districtCode}?depth=2`);
-            const data = await res.json();
-            const wardSelect = document.getElementById("ward");
-            wardSelect.innerHTML = '<option>-- Chọn xã --</option>';
-            data.wards.forEach(w => {
-                const opt = document.createElement("option");
-                opt.text = w.name;
-                wardSelect.appendChild(opt);
-            });
-        }
-        // Gọi khi trang load
-        loadProvinces();
-    </script>
-   
+				@{
+					var tongTien = Model.ThongTins.Sum(item => (item.GiaBan ?? 0) * (item.SoLuong ?? 0));
+				}
+				
+				<p><strong>Tổng Số Tiền : @tongTien đ</strong></p>
+
+				<p>Thành tiền: @tongTien đ</p>
+			</strong>
+
+			<br><br>
+			<button class="btn-pay" onclick="showQR()">Xác nhận thanh toán</button>
+			<div id="qr-container" style="display:none; margin-top: 20px;">
+				<h3>Quét mã QR để thanh toán bằng MB Bank</h3>
+				<img src="https://img.vietqr.io/image/970422-05205418042004-compact2.png?amount=204500&addInfo=Thanh%20toan%20don%20hang%20%23123"
+					 alt="QR Code MB Bank"
+					 width="200" height="200" />
+			</div>
+		</div>
+	</form>
+	<script>
+		function showQR() {
+			document.getElementById("qr-container").style.display = "block";
+		}
+	</script>
+	<script>
+		async function loadProvinces() {
+			const res = await fetch("https://provinces.open-api.vn/api/p/");
+			const provinces = await res.json();
+			const select = document.getElementById("province");
+			provinces.forEach(p => {
+				const opt = document.createElement("option");
+				opt.value = p.code;
+				opt.text = p.name;
+				select.appendChild(opt);
+			});
+		}
+
+		async function loadDistricts() {
+			const provinceCode = document.getElementById("province").value;
+			const res = await fetch(`https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`);
+			const data = await res.json();
+			const districtSelect = document.getElementById("district");
+			districtSelect.innerHTML = '<option>-- Chọn huyện --</option>';
+			document.getElementById("ward").innerHTML = '<option>-- Chọn xã --</option>';
+
+			data.districts.forEach(d => {
+				const opt = document.createElement("option");
+				opt.value = d.code;
+				opt.text = d.name;
+				districtSelect.appendChild(opt);
+			});
+		}
+
+		async function loadWards() {
+			const districtCode = document.getElementById("district").value;
+			const res = await fetch(`https://provinces.open-api.vn/api/d/${districtCode}?depth=2`);
+			const data = await res.json();
+			const wardSelect = document.getElementById("ward");
+			wardSelect.innerHTML = '<option>-- Chọn xã --</option>';
+			data.wards.forEach(w => {
+				const opt = document.createElement("option");
+				opt.text = w.name;
+				wardSelect.appendChild(opt);
+			});
+		}
+		// Gọi khi trang load
+		loadProvinces();
+	</script>
+
 </body>
 
 </html>
