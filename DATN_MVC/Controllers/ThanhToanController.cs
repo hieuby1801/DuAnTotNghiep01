@@ -1,4 +1,5 @@
-﻿using DATN_MVC.DTOs;
+﻿using Azure.Core;
+using DATN_MVC.DTOs;
 using DATN_MVC.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -74,7 +75,18 @@ namespace DATN_MVC.Controllers
 
 				if (repom.IsSuccessStatusCode)
 				{
-					return RedirectToAction("ThanhCong");
+                    var xoagio = new XoaGioHangDTOs
+                    {
+                        MaNguoiDung = int.Parse(idnd),
+                        DanhSachMaSach = masach,
+
+                    };
+					var response = await _httpClient.PostAsJsonAsync("GioHangs/Xoagiohang", xoagio);
+                    if (repom.IsSuccessStatusCode)
+                    {
+						return RedirectToAction("ThanhCong");
+					}
+					return BadRequest("Lỗi khi xóa giỏ .");
 				}
 				else
 				{

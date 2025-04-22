@@ -24,7 +24,7 @@ namespace DATN_MVC.Controllers
 			var idnd = HttpContext.Session.GetString("NguoiDungId");
 			if (idnd != null) 
 			{
-				var request = new XoaGioHangRequest
+				var request = new XoaGioHangDTOs
 				{
 					MaNguoiDung = int.Parse(idnd),
 					DanhSachMaSach = danhSachMaSach
@@ -55,11 +55,7 @@ namespace DATN_MVC.Controllers
 
 
 		}
-		public class XoaGioHangRequest
-		{
-			public List<int> DanhSachMaSach { get; set; }
-			public int MaNguoiDung { get; set; }
-		}
+		
 
 		public async Task<IActionResult> XemGioHang()
 		{
