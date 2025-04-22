@@ -50,12 +50,5 @@ namespace DATN_MVC.Controllers
             }
             return View(modeltong);
         }
-
-
-        /*public async Task<IActionResult> XacNhan()
-		{
-
-
-		}*/
     }
 }
