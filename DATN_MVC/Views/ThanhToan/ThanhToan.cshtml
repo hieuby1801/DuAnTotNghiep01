@@ -72,11 +72,21 @@
             button:hover {
                 background-color: #a30000;
             }
+
+        .btn-pay {
+            background-color: red;
+            color: white;
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
+  
 </head>
 <body>
-
-   
+    <form action="/" method="post">
     <div class="section">
 
         <h5>Địa Chỉ Giao Hàng</h5>
@@ -154,8 +164,8 @@
         <div class="section">
             <h5>Phương Thức Thanh Toán</h5>
             <div class="radio-group">
-                <label><input type="radio" name="payment" value="COD"> Thanh toán khi nhận hàng (COD)</label>
-                <label><input type="radio" name="payment" value="BankTransfer"> Chuyển khoản ngân hàng</label>
+                <label><input type="radio" name="Phuongthuc" value="COD"> Thanh toán khi nhận hàng (COD)</label>
+                <label><input type="radio" name="Phuongthuc" value="BankTransfer"> Chuyển khoản ngân hàng</label>
             </div>
         </div>
     </div>
@@ -188,24 +198,13 @@
                  alt="QR Code MB Bank"
                  width="200" height="200" />
         </div>
-        <style>
-            .btn-pay {
-                background-color: red;
-                color: white;
-                padding: 10px 20px;
-                font-size: 18px;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-        </style>
-
-        <script>
-            function showQR() {
-                document.getElementById("qr-container").style.display = "block";
-            }
-        </script>
     </div>
+    </form>
+    <script>
+        function showQR() {
+            document.getElementById("qr-container").style.display = "block";
+        }
+    </script>
     <script>
         async function loadProvinces() {
             const res = await fetch("https://provinces.open-api.vn/api/p/");
