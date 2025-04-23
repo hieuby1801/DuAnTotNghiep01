@@ -15,6 +15,7 @@ namespace DATN_API.Service
 			_context = context;
 			_configuration = configuration;
 		}
+		// Thanh  toán giỏ hàng qua QR
 		public List<GioHangDTO> LayThongTinGioHang(List<int> danhSachMaGioHang, int maNguoiDung)
 		{
 			var gioHangList = new List<GioHangDTO>();
@@ -78,8 +79,7 @@ namespace DATN_API.Service
 				}
 			}
 		}
-
-
+		//Thêm chi Tiết đơn hàng
 		public ChiTietDonHang ThemChiTietDonHang(DonHangChiTietDTOs donHangChiTietDTOs)
 		{
 			var connectionString = _configuration.GetConnectionString("con");
@@ -120,6 +120,34 @@ namespace DATN_API.Service
 			};
 		}
 
+
+		// Thanh toán giỏ hàng bằng tiền mặt
+		public VanChuyenDTOs ThemVaoVanChuyen(VanChuyenDTOs vanChuyenDTOs)
+		{
+			var connectionString = _configuration.GetConnectionString("con");
+
+			using (var connection = new SqlConnection(connectionString))
+			{
+				connection.Open();
+
+				using (var command = new SqlCommand("ThemVaoVanChuyen", connection))
+				{
+					command.CommandType = CommandType.StoredProcedure;
+					command.Parameters.AddWithValue("@MaDonHang", vanChuyenDTOs.MaDonHang);
+					command.Parameters.AddWithValue("@DiaChi", vanChuyenDTOs.DiaChi);
+					command.Parameters.AddWithValue("@SDT", vanChuyenDTOs.SDT);
+
+					// Trả về mã đơn hàng mới từ stored procedure
+					return new VanChuyenDTOs
+					{
+						MaDonHang = Convert.ToInt32(command.ExecuteScalar()),
+						DiaChi = vanChuyenDTOs.DiaChi,
+						SDT = vanChuyenDTOs.SDT,
+						NgayNhanHang = vanChuyenDTOs.NgayNhanHang,
+					};
+				}
+			}
+		}
 
 	}
 }

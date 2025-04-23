@@ -53,17 +53,42 @@ namespace DATN_MVC.Controllers
         }
 
 
-		public async Task<IActionResult> Xacnhanthanhtoan(string Phuongthuc,List<int> soluong, List<int> masach)
+		public async Task<IActionResult> Xacnhanthanhtoan(string Phuongthuc,List<int> soluong, List<int> masach,string SDT,string diachi,string Ward,string District,string Province)
         {
+			var diachifull = $"{diachi} {Ward} {District} {Province}";
 			var idnd = HttpContext.Session.GetString("NguoiDungId");
+			var xoagio = new XoaGioHangDTOs
+			{
+				MaNguoiDung = int.Parse(idnd),
+				DanhSachMaSach = masach,
 
+			};
 			if (Phuongthuc == "COD")
             {
-                return RedirectToAction("TienMat");
+
+                var donhangtm = new ChiTietDonHangGui
+                {
+                    manguoidung = int.Parse(idnd),
+                    DiaChi = diachifull,
+                    SoLuong = soluong,
+                    MaSach = masach,
+                    NgayNhanHang = DateTime.Now,
+                    SDT = SDT,
+				};
+				var repom = await _httpClient.PostAsJsonAsync("ThanhToans/Themdonhangtienmat", donhangtm);
+                if (repom.IsSuccessStatusCode)
+                {
+					var response = await _httpClient.PostAsJsonAsync("GioHangs/Xoagiohang", xoagio);
+					if (repom.IsSuccessStatusCode)
+					{
+						return RedirectToAction("ThanhCongtt");
+					}
+					return BadRequest("Lỗi khi xóa giỏ .");
+				}
+				return BadRequest("Lỗi khi tạo đơn hàng tiền mặt .");
 			}
             else
             {
-
 				var donHangData = new ChiTietDonHangGui
 				{
 					manguoidung = int.Parse(idnd),
@@ -71,16 +96,11 @@ namespace DATN_MVC.Controllers
 					SoLuong = soluong
 				};
 
-				var repom = await _httpClient.PostAsJsonAsync("ThanhToans/ThemdonhangQR", donHangData);
+				var repom = await _httpClient.PostAsJsonAsync("ThanhToans/ThemdonhangQR",donHangData);
 
 				if (repom.IsSuccessStatusCode)
 				{
-                    var xoagio = new XoaGioHangDTOs
-                    {
-                        MaNguoiDung = int.Parse(idnd),
-                        DanhSachMaSach = masach,
-
-                    };
+                   
 					var response = await _httpClient.PostAsJsonAsync("GioHangs/Xoagiohang", xoagio);
                     if (repom.IsSuccessStatusCode)
                     {

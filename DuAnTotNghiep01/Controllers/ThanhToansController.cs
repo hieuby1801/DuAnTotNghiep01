@@ -61,7 +61,47 @@ namespace DATN_API.Controllers
 
 			return Ok(ketQuaChiTiet);
 		}
+		[HttpPost("Themdonhangtienmat")]
 
+		public IActionResult Tienmat([FromBody] DonHangQRRequest request)
+		{
+			if (request.masach.Count != request.soluong.Count)
+				return BadRequest("Số lượng sách và số lượng không khớp.");
+
+			// Tạo đơn hàng mới
+			var maDonHangMoi = _thanhToanService.Themdonhang(request.manguoidung);
+			if (maDonHangMoi == null)
+			{
+				return BadRequest("Lỗi tạo đơn hàng mới.");
+			}
+
+			// Tạo chi tiết đơn hàng (danh sách)
+			var chiTiet = new DonHangChiTietDTOs
+			{
+				MaDonHang = maDonHangMoi,
+				MaSach = request.masach,
+				SoLuong = request.soluong
+			};
+
+			var ketQuaChiTiet = _thanhToanService.ThemChiTietDonHang(chiTiet);
+			if (ketQuaChiTiet == null)
+			{
+				return BadRequest("Lỗi tạo chi tiết đơn hàng.");
+			}
+			var vanchuye = new VanChuyenDTOs
+			{
+				MaDonHang = maDonHangMoi,
+				SDT = request.SDT,
+				DiaChi = request.DiaChi,
+				NgayNhanHang = request.NgayNhanHang
+			};
+			var ketQuaVanChuyen = _thanhToanService.ThemVaoVanChuyen(vanchuye);
+			if (ketQuaVanChuyen == null)
+			{
+				return BadRequest("Lỗi tạo vận chuyển đơn hàng.");
+			}
+			return Ok(ketQuaVanChuyen);
+		}
 
 	}
 }
