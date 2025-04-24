@@ -27,8 +27,14 @@ namespace DATN_MVC.Models
 		public ThemSachDto ThemSachDto { get; set; }
 		public ThongTin ThongTin {  get; set; }
 		public List<ThongTin> ThongTins { get; set; } = new List<ThongTin>();
+<<<<<<< HEAD
 		public string PayUrl { get; set; }
 	}
+=======
+		public LoHang LoHang { get; set; }
+		public List<LoHang>	LoHangs { get; set; }
+    }
+>>>>>>> 95a23e243397dedcee40f9ba48556a07af1bf855
 
     }
 

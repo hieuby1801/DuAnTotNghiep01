@@ -51,7 +51,11 @@ namespace DATN_MVC.Controllers
             }
             return View(modeltong);
         }
+<<<<<<< HEAD
 
+=======
+   
+>>>>>>> 95a23e243397dedcee40f9ba48556a07af1bf855
 
 
 		public async Task<IActionResult> Xacnhanthanhtoan(string Phuongthuc,List<int> soluong, List<int> masach,string SDT,string diachi,string Ward,string District,string Province)
@@ -111,8 +115,8 @@ namespace DATN_MVC.Controllers
 					var response = await _httpClient.PostAsJsonAsync("GioHangs/Xoagiohang", xoagio);
                     if (repom.IsSuccessStatusCode)
                     {
-						return RedirectToAction("ThanhCong");
-					}
+                        return RedirectToAction("ThanhCongtt");
+                    }
 					return BadRequest("Lỗi khi xóa giỏ .");
 				}
 				else
@@ -121,7 +125,16 @@ namespace DATN_MVC.Controllers
 				}
 			}
         }
+<<<<<<< HEAD
 	}
 	}
 
 
+=======
+        public async Task<IActionResult> ThanhCongtt()
+        {
+            return View();
+        }
+    }
+}
+>>>>>>> 95a23e243397dedcee40f9ba48556a07af1bf855
