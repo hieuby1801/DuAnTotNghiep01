@@ -51,9 +51,7 @@ namespace DATN_MVC.Controllers
             }
             return View(modeltong);
         }
-<<<<<<< HEAD
-    }
-=======
+
 
 
 		public async Task<IActionResult> Xacnhanthanhtoan(string Phuongthuc,List<int> soluong, List<int> masach,string SDT,string diachi,string Ward,string District,string Province)
@@ -100,10 +98,16 @@ namespace DATN_MVC.Controllers
 				};
 
 				var repom = await _httpClient.PostAsJsonAsync("ThanhToans/ThemdonhangQR",donHangData);
-
+				
 				if (repom.IsSuccessStatusCode)
 				{
-                   
+					var responseContent = await repom.Content.ReadFromJsonAsync<QRs>(); // ResponseModel là kiểu dữ liệu bạn mong đợi từ API
+
+					// Gán giá trị PayUrl vào model
+					var model = new Modeltong
+					{
+						PayUrl = responseContent?.PayUrl // Giả sử API trả về PayUrl
+					};
 					var response = await _httpClient.PostAsJsonAsync("GioHangs/Xoagiohang", xoagio);
                     if (repom.IsSuccessStatusCode)
                     {
@@ -118,5 +122,6 @@ namespace DATN_MVC.Controllers
 			}
         }
 	}
->>>>>>> d399b9da1cd249c5f30e1b5db89c127cd6b65b39
-}
+	}
+
+

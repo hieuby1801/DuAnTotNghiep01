@@ -100,8 +100,10 @@ namespace DATN_API.Service
 						chiTietTable.Rows.Add(donHangChiTietDTOs.MaSach[i], donHangChiTietDTOs.SoLuong[i]);
 					}
 
+					// Thêm tham số vào câu lệnh SQL
 					cmd.Parameters.AddWithValue("@MaDonHang", donHangChiTietDTOs.MaDonHang);
 
+					// Truyền TVP (table-valued parameter)
 					SqlParameter tvpParam = cmd.Parameters.AddWithValue("@ChiTietDonHangs", chiTietTable);
 					tvpParam.SqlDbType = SqlDbType.Structured;
 					tvpParam.TypeName = "dbo.ChiTietDonHangType";
@@ -111,14 +113,45 @@ namespace DATN_API.Service
 				}
 			}
 
-			// Trả về 1 bản ghi đầu tiên hoặc null (nếu bạn cần trả danh sách thì return List<ChiTietDonHang>)
-			return new ChiTietDonHang
+			// Lấy giá tiền của từng mặt hàng từ cơ sở dữ liệu sau khi gọi thủ tục
+			using (SqlConnection conn = new SqlConnection(connectionString))
 			{
-				MaDonHang = donHangChiTietDTOs.MaDonHang,
-				MaSach = donHangChiTietDTOs.MaSach[0],
-				SoLuong = donHangChiTietDTOs.SoLuong[0]
-			};
+				var query = @"
+            SELECT MaSach, GiaTien 
+            FROM ChiTietDonHang
+            WHERE MaDonHang = @MaDonHang";
+
+				using (SqlCommand cmd = new SqlCommand(query, conn))
+				{
+					cmd.Parameters.AddWithValue("@MaDonHang", donHangChiTietDTOs.MaDonHang);
+
+					conn.Open();
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						if (reader.HasRows)
+						{
+							while (reader.Read())
+							{
+								int maSach = reader.GetInt32(0);
+								int giaTien = reader.GetInt32(1);
+
+								// Trả về thông tin chi tiết đơn hàng với GiaTien
+								return new ChiTietDonHang
+								{
+									MaDonHang = donHangChiTietDTOs.MaDonHang,
+									MaSach = maSach,
+									SoLuong = donHangChiTietDTOs.SoLuong[0], // Có thể thay đổi để lấy từ nhiều giá trị
+									GiaTien = giaTien
+								};
+							}
+						}
+					}
+				}
+			}
+
+			return null; // Trả về null nếu không có dữ liệu
 		}
+
 
 
 		// Thanh toán giỏ hàng bằng tiền mặt
@@ -148,6 +181,19 @@ namespace DATN_API.Service
 				}
 			}
 		}
+		public bool CapNhatTrangThaiDonHang(int maDonHang, string trangThai)
+		{
+			// Gọi stored procedure để cập nhật trạng thái đơn hàng
+			var parameters = new[]
+			{
+		new SqlParameter("@MaDonHang", maDonHang),
+		new SqlParameter("@TrangThai", trangThai)
+	};
+
+			var result = _context.Database.ExecuteSqlRaw("EXEC dbo.CapNhatTrangThaiDonHang @MaDonHang, @TrangThai", parameters);
+			return result > 0;  // Trả về true nếu cập nhật thành công, false nếu thất bại
+		}
+
 
 	}
 }

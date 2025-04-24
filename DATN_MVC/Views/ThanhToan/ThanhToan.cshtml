@@ -200,7 +200,7 @@
 			<button class="btn-pay" onclick="showQR()">Xác nhận thanh toán</button>
 			<div id="qr-container" style="display:none; margin-top: 20px;">
 				<h3>Quét mã QR để thanh toán bằng MB Bank</h3>
-				<img src="https://img.vietqr.io/image/970422-05205418042004-compact2.png?amount=204500&addInfo=Thanh%20toan%20don%20hang%20%23123"
+				<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=@Model.PayUrl" />
 					 alt="QR Code MB Bank"
 					 width="200" height="200" />
 			</div>

@@ -7,6 +7,7 @@
 		public List<int> soluong { get; set; }
 		public string? SDT { get; set; }
 		public string? DiaChi { get; set; }
+		
 		public DateTime NgayNhanHang { get; set; } = DateTime.Now;
 	}
 }

@@ -9,6 +9,7 @@ namespace DATN_API.Service
 		public int Themdonhang(int manguoidung);
 		public ChiTietDonHang ThemChiTietDonHang(DonHangChiTietDTOs donHangChiTietDTOs);
 		public VanChuyenDTOs ThemVaoVanChuyen(VanChuyenDTOs vanChuyenDTOs);
+		public bool CapNhatTrangThaiDonHang(int maDonHang, string trangThai);
 
 	}
 }
