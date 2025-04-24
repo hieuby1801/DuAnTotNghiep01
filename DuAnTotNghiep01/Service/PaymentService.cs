@@ -1,4 +1,6 @@
-﻿using DATN_API.Request;
+﻿using DATN_API.DTOs;
+using DATN_API.Request;
+using QRCoder;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -16,7 +18,7 @@ namespace DATN_API.Service
 			_httpClient = httpClientFactory.CreateClient();
 		}
 
-		public async Task<string> CreateMomoPaymentUrl(MomoRequest req)
+		public async Task<MomoQrResponse> CreateMomoPaymentUrl(MomoRequest req)
 		{
 			var momoSection = _config.GetSection("Momo");
 
@@ -65,10 +67,16 @@ namespace DATN_API.Service
 			var responseContent = await response.Content.ReadAsStringAsync();
 
 			using var doc = JsonDocument.Parse(responseContent);
-			if (doc.RootElement.TryGetProperty("payUrl", out var payUrl))
+			if (doc.RootElement.TryGetProperty("payUrl", out var payUrlElement))
 			{
-				return payUrl.GetString();
-			}
+                string payUrl = payUrlElement.GetString();
+                string qrBase64 = GenerateBase64QrCode(payUrl);
+                return new MomoQrResponse
+                {
+                    PayUrl = payUrl,
+                    QrImageBase64 = GenerateBase64QrCode(payUrl)  // Tạo mã QR luôn
+                };
+            }
 
 			var message = doc.RootElement.TryGetProperty("message", out var msg)
 							? msg.GetString()
@@ -76,14 +84,20 @@ namespace DATN_API.Service
 
 			throw new Exception($"Momo error: {message}");
 		}
-
-
-
 		private string CreateSignature(string key, string rawData)
 		{
 			using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(key));
 			byte[] hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(rawData));
 			return BitConverter.ToString(hash).Replace("-", "").ToLower();
 		}
-	}
+        private string GenerateBase64QrCode(string content)
+        {
+            using var qrGenerator = new QRCoder.QRCodeGenerator();
+            using var qrCodeData = qrGenerator.CreateQrCode(content, QRCoder.QRCodeGenerator.ECCLevel.Q);
+            using var qrCode = new QRCoder.PngByteQRCode(qrCodeData);
+            byte[] qrCodeBytes = qrCode.GetGraphic(20);
+            return Convert.ToBase64String(qrCodeBytes);
+        }
+
+    }
 }

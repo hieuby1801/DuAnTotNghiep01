@@ -5,6 +5,6 @@ namespace DATN_API.Service
 {
 	public interface IPaymentService
 	{
-		Task<string> CreateMomoPaymentUrl(MomoRequest request);
+		Task<MomoQrResponse> CreateMomoPaymentUrl(MomoRequest request);
 	}
 }
