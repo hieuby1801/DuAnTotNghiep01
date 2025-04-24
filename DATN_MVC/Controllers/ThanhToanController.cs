@@ -8,6 +8,7 @@ using Microsoft.DotNet.MSIdentity.Shared;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Security.AccessControl;
+
 namespace DATN_MVC.Controllers
 {
     public class ThanhToanController : Controller
@@ -127,6 +128,7 @@ namespace DATN_MVC.Controllers
 
             return View(model);
         }
+       
     }
 }
 

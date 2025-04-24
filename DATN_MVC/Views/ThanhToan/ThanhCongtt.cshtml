@@ -115,11 +115,17 @@
             <button class="btn btn-red">TIẾP TỤC MUA SẮM</button>
             <button class="btn btn-white">XEM CHI TIẾT ĐƠN HÀNG</button>
         </div>
-      
-        <div style="text-align: center; margin-top: 20px;">
-            <!-- Hiển thị ảnh QR từ URL -->
-            <img src="data:image/png;base64,@Model.RealQRImageBase64" alt="QR Code MoMo" />
+        @{
+            var encoded = System.Net.WebUtility.UrlEncode(Model.PayUrl);
+        }
+        <div style="text-align:center;margin-top:20px">
+            <!-- ảnh QR tạo online -->
+            <img src="https://quickchart.io/qr?size=300&text=@encoded"
+                 alt="QR MoMo" width="300" />
+            <br />
+            <a href="@Model.PayUrl" target="_blank">Mở trang thanh toán</a>
         </div>
+
         <table class="table-products">
             <tr>
                 <th>Hình</th>
