@@ -51,9 +51,7 @@ namespace DATN_MVC.Controllers
             }
             return View(modeltong);
         }
-<<<<<<< HEAD
-    }
-=======
+   
 
 
 		public async Task<IActionResult> Xacnhanthanhtoan(string Phuongthuc,List<int> soluong, List<int> masach,string SDT,string diachi,string Ward,string District,string Province)
@@ -118,5 +116,4 @@ namespace DATN_MVC.Controllers
 			}
         }
 	}
->>>>>>> d399b9da1cd249c5f30e1b5db89c127cd6b65b39
 }
