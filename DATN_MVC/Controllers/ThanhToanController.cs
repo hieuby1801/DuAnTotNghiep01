@@ -105,8 +105,8 @@ namespace DATN_MVC.Controllers
 					var response = await _httpClient.PostAsJsonAsync("GioHangs/Xoagiohang", xoagio);
                     if (repom.IsSuccessStatusCode)
                     {
-						return RedirectToAction("ThanhCong");
-					}
+                        return RedirectToAction("ThanhCongtt");
+                    }
 					return BadRequest("Lỗi khi xóa giỏ .");
 				}
 				else
@@ -115,5 +115,9 @@ namespace DATN_MVC.Controllers
 				}
 			}
         }
-	}
+        public async Task<IActionResult> ThanhCongtt()
+        {
+            return View();
+        }
+    }
 }
