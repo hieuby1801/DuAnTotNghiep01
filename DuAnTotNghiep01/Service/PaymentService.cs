@@ -28,7 +28,7 @@ namespace DATN_API.Service
 			string ipnUrl = momoSection["IpnUrl"];
 			string requestType = "captureWallet";
 			string orderId = $"{req.OrderId}_{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}";
-			string orderInfo = req.OrderInfo;
+			string orderInfo = req.OrderInfo.ToString();
 			string amount = ((long)req.Amount).ToString();
 			string requestId = Guid.NewGuid().ToString();
 			string userStk = "0329126894";
