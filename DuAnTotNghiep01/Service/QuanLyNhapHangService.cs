@@ -4,6 +4,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Data;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace DATN_API.Service
 {
@@ -47,9 +48,9 @@ namespace DATN_API.Service
                 }
             }
         }
-        public Task<bool> insertChiTietLoHang(List<ChiTietLoHangDTO> chiTietLoHangs)
+        public async Task<bool> insertChiTietLoHang(List<ChiTietLoHangDTO> chiTietLoHangs)
         {
-
+            return true;
         }
     }
 }
