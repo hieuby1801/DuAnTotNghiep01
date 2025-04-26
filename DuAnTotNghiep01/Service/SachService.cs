@@ -241,34 +241,47 @@ namespace DATN_API.Service
                 })
                 .ToList();
         }
-        public async Task<ThemSachDto> GetSachChiTiet(int maSach)
-        {			
-            Sach sach = await _context.Sach.FirstOrDefaultAsync(s => s.MaSach == maSach);
-			SachChiTiet chiTiet = await _context.SachChiTiet.FirstOrDefaultAsync(s => s.MaSach == maSach);
-			var theLoai = await _context.SachTheLoai
+        public ThemSachDto GetSachChiTiet(int maSach)
+        {
+            // Truy vấn sách đồng bộ
+            Sach sach = _context.Sach.FirstOrDefault(s => s.MaSach == maSach);
+            SachChiTiet chiTiet = _context.SachChiTiet.FirstOrDefault(s => s.MaSach == maSach);
+
+            // Kiểm tra nếu không tìm thấy sách hoặc chi tiết sách
+            if (sach == null || chiTiet == null)
+            {
+                return null;  // Hoặc bạn có thể ném ra một ngoại lệ nếu cần
+            }
+
+            // Truy vấn thể loại sách đồng bộ
+            var theLoai = _context.SachTheLoai
                 .Where(stl => stl.MaSach == maSach)
-				.Select(stl => stl.MaTheLoai)
-				.ToListAsync();
+                .Select(stl => stl.MaTheLoai)
+                .ToList();  // Đồng bộ thay vì ToListAsync
+
             string theLoaiString = string.Join(",", theLoai);
+
+            // Tạo DTO và ánh xạ dữ liệu
             var sachChiTiet = new ThemSachDto
             {
                 MaSach = maSach,
-                TenSach = sach.TenSach,
-                TacGia = sach.TacGia,
-                HinhAnh = sach.HinhAnh,
-                TrangThai = sach.TrangThai,
-                NgonNgu = chiTiet.NgonNgu,
-                KichThuoc = chiTiet.KichThuoc,
-                TrongLuong = chiTiet.TrongLuong,
-                SoTrang = chiTiet.SoTrang,
-                HinhThuc = chiTiet.HinhThuc,
-                MoTa = chiTiet.MoTa,
-                DoTuoi = chiTiet.DoTuoi,
+                TenSach = sach.TenSach ?? "",  // Kiểm tra NULL cho TenSach
+                TacGia = sach.TacGia ?? "",  // Kiểm tra NULL cho TacGia
+                HinhAnh = sach.HinhAnh ?? "",  // Kiểm tra NULL cho HinhAnh
+                TrangThai = sach.TrangThai ?? "",  // Kiểm tra NULL cho TrangThai
+                NgonNgu = chiTiet.NgonNgu ?? "",  // Kiểm tra NULL cho NgonNgu
+                KichThuoc = chiTiet.KichThuoc ?? "",  // Kiểm tra NULL cho KichThuoc
+                TrongLuong = chiTiet.TrongLuong ?? 0m,    // Kiểm tra NULL cho TrongLuong
+                SoTrang = chiTiet.SoTrang ?? 0,  // Kiểm tra NULL cho SoTrang
+                HinhThuc = chiTiet.HinhThuc ?? "",  // Kiểm tra NULL cho HinhThuc
+                MoTa = chiTiet.MoTa ?? "",  // Kiểm tra NULL cho MoTa
+                DoTuoi = chiTiet.DoTuoi ?? "Không rõ",  // Kiểm tra NULL cho DoTuoi
                 ListTheLoai = theLoaiString
             };
 
             return sachChiTiet;
         }
+
         public async Task<bool> CapNhatSachAsync(ThemSachDto sach)
         {
             var parameters = new[]
