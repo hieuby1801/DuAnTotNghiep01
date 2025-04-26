@@ -1,0 +1,299 @@
+﻿@{
+    ViewData["Title"] = "ThongTinDonHang";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đơn hàng của tôi</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --primary-color: #e74c3c;
+            --secondary-color: #3498db;
+            --bg-light: #f5f5f5;
+            --bg-white: #ffffff;
+            --text-dark: #333;
+            --border-color: #ddd;
+            --badge-bg: #e74c3c;
+            --badge-text: #fff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Arial", sans-serif;
+        }
+
+        body {
+            background: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        .order-page .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: var(--bg-white);
+            padding: 20px;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .profile {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            background: var(--border-color);
+            border-radius: 50%;
+            margin: 0 auto 10px;
+        }
+
+        .profile h2 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .rank {
+            background: #ccc;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-bottom: 5px;
+            display: inline-block;
+        }
+
+        .fpoint, .upgrade {
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        .menu ul {
+            list-style: none;
+        }
+
+        .menu li {
+            padding: 12px 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+
+            .menu li.active,
+            .menu li:hover {
+                color: var(--primary-color);
+                font-weight: bold;
+            }
+
+        .badge {
+            background: var(--badge-bg);
+            color: var(--badge-text);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            margin-left: 6px;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 30px;
+        }
+
+        .order-header {
+            background: var(--bg-white);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+            .order-header h1 {
+                font-size: 22px;
+                margin-bottom: 15px;
+            }
+
+        .order-status span {
+            margin-right: 15px;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+
+            .order-status span.active,
+            .order-status span:hover {
+                background: var(--primary-color);
+                color: var(--badge-text);
+            }
+
+        .order-card {
+            background: var(--bg-white);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+
+        .order-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .order-id a {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+
+        .cancelled {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+
+        .product {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .product-img {
+            width: 60px;
+            height: 80px;
+            object-fit: cover;
+            margin-right: 15px;
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+        }
+
+        .product-name {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .order-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .order-total {
+            margin-right: 20px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .cancel-btn,
+        .buy-again-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .cancel-btn {
+            background: #ecf0f1;
+            color: #555;
+            margin-right: 10px;
+        }
+
+            .cancel-btn:hover {
+                background: #dcdde1;
+            }
+
+        .buy-again-btn {
+            background: var(--primary-color);
+            color: var(--badge-text);
+        }
+
+            .buy-again-btn:hover {
+                background: #c0392b;
+            }
+    </style>
+</head>
+<body>
+    <div class="order-page">
+        <div class="container">
+            <aside class="sidebar">
+                <div class="profile">
+                    <div class="avatar"></div>
+                    <h2>Phan Nam</h2>
+                    <p class="rank">Thành viên Bạc</p>
+                    <p class="fpoint">F-Point tích lũy 0</p>
+                    <p class="upgrade">Thêm 30.000 để nâng hạng Vàng</p>
+                </div>
+                <nav class="menu">
+                    <ul>
+                        <li>Thông tin tài khoản</li>
+                        <li class="active">Đơn hàng của tôi</li>
+                        <li>Ví voucher <span class="badge">17</span></li>
+                        <li>Tài Khoản F-Point / Freeship</li>
+                        <li>Thông Báo</li>
+                        <li>Sản phẩm yêu thích</li>
+                        <li>Sách theo bộ</li>
+                        <li>Nhận xét của tôi</li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <main class="main-content">
+                <div class="order-header">
+                    <h1>Đơn hàng của tôi</h1>
+                    <div class="order-status">
+                        <span class="active">Tất cả (1)</span>
+                        <span>Chờ thanh toán (0)</span>
+                        <span>Đang xử lý (0)</span>
+                        <span>Đang giao (0)</span>
+                        <span>Hoàn tất (0)</span>
+                        <span>Bị hủy (1)</span>
+                        <span>Đổi trả (0)</span>
+                    </div>
+                </div>
+
+                <div class="order-card">
+                    <div class="order-info">
+                        <div class="order-id">
+                            <a href="#">#103665076</a>
+                            <span class="cancelled">Bị hủy</span>
+                        </div>
+                        <div class="order-date">24/04/2025 - 15:14</div>
+                    </div>
+                    <div class="product">
+                        <img src="https://cdn0.fahasa.com/media/catalog/product/9/7/9786045862732.jpg" alt="Tư Duy Ngược" class="product-img">
+                        <div class="product-name">Tư Duy Ngược</div>
+                    </div>
+                    <div class="order-footer">
+                        <div>1 sản phẩm</div>
+                        <div class="order-actions">
+                            <div class="order-total">Tổng tiền: <strong>89.500 đ</strong></div>
+                            <button class="cancel-btn">Hủy đơn</button>
+                            <button class="buy-again-btn">Mua lại</button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>
