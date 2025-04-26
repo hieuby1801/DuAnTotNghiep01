@@ -6,5 +6,7 @@ namespace DATN_API.Service
     public interface IQuanLyNhapHangService
     {
         public List<LoHang> getAllLoHang();
+        public Task<bool> insertLoHang(LoHangDTO dto);
+        public Task<bool> insertChiTietLoHang(List<ChiTietLoHangDTO> chiTietLoHangs);
     }
 }

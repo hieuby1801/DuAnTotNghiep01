@@ -29,6 +29,11 @@ namespace DATN_MVC.Models
 		public List<ThongTin> ThongTins { get; set; } = new List<ThongTin>();
 		public LoHang LoHang { get; set; }
 		public List<LoHang>	LoHangs { get; set; }
+		public ChiTietDonHang ChiTietDonHang { get; set; }
+		public List<ChiTietDonHang> ChiTietDonHangs { get; set; }
+		public ChiTietLoHang ChiTietLoHang { get;set; }
+		public List<ChiTietLoHang> chiTietLoHangs { get; set; }
+
     }
 
     }
