@@ -38,7 +38,7 @@ namespace DATN_API.Controllers
         }
 		// Khi khác hàng chọn phương thức là thanh toán chuyển khoản 	
 		[HttpPost("Themdonhangtienmat")]
-		public IActionResult Tienmat([FromBody] DonHangQRRequest request)
+		public IActionResult Tienmat([FromBody] DonHangQRRequest request )
 		{
 			if (request.masach.Count != request.soluong.Count)
 				return BadRequest("Số lượng sách và số lượng không khớp.");
