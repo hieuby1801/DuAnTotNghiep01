@@ -30,6 +30,11 @@ builder.Services.AddScoped<INguoiDungService, NguoiDungService>();
 builder.Services.AddScoped<IGioHnagservice, GioHangservice>();
 builder.Services.AddScoped<IThanhToanService, ThanhToanService>();
 builder.Services.AddScoped<IQuanLyNhapHangService, QuanLyNhapHangService>();
+builder.Services.AddScoped<INhaCungCapService, NhaCungCapService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<INhaCungCapService, NhaCungCapService>();
+
+
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 var jwtKey = builder.Configuration["Jwt:Key"];
 if (string.IsNullOrEmpty(jwtKey))
