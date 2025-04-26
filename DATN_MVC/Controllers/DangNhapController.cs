@@ -169,13 +169,6 @@ namespace DATN_MVC.Controllers
             return View("DangNhap", modeltong); // Giữ lại thông tin nhập và lỗi nếu có
         }
 
-
-
-
-
-
-        // đổi mật khẩu
-
         [HttpPost]
         public async Task<IActionResult> layOtp(string Email)
         {
