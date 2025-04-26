@@ -102,7 +102,9 @@
             <div id="chiTietContainer">
                 <div class="row chiTietLoHang mb-3 chi-tiet-lo">
                     <div class="col-md-3">                        
+
                         <select class="form-select" asp-for="chiTietLoHangs[0].MaSach" required>
+
                             <option value="">-- Chọn mã sách --</option>
                             @foreach (var item in Model.Saches)
                             {
@@ -111,6 +113,7 @@
                         </select>
                     </div>
                     <div class="col-md-3">                        
+
                         <input type="number" class="form-control so-luong" asp-for="chiTietLoHangs[0].SoLuongNhap" required />
                     </div>
                     <div class="col-md-3">
@@ -118,6 +121,15 @@
                     </div>
                     <div class="col-md-3">
                         <input class="form-control" asp-for="chiTietLoHangs[0].NhaXuatBan" required />
+
+                        <input type="number" class="form-control so-luong" asp-for="chiTietLoHangs[0].SoLuongNhap" required />
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" class="form-control gia-nhap" asp-for="chiTietLoHangs[0].GiaNhap" required />
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control" asp-for="chiTietLoHangs[0].NhaXuatBan" required />
+
                     </div>
                 </div>
             </div>
