@@ -10,7 +10,9 @@
         public DateTime? NgayDatHang { get; set; }
         public List<ChiTietDonHangViewModel>? ChiTietDonHangs { get; set; } = new List<ChiTietDonHangViewModel>();
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class ChiTietDonHangViewModel
     {
         public string TenSach { get; set; }
