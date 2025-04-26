@@ -1,0 +1,124 @@
+﻿@{
+    Layout = "~/Views/Shared/Admin.cshtml";
+}
+@section Styles {
+    <style>
+        .table-container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+            max-width: 1200px; /* To hơn */
+            margin: 40px auto;
+            overflow-x: auto;
+        }
+
+            .table-container h2 {
+                text-align: center;
+                margin-bottom: 30px;
+                font-size: 28px; /* To hơn */
+                color: #2c3e50;
+                font-weight: bold;
+            }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 16px 20px; /* Tăng padding */
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+            font-size: 16px; /* To hơn */
+        }
+
+        th {
+            background-color: #f4f6f9;
+            font-weight: 700; /* Đậm hơn */
+            color: #2c3e50;
+            font-size: 17px;
+        }
+
+        .update-btn {
+            background: linear-gradient(to right, #2980b9, #3498db);
+            color: #fff;
+            border: none;
+            padding: 10px 20px; /* To hơn */
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-size: 15px;
+        }
+
+            .update-btn:hover {
+                background: linear-gradient(to right, #2471a3, #2980b9);
+            }
+    </style>
+}
+
+<div class="table-container">
+    <h2>🚚 Danh Sách Vận Chuyển</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Mã Đơn Hàng</th>
+                <th>Ngày Giao</th>
+                <th>Ngày Nhận</th>
+                <th>Trạng Thái</th>
+                <th>Địa Chỉ Giao</th>
+                <th>Số Điện Thoại</th>
+                <th>Hành Động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>DH001</td>
+                <td>25/04/2025</td>
+                <td>27/04/2025</td>
+                <td>Đã giao</td>
+                <td>123 Lê Lợi, Q.1, TP.HCM</td>
+                <td>0901234567</td>
+                <td>
+                    <button class="update-btn">✏️ Cập Nhật</button>
+                </td>
+            </tr>
+            <tr>
+                <td>DH002</td>
+                <td>26/04/2025</td>
+                <td></td>
+                <td>Đang giao</td>
+                <td>456 Nguyễn Huệ, Q.1, TP.HCM</td>
+                <td>0902345678</td>
+                <td>
+                    <button class="update-btn">✏️ Cập Nhật</button>
+                </td>
+            </tr>
+            <tr>
+                <td>DH003</td>
+                <td>24/04/2025</td>
+                <td>25/04/2025</td>
+                <td>Đã giao</td>
+                <td>789 Cách Mạng Tháng 8, Q.10, TP.HCM</td>
+                <td>0903456789</td>
+                <td>
+                    <button class="update-btn">✏️ Cập Nhật</button>
+                </td>
+            </tr>
+            <tr>
+                <td>DH004</td>
+                <td>25/04/2025</td>
+                <td></td>
+                <td>Hủy</td>
+                <td>321 Phạm Văn Đồng, Q.Thủ Đức, TP.HCM</td>
+                <td>0904567890</td>
+                <td>
+                    <button class="update-btn">✏️ Cập Nhật</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

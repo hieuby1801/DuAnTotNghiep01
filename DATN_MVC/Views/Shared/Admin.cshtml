@@ -61,18 +61,24 @@
 
                 .sidebar li i {
                     margin-right: 12px;
-                    transition: transform 0.3s ease;
+                    font-size: 20px;
+                    color: #ecf0f1;
+                    transition: transform 0.3s ease, color 0.3s ease;
                 }
 
                 .sidebar li:hover i {
                     transform: scale(1.1);
+                    color: #ffffff;
                 }
 
-                .sidebar li:hover,
                 .sidebar li.active {
                     background: #1abc9c;
                     color: #fff;
                 }
+
+                    .sidebar li.active i {
+                        color: #fff;
+                    }
 
         .main-content {
             flex: 1;
@@ -205,65 +211,88 @@
             .delete-btn:hover {
                 background-color: #c0392b;
             }
-            li {
-  list-style: none;
-}
 
-a {
-  display: inline-block;
-}
+        li {
+            list-style: none;
+        }
+
+        a {
+            display: inline-block;
+        }
 
     </style>
-    
 </head>
 
 <body>
     <div class="admin-container">
         <aside class="sidebar">
             <div class="logo">
-                <img src="~/images/main-logo.png" alt="Bookly Logo">
+                <img src="~/images/LogoDaviCiBook-removebg.png" alt="Bookly Logo">
             </div>
             <ul>
-                <li class="active"><i class="bi bi-speedometer2"></i> Tổng quan</li>
-                <li onclick="location.href='@Url.Action("QuanLySach", "Admin")'" style="cursor: pointer;">
-                    <i class="bi bi-cart-check"></i> Quản Lý Sách
+                <li id="tongQuanItem" class="active" onclick="changeActiveMenu(this)">
+                    <i class="bi bi-speedometer2"></i> Tổng quan
+                </li>
+                <li id="quanLySachItem" onclick="location.href='@Url.Action("QuanLySach", "Admin")'; changeActiveMenu(this)" style="cursor: pointer;">
+                    <i class="bi bi-journal-bookmark"></i> Quản Lý Sách
+                </li>
+                <li id="donHangItem" onclick="location.href='@Url.Action("QuanLyDonhang", "Admin")'; changeActiveMenu(this)" style="cursor: pointer;">
+                    <i class="bi bi-cart-check"></i> Đơn hàng
+                </li>
+                <li onclick="changeActiveMenu(this)">
+                    <i class="bi bi-bar-chart-line"></i> Thống kê
+                </li>
+                <li onclick="location.href='@Url.Action("DanhSachNhapHang", "QuanLyNhapHang")'; changeActiveMenu(this)" style="cursor:pointer;">
+                    <i class="bi bi-boxes"></i> Nhập Hàng
+                </li>
+                <li onclick="location.href='@Url.Action("VanChuyen", "Admin")'; changeActiveMenu(this)" style="cursor:pointer;">
+                    <i class="bi bi-truck"></i> Vận Chuyển
                 </li>
 
-                <li><i class="bi bi-cart-check"></i> Đơn hàng</li>
-                <li><i class="bi bi-bar-chart-line"></i> Thống kê</li>
-                <li onclick="location.href='@Url.Action("DanhSachNhapHang", "QuanLyNhapHang")'" style="cursor:pointer;">
-                    <i class="fas fa-warehouse"></i> Quản Kho
+            
+                <li onclick="location.href='@Url.Action("DangXuat", "TaiKhoan")'; changeActiveMenu(this)" style="cursor:pointer;">
+                    <i class="bi bi-box-arrow-right"></i> Đăng xuất
                 </li>
-
-                <li><i class="bi bi-box-arrow-right"></i> Đăng xuất</li>
             </ul>
         </aside>
 
         <main class="main-content">
-            <header>
+            <header> 
                 <h1>📊 Bảng điều khiển Admin</h1>
                 <input type="text" placeholder="🔍 Tìm kiếm...">
-            </header>  
-            
-            @RenderBody() 
-            
+            </header>
+
+            @RenderBody()
+
         </main>
     </div>
-    <script>
-        function toggleForm() {
-            const container = document.getElementById("themSachContainer");
-            container.classList.toggle("d-none");
 
-            const thongBao = document.getElementById("thongBao");
-            if (thongBao) {
-                thongBao.style.display = "none";
-            }
+    <script>
+        function changeActiveMenu(element) {
+            const menuItems = document.querySelectorAll('.sidebar li');
+            menuItems.forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        window.onload = function () {
+            const currentUrl = window.location.href.toLowerCase();
+            const menuItems = document.querySelectorAll('.sidebar li');
+
+            menuItems.forEach(item => {
+                const link = item.getAttribute('onclick');
+                if (link && link.includes('location.href')) {
+                    const match = link.match(/location.href='([^']+)'/);
+                    if (match && currentUrl.includes(match[1].toLowerCase())) {
+                        menuItems.forEach(i => i.classList.remove('active'));
+                        item.classList.add('active');
+                    }
+                }
+            });
         }
     </script>
+
     @RenderSection("Scripts", required: false)
     @RenderSection("Styles", required: false)
 </body>
 
 </html>
-
-

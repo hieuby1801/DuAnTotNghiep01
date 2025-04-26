@@ -202,5 +202,14 @@ namespace DATN_MVC.Controllers
 
             return RedirectToAction();
         }
+        public async Task<IActionResult> QuanLyDonHang()
+        {
+            return View();
+        }
+        public async Task<IActionResult> VanChuyen()
+        {
+            return View();
+        }
     }
+
 }
