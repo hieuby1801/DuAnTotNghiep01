@@ -8,5 +8,9 @@ namespace DATN_MVC.Controllers
         {
             return View();
         }
+        public IActionResult ThongTinKH()
+        {
+            return View();
+        }
     }
 }

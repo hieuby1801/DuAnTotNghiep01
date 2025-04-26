@@ -228,7 +228,7 @@
         }
 
             .buy-again-btn:hover {
-                background: #c0392b;
+                background: #c0392b;    
             }
     </style>
 </head>
@@ -238,14 +238,14 @@
             <aside class="sidebar">
                 <div class="profile">
                     <div class="avatar"></div>
-                    <h2>Phan Nam</h2>
-                    <p class="rank">Thành viên Bạc</p>
-                    <p class="fpoint">F-Point tích lũy 0</p>
-                    <p class="upgrade">Thêm 30.000 để nâng hạng Vàng</p>
+                    <h1>Phan Nam</h1>
+                   <p class="rank">Thành viên Bạc</p>                  
+                 
                 </div>
                 <nav class="menu">
                     <ul>
-                        <li>Thông tin tài khoản</li>
+                        <li><a href="@Url.Action("ThongTinKH", "ThongTinKH")">Thông tin tài khoản</a></li>
+
                         <li class="active">Đơn hàng của tôi</li>
                         <li>Ví voucher <span class="badge">17</span></li>
                         <li>Tài Khoản F-Point / Freeship</li>
