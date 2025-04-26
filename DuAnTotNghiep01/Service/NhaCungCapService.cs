@@ -15,7 +15,7 @@ namespace DATN_API.Service
 
         public List<NhaCungCapDto> GetAllNhaCungCap()
         {
-            return _context.NhaCungCap
+            return _context.nhaCungCaps
                 .Select(ncc => new NhaCungCapDto
                 {
                     MaNhaCungCap = ncc.MaNhaCungCap,

@@ -8,7 +8,7 @@
         public string? TrangThaiVanChuyen { get; set; }
         public string? DiaChiGiao { get; set; }
         public DateTime? NgayDatHang { get; set; }
-        public List<ChiTietDonHangViewModel> ChiTietDonHangs { get; set; } = new List<ChiTietDonHangViewModel>();
+        public List<ChiTietDonHangViewModel>? ChiTietDonHangs { get; set; } = new List<ChiTietDonHangViewModel>();
     }
 
     public class ChiTietDonHangViewModel
