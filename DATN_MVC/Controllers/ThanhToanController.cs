@@ -54,9 +54,9 @@ namespace DATN_MVC.Controllers
             return View(modeltong);
         }
         public async Task<IActionResult> Xacnhanthanhtoan(string Phuongthuc, List<int> soluong, List<int> masach, 
-            string SDT, string diachi, string Ward, string DistrictName, string ProvinceName)
+            string SDT, string diachi, string WardName, string DistrictName, string ProvinceName)
         {
-            var diachifull = $"{diachi}, {Ward} ,{DistrictName}, {ProvinceName}";
+            var diachifull = $"{diachi},{WardName},{DistrictName},{ProvinceName}";
             var idnd = HttpContext.Session.GetString("NguoiDungId");
             var xoagio = new XoaGioHangDTOs
             {

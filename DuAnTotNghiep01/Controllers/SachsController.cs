@@ -112,9 +112,9 @@ namespace DATN_API.Controllers
         }
 
         [HttpGet("SachChiTiet/{maSach}")]
-        public async Task<IActionResult> GetSachChiTiet(int maSach)
-        {            
-            var sach = await _sachservice.GetSachChiTiet(maSach);
+        public IActionResult GetSachChiTiet(int maSach)
+        {
+            var sach =  _sachservice.GetSachChiTiet(maSach); // 117
             if (sach != null)
             {
                 return Ok(sach);

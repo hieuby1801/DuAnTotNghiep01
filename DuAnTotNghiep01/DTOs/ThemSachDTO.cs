@@ -16,7 +16,7 @@ namespace DATN_API.DTOs
         public int? SoTrang { get; set; }
         public string HinhThuc { get; set; }
         public string MoTa { get; set; }
-        public string DoTuoi { get; set; }
+        public string? DoTuoi { get; set; }
         public string ListTheLoai { get; set; }
     }
 

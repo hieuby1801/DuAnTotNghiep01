@@ -61,11 +61,7 @@
             background-color: #f9fafb;
         }
 
-        img {
-            height: 80px;
-            width: auto;
-            border-radius: 8px;
-        }
+        
 
         .update-btn {
             background-color: #3b82f6;
@@ -130,7 +126,7 @@
 }
 
 <div class="header-bar">
-    <h2>📘 Danh Sách Nhập Hàng</h2>
+    <h2>📘 Danh Sách Lô Hàng Đã Nhập</h2>
     <button class="add-btn" onclick="window.location.href='@Url.Action("NhapLoHangMoi", "QuanLyNhapHang")'">➕ Nhập Lô Hàng Mới</button>
 
 </div>
@@ -142,18 +138,23 @@
             <th>Ngày Nhập</th>
             <th>Mã Nhà Cung Cấp</th>
             <th>Tổng Giá Trị Lô Hàng</th>
+            <th>Thêm</th>
         </tr>
     </thead>
     <tbody>
-
-        @* @foreach (var item in Model.LoHangs)
+        @foreach (var item in Model.LoHangs)
         {
             <tr>
                 <td>@item.MaLo</td>
-                <td>@item.NgayNhap</td>
+                <td>@item.NgayNhap.ToString("yyyy-MM-dd")</td>
                 <td>@item.MaNhaCungCap</td>
                 <td>@item.GiaTienLoHang</td>
+                <td>
+                    <a class="add-btn" style="text-decoration: none;">
+                        Chi tiết
+                    </a>
+                </td>
             </tr>
-        } *@
+        }
     </tbody>
 </table>
