@@ -31,8 +31,11 @@ builder.Services.AddScoped<IGioHnagservice, GioHangservice>();
 builder.Services.AddScoped<IThanhToanService, ThanhToanService>();
 builder.Services.AddScoped<IQuanLyNhapHangService, QuanLyNhapHangService>();
 builder.Services.AddScoped<INhaCungCapService, NhaCungCapService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<INhaCungCapService, NhaCungCapService>();
 
 
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 var jwtKey = builder.Configuration["Jwt:Key"];
 if (string.IsNullOrEmpty(jwtKey))
 {
@@ -90,6 +93,10 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 builder.Services.AddHttpContextAccessor();
+// Đăng ký IHttpClientFactory
+builder.Services.AddHttpClient();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -8,8 +8,8 @@ namespace DATN_API.Models
         [Key]
         public int MaDonHang { get; set; }
 		public int? MaSach { get; set; }
-		public int? SoLuong { get; set; }
-		public int? GiaTien { get; set; }
+		public int SoLuong { get; set; }
+		public int GiaTien { get; set; }
 	}
 
 }
