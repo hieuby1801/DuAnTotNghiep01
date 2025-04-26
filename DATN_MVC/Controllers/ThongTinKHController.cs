@@ -32,9 +32,24 @@ namespace DATN_MVC.Controllers
 			}
 			return View(model);
         }
-        public IActionResult ThongTinKH()
+        public async Task<IActionResult> ThongTinKH()
         {
-            return View();
+            var idnd = HttpContext.Session.GetString("NguoiDungId");
+			var model = new Modeltong();
+			if (string.IsNullOrEmpty(idnd))
+			{
+				return RedirectToAction("DangNhap", "DangNhap"); // Nếu chưa đăng nhập, chuyển đến trang đăng nhập
+			}
+			else
+			{
+				var repon = await _httpClient.GetAsync($"DangNhaps/LayId/{idnd}");
+				if (repon.IsSuccessStatusCode)
+				{
+					var ndjs = await repon.Content.ReadAsStringAsync();
+                    model.NguoiDung = JsonConvert.DeserializeObject<NguoiDung>(ndjs);
+                }
+			}
+              return View(model);
         }
     }
 }

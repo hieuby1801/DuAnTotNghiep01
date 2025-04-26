@@ -1,4 +1,5 @@
-﻿@{
+﻿@model DATN_MVC.Models.Modeltong
+@{
     ViewData["Title"] = "ThongTinKhachHang";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -170,7 +171,7 @@
             <aside class="sidebar">
                 <div class="profile">
                     <div class="avatar"></div>
-                    <h2>Phan Nam</h2>
+                    <h2>@Model.NguoiDung.TenNguoiDung</h2>
                     <p class="rank">Thành viên Bạc</p>                    
                 </div>
                 <nav class="menu">
@@ -192,21 +193,18 @@
                 <div class="info-header">
                     <h1>Thông tin cá nhân</h1>
                     <form>
-                        <div class="form-group">
-                            <label>Họ</label>
-                            <input type="text" value="Phan">
-                        </div>
-                        <div class="form-group">
-                            <label>Tên</label>
-                            <input type="text" value="Nam">
-                        </div>
+                        @if(Model.NguoiDung != null)
+						{
+							
+						
+                     
                         <div class="form-group">
                             <label>Số điện thoại</label>
-                            <input type="text" value="0934666305">
+                                <input type="text" value="@Model.NguoiDung?.SoDienThoai" />
                         </div>
                         <div class="form-group">
                             <label>Email</label>
-                            <input type="email" value="Nam383166@gmail.com">
+                                <input type="email" value="@Model.NguoiDung?.Email" />
                         </div>
                         <div class="form-group">
                             <label>Giới tính</label>
@@ -217,9 +215,21 @@
                         </div>
                         <div class="form-group">
                             <label>Ngày sinh</label>
-                            <input type="date" value="2003-07-13">
-                        </div>
+                                @if (Model.NguoiDung?.NgaySinh == null)
+                                {
+                                    <input type="date" disabled />
+                                }
+                                else
+                                {
+                                    <input type="date" value="@Model.NguoiDung?.NgaySinh?.ToString("yyyy-MM-dd")" />
+                                }
+                       </div>
                         <button type="submit" class="save-btn">Lưu thay đổi</button>
+                        }
+						else
+						{
+							<p>Không có thông tin người dùng.</p>
+						}
                     </form>
                 </div>
             </main>
