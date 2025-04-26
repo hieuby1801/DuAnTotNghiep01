@@ -103,39 +103,40 @@
 				Số điện thoại
 				<input type="text" name="SDT" value="@Model.NguoiDung.SoDienThoai">
 			</label>
-			
-				<label>
-					Quốc gia
-					<select required>
-						<option value="Vietnam" selected>Việt Nam</option>
-					</select>
-				</label>
 
-				<label>
-					Tỉnh/Thành phố
-					<select id="province" name="Province" onchange="loadDistricts()" required>
-						<option value="">-- Chọn tỉnh --</option>
-					</select>
-				</label>
+			<label>
+				Quốc gia
+				<select required>
+					<option value="Vietnam" selected>Việt Nam</option>
+				</select>
+			</label>
+			<label>
+				Tỉnh/Thành phố
+				<select id="province" name="Province" onchange="loadDistricts(); updateProvinceName()" required>
+					<option value="">-- Chọn tỉnh --</option>
+				</select>
+				<input type="hidden" id="provinceName" name="ProvinceName" />
+			</label>
 
-				<label>
-					Quận/Huyện
-					<select id="district" name="District" onchange="loadWards()" required>
-						<option value="">-- Chọn huyện --</option>
-					</select>
-				</label>
+			<label>
+				Quận/Huyện
+				<select id="district" name="District" onchange="loadWards(); updateDistrictName()" required>
+					<option value="">-- Chọn huyện --</option>
+				</select>
+				<input type="hidden" id="districtName" name="DistrictName" />
+			</label>
 
-				<label>
-					Phường/Xã
-					<select id="ward" name="Ward" required>
-						<option value="">-- Chọn xã --</option>
-					</select>
-				</label>
+			<label>
+				Phường/Xã
+				<select id="ward" required>
+					<option value="">-- Chọn xã --</option>
+				</select>
+			</label>
 
-				<label>
-					Địa chỉ nhận hàng
-					<input type="text" name="Diachi" required>
-				</label>
+			<label>
+				Địa chỉ nhận hàng
+				<input type="text" name="Diachi" required>
+			</label>
 
 			@if (Model.ThongTins.Count > 0)
 			{
@@ -159,7 +160,7 @@
 			}
 		</div>
 		<div class="section">
-			
+
 			<h5>Phương Thức Thanh Toán</h5>
 
 			<div class="radio-group">
@@ -184,13 +185,13 @@
 				{
 					var thanhTien = (item.GiaBan ?? 0) * (item.SoLuong ?? 0);
 					<p>@item.TenSach - SL: @item.SoLuong - Giá: @item.GiaBan đ → Thành tiền: @thanhTien đ</p>
-					
+
 				}
 
 				@{
 					var tongTien = Model.ThongTins.Sum(item => (item.GiaBan ?? 0) * (item.SoLuong ?? 0));
 				}
-				
+
 				<p><strong>Tổng Số Tiền : @tongTien đ</strong></p>
 
 				<p>Thành tiền: @tongTien đ</p>
@@ -200,9 +201,9 @@
 			<button class="btn-pay" onclick="showQR()">Xác nhận thanh toán</button>
 			<div id="qr-container" style="display:none; margin-top: 20px;">
 				<h3>Quét mã QR để thanh toán bằng MB Bank</h3>
-				
-					 alt="QR Code MB Bank"
-					 width="200" height="200" />
+
+				alt="QR Code MB Bank"
+				width="200" height="200" />
 			</div>
 		</div>
 	</form>
@@ -216,12 +217,19 @@
 			const res = await fetch("https://provinces.open-api.vn/api/p/");
 			const provinces = await res.json();
 			const select = document.getElementById("province");
+
 			provinces.forEach(p => {
 				const opt = document.createElement("option");
-				opt.value = p.code;
-				opt.text = p.name;
+				opt.value = p.code;                     // Dùng mã tỉnh để gọi API huyện
+				opt.text = p.name;                      // Hiển thị tên tỉnh
+				opt.setAttribute('data-name', p.name);  // Lưu tên tỉnh vào thuộc tính data-name
 				select.appendChild(opt);
 			});
+		}
+
+		function updateProvinceName() {
+			const selectedOption = document.getElementById("province").selectedOptions[0];
+			document.getElementById("provinceName").value = selectedOption.getAttribute('data-name');
 		}
 
 		async function loadDistricts() {
@@ -236,8 +244,15 @@
 				const opt = document.createElement("option");
 				opt.value = d.code;
 				opt.text = d.name;
+				opt.setAttribute('data-name', d.name);  // Lưu tên huyện vào data-name
 				districtSelect.appendChild(opt);
 			});
+		}
+
+		function updateDistrictName() {
+			const selected = document.getElementById("district").selectedOptions[0];
+			const name = selected?.getAttribute('data-name') || "";  // Lấy tên quận/huyện
+			document.getElementById("districtName").value = name;   // Gán tên quận/huyện vào input hidden
 		}
 
 		async function loadWards() {
@@ -246,12 +261,15 @@
 			const data = await res.json();
 			const wardSelect = document.getElementById("ward");
 			wardSelect.innerHTML = '<option>-- Chọn xã --</option>';
+
 			data.wards.forEach(w => {
 				const opt = document.createElement("option");
 				opt.text = w.name;
+				opt.setAttribute('data-name', w.name);  // Lưu tên xã vào data-name
 				wardSelect.appendChild(opt);
 			});
 		}
+
 		// Gọi khi trang load
 		loadProvinces();
 	</script>
