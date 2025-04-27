@@ -103,6 +103,7 @@
                 <div class="row chiTietLoHang mb-3 chi-tiet-lo">
                     <div class="col-md-3">                        
                         <select class="form-select" asp-for="chiTietLoHangDtos[0].MaSach" required>
+
                             <option value="">-- Chọn mã sách --</option>
                             @foreach (var item in Model.Saches)
                             {

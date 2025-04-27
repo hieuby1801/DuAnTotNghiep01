@@ -1,4 +1,5 @@
-﻿@{
+﻿@model DATN_MVC.Models.Modeltong
+@{
     ViewData["Title"] = "ThongTinDonHang";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -238,7 +239,7 @@
             <aside class="sidebar">
                 <div class="profile">
                     <div class="avatar"></div>
-                    <h2>Phan Nam</h2>
+                    @Html.Partial("TTGT", Model)
                    <p class="rank">Thành viên Bạc</p>                  
                  
                 </div>
@@ -261,7 +262,7 @@
                 <div class="order-header">
                     <h1>Đơn hàng của tôi</h1>
                     <div class="order-status">
-                        <span class="active">Tất cả (1)</span>
+                        <span class="active">Tất cả (@Model.donUserDTOs.Count())</span>
                         <span>Chờ thanh toán (0)</span>
                         <span>Đang xử lý (0)</span>
                         <span>Đang giao (0)</span>
@@ -272,25 +273,40 @@
                 </div>
 
                 <div class="order-card">
-                    <div class="order-info">
-                        <div class="order-id">
-                            <a href="#">#103665076</a>
-                            <span class="cancelled">Bị hủy</span>
+                    @foreach (var donHang in Model.donUserDTOs)
+                    {
+                        <div class="order-info">
+                            <div class="order-id">
+                                <a href="#">#@donHang.MaDonHang</a>
+                                <span class="cancelled">@donHang.TrangThaiDonHang</span>
+                            </div>
+                            <div class="order-date">@donHang.NgayDatHang</div>
                         </div>
-                        <div class="order-date">24/04/2025 - 15:14</div>
-                    </div>
-                    <div class="product">
-                        <img src="https://cdn0.fahasa.com/media/catalog/product/9/7/9786045862732.jpg" alt="Tư Duy Ngược" class="product-img">
-                        <div class="product-name">Tư Duy Ngược</div>
-                    </div>
-                    <div class="order-footer">
-                        <div>1 sản phẩm</div>
-                        <div class="order-actions">
-                            <div class="order-total">Tổng tiền: <strong>89.500 đ</strong></div>
-                            <button class="cancel-btn">Hủy đơn</button>
-                            <button class="buy-again-btn">Mua lại</button>
-                        </div>
-                    </div>
+
+                        @foreach (var chiTiet in donHang.ChiTietDonHangs)
+                        {
+                            <div class="product">
+                                <img src="@Url.Content(chiTiet.HinhAnh)" alt="@chiTiet.TenSach" class="product-img">
+                                <div class="product-name">@chiTiet.TenSach</div>
+                                <div class="product-quantity">Số lượng: @chiTiet.SoLuong</div>
+                            </div>
+                        }
+
+                        <div class="order-footer">
+                            <div>@donHang.ChiTietDonHangs.Count sản phẩm</div>
+                            <div class="order-actions">
+                                <div class="order-total">Tổng tiền: <strong>@donHang.TongTien đ</strong></div>
+                                <form action="HuyDon" method="post">
+                                    <input type="hidden" name="madon" value="@donHang.MaDonHang" />
+                                    <button type="submit" class="cancel-btn">Hủy đơn</button>
+                                </form>
+                                <form action="MuaLai" method="post" style="display:inline;">
+                                    <input type="hidden" name="madon" value="@donHang.MaDonHang" />
+                                    <button type="submit" class="buy-again-btn">Mua lại</button>
+                                </form>
+                            </div>
+                        </div>                       
+                    }
                 </div>
             </main>
         </div>

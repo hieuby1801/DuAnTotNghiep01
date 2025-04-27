@@ -128,11 +128,11 @@
 
 			<label>
 				Phường/Xã
-				<select id="ward" required>
+				<select id="ward" name="Ward" onchange="updateWardName()" required>
 					<option value="">-- Chọn xã --</option>
 				</select>
+				<input type="hidden" id="wardName" name="WardName" />
 			</label>
-
 			<label>
 				Địa chỉ nhận hàng
 				<input type="text" name="Diachi" required>
@@ -212,7 +212,7 @@
 			document.getElementById("qr-container").style.display = "block";
 		}
 	</script>
-	<script>  
+	<script>
 		async function loadProvinces() {
 			const res = await fetch("https://provinces.open-api.vn/api/p/");
 			const provinces = await res.json();
@@ -220,16 +220,16 @@
 
 			provinces.forEach(p => {
 				const opt = document.createElement("option");
-				opt.value = p.code;                     // Dùng mã tỉnh để gọi API huyện
-				opt.text = p.name;                      // Hiển thị tên tỉnh
-				opt.setAttribute('data-name', p.name);  // Lưu tên tỉnh vào thuộc tính data-name
+				opt.value = p.code;
+				opt.text = p.name;
+				opt.setAttribute('data-name', p.name);
 				select.appendChild(opt);
 			});
 		}
 
 		function updateProvinceName() {
 			const selectedOption = document.getElementById("province").selectedOptions[0];
-			document.getElementById("provinceName").value = selectedOption.getAttribute('data-name');
+			document.getElementById("provinceName").value = selectedOption.getAttribute('data-name') || "";
 		}
 
 		async function loadDistricts() {
@@ -237,22 +237,21 @@
 			const res = await fetch(`https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`);
 			const data = await res.json();
 			const districtSelect = document.getElementById("district");
-			districtSelect.innerHTML = '<option>-- Chọn huyện --</option>';
-			document.getElementById("ward").innerHTML = '<option>-- Chọn xã --</option>';
+			districtSelect.innerHTML = '<option value="">-- Chọn huyện --</option>';
+			document.getElementById("ward").innerHTML = '<option value="">-- Chọn xã --</option>';
 
 			data.districts.forEach(d => {
 				const opt = document.createElement("option");
 				opt.value = d.code;
 				opt.text = d.name;
-				opt.setAttribute('data-name', d.name);  // Lưu tên huyện vào data-name
+				opt.setAttribute('data-name', d.name);
 				districtSelect.appendChild(opt);
 			});
 		}
 
 		function updateDistrictName() {
 			const selected = document.getElementById("district").selectedOptions[0];
-			const name = selected?.getAttribute('data-name') || "";  // Lấy tên quận/huyện
-			document.getElementById("districtName").value = name;   // Gán tên quận/huyện vào input hidden
+			document.getElementById("districtName").value = selected?.getAttribute('data-name') || "";
 		}
 
 		async function loadWards() {
@@ -260,17 +259,23 @@
 			const res = await fetch(`https://provinces.open-api.vn/api/d/${districtCode}?depth=2`);
 			const data = await res.json();
 			const wardSelect = document.getElementById("ward");
-			wardSelect.innerHTML = '<option>-- Chọn xã --</option>';
+			wardSelect.innerHTML = '<option value="">-- Chọn xã --</option>';
 
 			data.wards.forEach(w => {
 				const opt = document.createElement("option");
+				opt.value = w.code;
 				opt.text = w.name;
-				opt.setAttribute('data-name', w.name);  // Lưu tên xã vào data-name
+				opt.setAttribute('data-name', w.name);
 				wardSelect.appendChild(opt);
 			});
 		}
 
-		// Gọi khi trang load
+		function updateWardName() {
+			const selected = document.getElementById("ward").selectedOptions[0];
+			document.getElementById("wardName").value = selected?.getAttribute('data-name') || "";
+		}
+
+		// Gọi hàm load tỉnh khi trang web load
 		loadProvinces();
 	</script>
 

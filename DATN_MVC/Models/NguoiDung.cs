@@ -5,7 +5,7 @@ namespace DATN_MVC.Models
     public class NguoiDung
     {
        
-        public int MaNguoiDung { get; set; }
+        public int? MaNguoiDung { get; set; }
 
         public string? TenNguoiDung { get; set; }
 

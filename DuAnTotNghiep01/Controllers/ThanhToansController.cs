@@ -120,15 +120,15 @@ namespace DATN_API.Controllers
 			var momoRequest = new MomoRequest
 			{
 				OrderId = maDonHangMoi,  // Sử dụng mã đơn hàng mới
-				OrderInfo = nguoidung.TenNguoiDung+ "chuyển tiền" + nguoidung.SoDienThoai + request.DiaChi,  // Thông tin đơn hàng
-				Amount = ketQuaChiTiet.GiaTien  // Giá trị thanh toán (ví dụ 10.000 VND cho demo)
+				OrderInfo = nguoidung.TenNguoiDung+ "chuyển tiền" + nguoidung.SoDienThoai,  // Thông tin đơn hàng
+				Amount = ketQuaChiTiet.GiaTien *ketQuaChiTiet.SoLuong // Giá trị thanh toán (ví dụ 10.000 VND cho demo)
 			};
 
 			// Gọi phương thức tạo URL thanh toán từ dịch vụ MoMo
 			var payUrl = await _paymentService.CreateMomoPaymentUrl(momoRequest);
 
 			// Trả về URL thanh toán cho người dùng
-			return Ok(new { PayUrl = payUrl });
+			return Ok(new { PayUrl = payUrl,momoRequest.Amount });
 		}
 
 		// Nhận kết quả từ MoMo và cập nhật trạng thái đơn hàng 

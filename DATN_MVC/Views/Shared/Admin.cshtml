@@ -1,5 +1,7 @@
 ﻿@model DATN_MVC.Models.Modeltong
-
+@{
+    var vaitro = Context.Session.GetString("VaiTro");
+}
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -227,30 +229,67 @@
     <div class="admin-container">
         <aside class="sidebar">
             <div class="logo">
-                <img src="~/images/main-logo.png" alt="Bookly Logo">
+                <img src="~/images/LogoDaviCiBook-removebg.png" alt="Bookly Logo">
             </div>
             <ul>
-                <li id="tongQuanItem" class="active" onclick="changeActiveMenu(this)">
-                    <i class="bi bi-speedometer2"></i> Tổng quan
-                </li>
+               
                 <li id="quanLySachItem" onclick="location.href='@Url.Action("QuanLySach", "Admin")'; changeActiveMenu(this)" style="cursor: pointer;">
                     <i class="bi bi-journal-bookmark"></i> Quản Lý Sách
                 </li>
-                <li id="donHangItem" onclick="location.href='@Url.Action("QuanLyDonhang", "Admin")'; changeActiveMenu(this)" style="cursor: pointer;">
+                <li id="donHangItem" onclick="location.href='@Url.Action("QuanLyDonhang", "DonHang")'; changeActiveMenu(this)" style="cursor: pointer;">
                     <i class="bi bi-cart-check"></i> Đơn hàng
                 </li>
                 <li onclick="changeActiveMenu(this)">
                     <i class="bi bi-bar-chart-line"></i> Thống kê
                 </li>
                 <li onclick="location.href='@Url.Action("DanhSachNhapHang", "QuanLyNhapHang")'; changeActiveMenu(this)" style="cursor:pointer;">
-                    <i class="bi bi-boxes"></i> Quản Kho
+                    <i class="bi bi-boxes"></i> Nhập Hàng
                 </li>
                 <li onclick="location.href='@Url.Action("VanChuyen", "Admin")'; changeActiveMenu(this)" style="cursor:pointer;">
                     <i class="bi bi-truck"></i> Vận Chuyển
                 </li>
+<<<<<<< HEAD
+=======
+=======
+                @if(vaitro == "Admin")
+                {
+                    <li id="quanLySachItem" onclick="location.href='@Url.Action("QuanLySach", "Admin")'; changeActiveMenu(this)" style="cursor: pointer;">
+                        <i class="bi bi-journal-bookmark"></i> Quản Lý Sách
+                    </li>
+                    <li id="donHangItem" onclick="location.href='@Url.Action("QuanLyDonhang", "Admin")'; changeActiveMenu(this)" style="cursor: pointer;">
+                        <i class="bi bi-cart-check"></i> Đơn hàng
+                    </li>
+                    <li onclick="changeActiveMenu(this)">
+                        <i class="bi bi-bar-chart-line"></i> Thống kê
+                    </li>
+                    <li onclick="location.href='@Url.Action("DanhSachNhapHang", "QuanLyNhapHang")'; changeActiveMenu(this)" style="cursor:pointer;">
+                        <i class="bi bi-boxes"></i> Nhập Hàng
+                    </li>
+                    <li onclick="location.href='@Url.Action("VanChuyen", "Admin")'; changeActiveMenu(this)" style="cursor:pointer;">
+                        <i class="bi bi-truck"></i> Vận Chuyển
+                    </li>
+                }
+                else if (vaitro == "Quản kho")
+                {
+                    <li onclick="location.href='@Url.Action("DanhSachNhapHang", "QuanLyNhapHang")'; changeActiveMenu(this)" style="cursor:pointer;">
+                        <i class="bi bi-boxes"></i> Nhập Hàng
+                    </li>
+                    <li onclick="location.href='@Url.Action("VanChuyen", "Admin")'; changeActiveMenu(this)" style="cursor:pointer;">
+                        <i class="bi bi-truck"></i> Vận Chuyển
+                    </li>
+                }
+                else
+                {
+                    <li onclick="location.href='@Url.Action("VanChuyen", "Admin")'; changeActiveMenu(this)" style="cursor:pointer;">
+                        <i class="bi bi-truck"></i> Vận Chuyển
+                    </li>
+                }
+
+
+>>>>>>> 0be4d3f2d9c7f380cbb8cb867b165018363b85b2
 
             
-                <li onclick="location.href='@Url.Action("DangXuat", "TaiKhoan")'; changeActiveMenu(this)" style="cursor:pointer;">
+                <li onclick="location.href='@Url.Action("DangXuat", "DangNhap") '; changeActiveMenu(this)" style="cursor:pointer;">
                     <i class="bi bi-box-arrow-right"></i> Đăng xuất
                 </li>
             </ul>

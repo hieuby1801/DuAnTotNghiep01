@@ -1,4 +1,5 @@
-﻿using DATN_MVC.DTOs;
+﻿
+using DATN_MVC.DTOs;
 
 namespace DATN_MVC.Models
 {
@@ -27,6 +28,12 @@ namespace DATN_MVC.Models
 		public ThemSachDto ThemSachDto { get; set; }
 		public ThongTin ThongTin { get; set; }
 		public List<ThongTin> ThongTins { get; set; } = new List<ThongTin>();
+
+		public List<QuanLyDonUserDTOs> donUserDTOs { get; set; } = new List<QuanLyDonUserDTOs>();
+		public QuanLyDonUserDTOs donUserDTO { get; set; }
+		public string PayUrl { get; set; }
+        public string RealQRImageBase64 { get; set; } // để chứa link ảnh QR thực sự
+
         public LoHang LoHang { get; set; }
         public List<LoHang> LoHangs { get; set; }
         public LoHangDTO loHangDto { get; set; }
@@ -40,6 +47,7 @@ namespace DATN_MVC.Models
         public List<LichSuGiaDTO> lichSuGiaDtos { get; set; }
         public string PayUrl { get; set; }
         public string RealQRImageBase64 { get; set; }
+        public List<DonHang> DonHangs { get; set; }
     }
 
 }
