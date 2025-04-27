@@ -48,9 +48,94 @@ namespace DATN_API.Service
                 }
             }
         }
-        public async Task<bool> insertChiTietLoHang(List<ChiTietLoHangDTO> chiTietLoHangs)
+        public async Task<bool> insertChiTietLoHang(ChiTietLoHangDTO dto)
         {
-            return true;
+            var connectionString = _configuration.GetConnectionString("con");
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                await connection.OpenAsync();
+
+                using (SqlCommand command = new SqlCommand(@"INSERT INTO ChiTietLoHang (MaLo, MaSach, SoLuongNhap, GiaNhap, NhaXuatBan)
+                                                     VALUES (@MaLo, @MaSach, @SoLuongNhap, @GiaNhap, @NhaXuatBan)", connection))
+                {
+                    command.CommandType = CommandType.Text; // vì đây là câu lệnh SQL thường, không phải stored procedure
+
+                    command.Parameters.AddWithValue("@MaLo", dto.MaLo);
+                    command.Parameters.AddWithValue("@MaSach", dto.MaSach);
+                    command.Parameters.AddWithValue("@SoLuongNhap", dto.SoLuongNhap);
+                    command.Parameters.AddWithValue("@GiaNhap", dto.GiaNhap);
+                    command.Parameters.AddWithValue("@NhaXuatBan", (object?)dto.NhaXuatBan ?? DBNull.Value); // nếu NXB null thì để NULL trong db
+
+                    try
+                    {
+                        await command.ExecuteNonQueryAsync();
+                        return true;
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                }
+            }
         }
-    }
+        public async Task<bool> insertTonKho(TonKhoDTO dto)
+        {
+			var connectionString = _configuration.GetConnectionString("con");
+
+			using (SqlConnection connection = new SqlConnection(connectionString))
+			{
+				await connection.OpenAsync();
+
+				string query = @"INSERT INTO TonKho (MaSach, MaLo, SoLuongTon, MaNhaCungCap)
+                             VALUES (@MaSach, @MaLo, @SoLuongTon, @MaNhaCungCap)";
+
+				using (SqlCommand command = new SqlCommand(query, connection))
+				{
+					command.Parameters.AddWithValue("@MaSach", dto.MaSach);
+					command.Parameters.AddWithValue("@MaLo", dto.MaLo);
+					command.Parameters.AddWithValue("@SoLuongTon", dto.SoLuongTon);
+					command.Parameters.AddWithValue("@MaNhaCungCap", dto.MaNhaCungCap);
+
+					try
+					{
+						await command.ExecuteNonQueryAsync();
+						return true;
+					}
+					catch
+					{
+						return false;
+					}
+				}
+			}
+		}
+		public async Task<bool> insertLichSuGia(LichSuGiaDTO dto)
+		{
+			var connectionString = _configuration.GetConnectionString("con");
+
+			using (SqlConnection connection = new SqlConnection(connectionString))
+			{
+				connection.Open();
+
+				using (SqlCommand command = new SqlCommand("InsertLichSuGia", connection))
+				{
+					command.CommandType = CommandType.StoredProcedure;
+
+					command.Parameters.AddWithValue("@MaSach", dto.MaSach);
+					command.Parameters.AddWithValue("@MaLo", dto.MaLo);
+					command.Parameters.AddWithValue("@GiaNhap", dto.GiaNhap);
+
+					try
+					{
+						await command.ExecuteNonQueryAsync();
+						return true;
+					}
+					catch
+					{
+						return false;
+					}
+				}
+			}
+		}
+	}
 }

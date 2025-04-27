@@ -36,10 +36,17 @@ namespace DATN_MVC.Models
 
         public LoHang LoHang { get; set; }
         public List<LoHang> LoHangs { get; set; }
+        public LoHangDTO loHangDto { get; set; }
         public ChiTietDonHang ChiTietDonHang { get; set; }
         public List<ChiTietDonHang> ChiTietDonHangs { get; set; }
         public ChiTietLoHang ChiTietLoHang { get; set; }
         public List<ChiTietLoHang> chiTietLoHangs { get; set; }
+        public ChiTietLoHangDTO chiTietLoHangDto { get; set; }
+        public List<ChiTietLoHangDTO> chiTietLoHangDtos { get; set; }
+        public LichSuGiaDTO lichSuGiaDto { get; set; }
+        public List<LichSuGiaDTO> lichSuGiaDtos { get; set; }
+        public string PayUrl { get; set; }
+        public string RealQRImageBase64 { get; set; }
         public List<DonHang> DonHangs { get; set; }
     }
 
