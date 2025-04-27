@@ -185,28 +185,31 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>#12345</td>
-                            <td>Nguyễn Văn A</td>
-                            <td>25/04/2025</td>
-                            <td>Đang xử lý</td>
-                            <td>100,000 VND</td> <!-- Hiển thị tổng tiền -->
-                            <td>
-                                <button class="edit-btn">Sửa</button>
-                                <button class="delete-btn">Xóa</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#12346</td>
-                            <td>Trần Thị B</td>
-                            <td>24/04/2025</td>
-                            <td>Đã giao</td>
-                            <td>150,000 VND</td> <!-- Hiển thị tổng tiền -->
-                            <td>
-                                <button class="edit-btn">Sửa</button>
-                                <button class="delete-btn">Xóa</button>
-                            </td>
-                        </tr>
+                        <!-- Dữ liệu sách mẫu -->
+                        @if (Model.DonHangs != null && Model.DonHangs.Any())
+                        {
+                            foreach (var item in Model.DonHangs)
+                            {
+                                <tr>
+                                    <td>@item.MaDonHang</td>
+                                    <td>@item.MaNguoiDung</td>
+                                    <td>@item.NgayDatHang</td>
+                                    <td> @item.TrangThai</td>
+                                    <td> @item.TongTien</td>
+                                    
+                                    <td>
+                                       
+                                        <button class="delete-btn">Xem Chi Tiết</button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center text-muted">Không có sách nào được hiển thị.</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>

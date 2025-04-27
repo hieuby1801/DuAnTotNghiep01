@@ -11,7 +11,7 @@ namespace DATN_API.Service
         }
         public List<DonHang> GetDonHangs()
         {
-             return _Context.donHangs.ToList();
+             return _Context.DonHang.ToList();
         }
 
 

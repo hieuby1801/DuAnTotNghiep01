@@ -10,11 +10,11 @@ namespace DATN_API.Controllers
     public class DonHangController : ControllerBase
     {
         private readonly IDonHangSeverce _donHangSeverce;
-        public DonHangController (DonHangService donHangSeverce)
+        public DonHangController (IDonHangSeverce donHangSeverce)
         {
             _donHangSeverce = donHangSeverce;
         }
-        [HttpGet]
+        [HttpGet("GetDonHangs")]
         public List<DonHang> GetDonHangs()
         {
             var donHangs = _donHangSeverce.GetDonHangs();

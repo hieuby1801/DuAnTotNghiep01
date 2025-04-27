@@ -40,7 +40,7 @@ namespace DATN_MVC.Models
         public List<ChiTietDonHang> ChiTietDonHangs { get; set; }
         public ChiTietLoHang ChiTietLoHang { get; set; }
         public List<ChiTietLoHang> chiTietLoHangs { get; set; }
-
+        public List<DonHang> DonHangs { get; set; }
     }
 
 }
