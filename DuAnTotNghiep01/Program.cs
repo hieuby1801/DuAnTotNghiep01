@@ -35,10 +35,7 @@ builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<INhaCungCapService, NhaCungCapService>();
 builder.Services.AddScoped<IDonHangSeverce, DonHangService>();
 
-<<<<<<< HEAD
-=======
 
->>>>>>> cf10167a49aeb2fabb4c550665a02c1be7f954af
 
 
 
