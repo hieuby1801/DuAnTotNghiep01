@@ -103,7 +103,8 @@ namespace DATN_MVC.Controllers
                         {
                             "User" => RedirectToAction("Index", "TrangChu"),
                             "Admin" => RedirectToAction("DanhSach", "Admin"),
-                            "admin" => RedirectToAction("DanhSach", "Admin"),
+                            "Quản kho" => RedirectToAction("DanhSachNhapHang", "QuanLyNhapHang"),
+                            "Shipper" => RedirectToAction("VanChuyen", "Admin"),
                             _ => RedirectToAction("DefaultPage")
                         };
                     }

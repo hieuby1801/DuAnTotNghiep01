@@ -1,5 +1,7 @@
 ﻿@model DATN_MVC.Models.Modeltong
-
+@{
+    var vaitro = Context.Session.GetString("VaiTro");
+}
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -230,22 +232,40 @@
                 <img src="~/images/LogoDaviCiBook-removebg.png" alt="Bookly Logo">
             </div>
             <ul>
-               
-                <li id="quanLySachItem" onclick="location.href='@Url.Action("QuanLySach", "Admin")'; changeActiveMenu(this)" style="cursor: pointer;">
-                    <i class="bi bi-journal-bookmark"></i> Quản Lý Sách
-                </li>
-                <li id="donHangItem" onclick="location.href='@Url.Action("QuanLyDonhang", "Admin")'; changeActiveMenu(this)" style="cursor: pointer;">
-                    <i class="bi bi-cart-check"></i> Đơn hàng
-                </li>
-                <li onclick="changeActiveMenu(this)">
-                    <i class="bi bi-bar-chart-line"></i> Thống kê
-                </li>
-                <li onclick="location.href='@Url.Action("DanhSachNhapHang", "QuanLyNhapHang")'; changeActiveMenu(this)" style="cursor:pointer;">
-                    <i class="bi bi-boxes"></i> Nhập Hàng
-                </li>
-                <li onclick="location.href='@Url.Action("VanChuyen", "Admin")'; changeActiveMenu(this)" style="cursor:pointer;">
-                    <i class="bi bi-truck"></i> Vận Chuyển
-                </li>
+                @if(vaitro == "Admin")
+                {
+                    <li id="quanLySachItem" onclick="location.href='@Url.Action("QuanLySach", "Admin")'; changeActiveMenu(this)" style="cursor: pointer;">
+                        <i class="bi bi-journal-bookmark"></i> Quản Lý Sách
+                    </li>
+                    <li id="donHangItem" onclick="location.href='@Url.Action("QuanLyDonhang", "Admin")'; changeActiveMenu(this)" style="cursor: pointer;">
+                        <i class="bi bi-cart-check"></i> Đơn hàng
+                    </li>
+                    <li onclick="changeActiveMenu(this)">
+                        <i class="bi bi-bar-chart-line"></i> Thống kê
+                    </li>
+                    <li onclick="location.href='@Url.Action("DanhSachNhapHang", "QuanLyNhapHang")'; changeActiveMenu(this)" style="cursor:pointer;">
+                        <i class="bi bi-boxes"></i> Nhập Hàng
+                    </li>
+                    <li onclick="location.href='@Url.Action("VanChuyen", "Admin")'; changeActiveMenu(this)" style="cursor:pointer;">
+                        <i class="bi bi-truck"></i> Vận Chuyển
+                    </li>
+                }
+                else if (vaitro == "Quản kho")
+                {
+                    <li onclick="location.href='@Url.Action("DanhSachNhapHang", "QuanLyNhapHang")'; changeActiveMenu(this)" style="cursor:pointer;">
+                        <i class="bi bi-boxes"></i> Nhập Hàng
+                    </li>
+                    <li onclick="location.href='@Url.Action("VanChuyen", "Admin")'; changeActiveMenu(this)" style="cursor:pointer;">
+                        <i class="bi bi-truck"></i> Vận Chuyển
+                    </li>
+                }
+                else
+                {
+                    <li onclick="location.href='@Url.Action("VanChuyen", "Admin")'; changeActiveMenu(this)" style="cursor:pointer;">
+                        <i class="bi bi-truck"></i> Vận Chuyển
+                    </li>
+                }
+
 
             
                 <li onclick="location.href='@Url.Action("DangXuat", "TaiKhoan")'; changeActiveMenu(this)" style="cursor:pointer;">
