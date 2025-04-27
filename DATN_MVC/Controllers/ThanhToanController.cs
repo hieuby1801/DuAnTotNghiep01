@@ -94,7 +94,8 @@ namespace DATN_MVC.Controllers
                 {
                     manguoidung = int.Parse(idnd),
                     MaSach = masach,
-                    SoLuong = soluong
+                    SoLuong = soluong,
+                   
                 };
 
                 var repom = await _httpClient.PostAsJsonAsync("ThanhToans/ThemdonhangQR", donHangData);

@@ -77,5 +77,41 @@ namespace DATN_MVC.Controllers
             }
             return View(model);
         }
+        public async Task<IActionResult> HuyDon(int madon)
+        {
+            var repon = await _httpClient.DeleteAsync($"NguoiDungs/huydon/{madon}");
+            if (repon.IsSuccessStatusCode) 
+            {
+                TempData["ThongBao"] = "Hủy đơn hàng thành công!";
+                return RedirectToAction("ThongTinDH"); // Về lại trang đơn hàng
+            }
+            else
+            {
+                TempData["ThongBao"] = "Hủy đơn hàng thất bại!";
+                return RedirectToAction("ThongTinDH"); // Vẫn về trang đơn hàng
+            }
+        }
+
+        public async Task<IActionResult> MuaLai(int madon)
+        {
+            // Gọi API với phương thức PUT để mua lại đơn hàng
+            var response = await _httpClient.PutAsync($"NguoiDungs/MuaLai/{madon}", null);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Nếu thành công, hiển thị thông báo thành công và chuyển đến trang đơn hàng
+                TempData["ThongBao"] = "Mua lại đơn hàng thành công!";
+            }
+            else
+            {
+                // Nếu thất bại, hiển thị thông báo lỗi với mã trạng thái
+                string errorMessage = $"Mua lại đơn hàng thất bại! Mã lỗi: {response.StatusCode}";
+                TempData["ThongBao"] = errorMessage;
+            }
+
+            // Chuyển hướng về trang thông tin đơn hàng
+            return RedirectToAction("ThongTinDH");
+        }
+
     }
 }

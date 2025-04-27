@@ -31,8 +31,11 @@ builder.Services.AddScoped<IGioHnagservice, GioHangservice>();
 builder.Services.AddScoped<IThanhToanService, ThanhToanService>();
 builder.Services.AddScoped<IQuanLyNhapHangService, QuanLyNhapHangService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
+<<<<<<< HEAD
 builder.Services.AddScoped<INhaCungCapService, NhaCungCapService>();
 builder.Services.AddScoped<IDonHangSeverce, DonHangService>();
+=======
+>>>>>>> c6cbd5e7c47f653d12d2794633d2d57061c43f7b
 
 
 

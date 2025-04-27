@@ -22,7 +22,8 @@ namespace DATN_MVC.Controllers
 			// Chuyển chuỗi JSON thành List<int>
 			var danhSachMaSach = JsonConvert.DeserializeObject<List<int>>(DanhSachMaSach);
 			var idnd = HttpContext.Session.GetString("NguoiDungId");
-			if (idnd != null) 
+           
+            if (idnd != null) 
 			{
 				var request = new XoaGioHangDTOs
 				{

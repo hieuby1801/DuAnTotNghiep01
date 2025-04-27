@@ -296,12 +296,17 @@
                             <div>@donHang.ChiTietDonHangs.Count sản phẩm</div>
                             <div class="order-actions">
                                 <div class="order-total">Tổng tiền: <strong>@donHang.TongTien đ</strong></div>
-                                <button class="cancel-btn">Hủy đơn</button>
-                                <button class="buy-again-btn">Mua lại</button>
+                                <form action="HuyDon" method="post">
+                                    <input type="hidden" name="madon" value="@donHang.MaDonHang" />
+                                    <button type="submit" class="cancel-btn">Hủy đơn</button>
+                                </form>
+                                <form action="MuaLai" method="post" style="display:inline;">
+                                    <input type="hidden" name="madon" value="@donHang.MaDonHang" />
+                                    <button type="submit" class="buy-again-btn">Mua lại</button>
+                                </form>
                             </div>
-                        </div>
+                        </div>                       
                     }
-
                 </div>
             </main>
         </div>
