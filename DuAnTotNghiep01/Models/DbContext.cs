@@ -26,6 +26,6 @@ namespace DATN_API.Models
 		public DbSet<TonKho> tonKhos { get; set; }
 		public DbSet<VanChuyen>	vanChuyens { get; set; }
 		public DbSet<GioHang> Giohang { get; set; }
-
+		public DbSet<DonHang> donHangs { get; set; }
     }
 }
