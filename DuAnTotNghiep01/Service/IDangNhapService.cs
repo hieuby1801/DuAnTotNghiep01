@@ -25,7 +25,7 @@ namespace DATN_API.Service
         public NguoiDung ThayDoiMatKhau(string email, string matkhau);
 
         //chinh sua 
-        public NguoiDung ChinhSua(int id, NguoiDung nguoiDung);
+        public NguoiDung ChinhSua(NguoiDung nguoiDung);
         public NguoiDung LayTheoId(int id);
     }
 }

@@ -225,25 +225,44 @@ namespace DATN_API.Service
             }
             return null;
         }
-        public NguoiDung ChinhSua(int id, NguoiDung nguoiDung)
+        // chỉnh sửa thông tin người dùng
+        public NguoiDung ChinhSua( NguoiDung nguoiDung)
         {
-            var user = _Context.NguoiDung.FirstOrDefault(x => x.MaNguoiDung == id);
+            var user = _Context.NguoiDung.FirstOrDefault(x => x.MaNguoiDung == nguoiDung.MaNguoiDung);
             if (user != null)
             {
-                var newuse = new NguoiDung
+                // Chỉ cập nhật những trường cần thiết
+                if (!string.IsNullOrEmpty(nguoiDung.GioiTinh))
                 {
-                    TenNguoiDung = user.TenNguoiDung,
-                  
-                    NgaySinh = user.NgaySinh,
-                    DiaChi = user.DiaChi,
-                    SoDienThoai = user.SoDienThoai,
-                    Email = user.Email,
-                    Saft = user.Saft,
-                    MatKhau = HashPassword(user.Saft, user.MatKhau),
-                };
-                _Context.NguoiDung.Update(newuse);
+                    user.GioiTinh = nguoiDung.GioiTinh;
+                }
+
+                // Cập nhật các trường khác nếu cần (vd: Giới tính, SĐT, Email, v.v.)
+                if (!string.IsNullOrEmpty(nguoiDung.TenNguoiDung))
+                {
+                    user.TenNguoiDung = nguoiDung.TenNguoiDung;
+                }
+                if (nguoiDung.NgaySinh != null)
+                {
+                    user.NgaySinh = nguoiDung.NgaySinh;
+                }
+                if (!string.IsNullOrEmpty(nguoiDung.DiaChi))
+                {
+                    user.DiaChi = nguoiDung.DiaChi;
+                }
+                if (!string.IsNullOrEmpty(nguoiDung.SoDienThoai))
+                {
+                    user.SoDienThoai = nguoiDung.SoDienThoai;
+                }
+                if (!string.IsNullOrEmpty(nguoiDung.Email))
+                {
+                    user.Email = nguoiDung.Email;
+                }
+
+                // Không cần thay đổi mật khẩu hoặc Saft trừ khi có yêu cầu cụ thể
+                _Context.NguoiDung.Update(user);
                 _Context.SaveChanges();
-                return newuse;
+                return user;
             }
             return null;
         }

@@ -155,30 +155,22 @@ namespace DATN_API.Controllers
             return BadRequest(new { message = "mật khẩu không được giống mật khẩu cũ" });
         }
 
-        // chinh sua tai khaon
-        [Authorize]
-        [HttpPut("chinhsua/{id}")]
-
-        public IActionResult NguoiDung(int id, NguoiDung nguoiDung)
+        [HttpPut("chinhsua")]
+        public IActionResult NguoiDung( [FromBody] NguoiDung nguoiDung)
         {
-            var saft = _dangNhapService.Ramdom();
-            nguoiDung.Saft = saft;
-            var newuser = new NguoiDung
+            if (nguoiDung == null)
             {
-                TenNguoiDung = nguoiDung.TenNguoiDung,
-                
-                NgaySinh = nguoiDung.NgaySinh,
-                DiaChi = nguoiDung.DiaChi,
-                Saft = nguoiDung.Saft,
-                MatKhau = nguoiDung.MatKhau,
-                Email = nguoiDung.Email,
-            };
-            var update = _dangNhapService.ChinhSua(id, nguoiDung);
+                return BadRequest(new { message = "Dữ liệu không hợp lệ!" });
+            }
+
+            var update = _dangNhapService.ChinhSua( nguoiDung);
+
             if (update != null)
             {
-                return Ok(new { message = "Cập nhập thành công!" });
+                return Ok(new { message = "Cập nhật thành công!" });
             }
-            return BadRequest(new { message = "Cập nhật không thành công" });
+
+            return BadRequest(new { message = "Cập nhật không thành công!" });
         }
 
         [HttpGet("LayId/{id}")]

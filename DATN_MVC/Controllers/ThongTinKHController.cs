@@ -2,6 +2,7 @@
 using DATN_MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Security.Policy;
 
 namespace DATN_MVC.Controllers
 {
@@ -58,6 +59,7 @@ namespace DATN_MVC.Controllers
 			}
               return View(model);
         }
+        
         public async Task<IActionResult> TTGT()
         {
             var idnd = HttpContext.Session.GetString("NguoiDungId");
@@ -112,6 +114,55 @@ namespace DATN_MVC.Controllers
             // Chuyển hướng về trang thông tin đơn hàng
             return RedirectToAction("ThongTinDH");
         }
+
+        // Hàm Chỉnh sửa người dùng
+        public async Task<IActionResult> ChinhSua(int Manguoidung, string gender, DateTime? Ngaysinh, string SDT, string Email)
+        {
+            // Kiểm tra các tham số có hợp lệ không
+            if (string.IsNullOrEmpty(SDT) || string.IsNullOrEmpty(Email))
+            {
+                TempData["ThongBao"] = "Số điện thoại và email không được để trống!";
+                return RedirectToAction("ThongTinKH");
+            }
+
+            // Tạo đối tượng NguoiDung với thông tin người dùng cần cập nhật
+            var nguoiDung = new NguoiDung();
+            nguoiDung.MaNguoiDung = Manguoidung;
+            // Chỉ cập nhật các trường có giá trị
+            if (!string.IsNullOrEmpty(gender))
+            {
+                nguoiDung.GioiTinh = gender;
+            }
+            if (Ngaysinh.HasValue)
+            {
+                nguoiDung.NgaySinh = Ngaysinh.Value;
+            }
+            if (!string.IsNullOrEmpty(SDT))
+            {
+                nguoiDung.SoDienThoai = SDT;
+            }
+            if (!string.IsNullOrEmpty(Email))
+            {
+                nguoiDung.Email = Email;
+            }
+
+            // Gửi dữ liệu tới API để cập nhật
+            var response = await _httpClient.PutAsJsonAsync("DangNhaps/chinhsua", nguoiDung);
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["ThongBao"] = "Cập nhật thông tin thành công!"+nguoiDung.GioiTinh ;
+                return RedirectToAction("ThongTinKH");
+            }
+            else
+            {
+                TempData["ThongBao"] = "Cập nhật thông tin thất bại!" + nguoiDung.GioiTinh;
+            }
+
+            return RedirectToAction("ThongTinKH");
+        }
+
+
 
     }
 }

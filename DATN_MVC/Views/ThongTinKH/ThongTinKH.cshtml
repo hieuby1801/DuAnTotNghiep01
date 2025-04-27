@@ -172,6 +172,7 @@
                 <div class="profile">
                     <div class="avatar"></div>
                     @Html.Partial("TTGT", Model)
+                    
                     <p class="rank">Thành viên Bạc</p>                    
                 </div>
                 <nav class="menu">
@@ -192,26 +193,23 @@
             <main class="main-content">
                 <div class="info-header">
                     <h1>Thông tin cá nhân</h1>
-                    <form>
+                    <form action="ChinhSua" method="post">
                         @if(Model.NguoiDung != null)
 						{
-							
-						
-                     
                         <div class="form-group">
                             <label>Số điện thoại</label>
-                                <input type="text" value="@Model.NguoiDung?.SoDienThoai" />
+                                <input type="text" name="SDT" value="@Model.NguoiDung?.SoDienThoai" />
                         </div>
                         <div class="form-group">
                             <label>Email</label>
-                                <input type="email" value="@Model.NguoiDung?.Email" />
+                                <input type="email" name="Email" value="@Model.NguoiDung?.Email" />
                         </div>
                         <div class="form-group">
                             <label>Giới tính</label>
-                            <div class="gender-group">
-                                <label><input type="radio" name="gender" checked> Nam</label>
-                                <label><input type="radio" name="gender"> Nữ</label>
-                            </div>
+                                <div class="gender-group">
+                                    <label><input type="radio" name="gender" value="Nam" @(Model.NguoiDung?.GioiTinh == "Nam" ? "checked" : "")> Nam</label>
+                                    <label><input type="radio" name="gender" value="Nữ" @(Model.NguoiDung?.GioiTinh == "Nữ" ? "checked" : "")> Nữ</label>
+                                </div>
                         </div>
                         <div class="form-group">
                             <label>Ngày sinh</label>
@@ -221,10 +219,10 @@
                                 }
                                 else
                                 {
-                                    <input type="date" value="@Model.NguoiDung?.NgaySinh?.ToString("yyyy-MM-dd")" />
+                                    <input type="date" name="Ngaysinh" value="@Model.NguoiDung?.NgaySinh?.ToString("yyyy-MM-dd")" />
                                 }
                        </div>
-                        <button type="submit" class="save-btn">Lưu thay đổi</button>
+                            <button type="submit" name="Manguoidung" value="@Model.NguoiDung.MaNguoiDung" class="save-btn">Lưu thay đổi</button>
                         }
 						else
 						{

@@ -21,8 +21,8 @@ namespace DATN_MVC.Models
 
         public string? VaiTro { get; set; }
 
-        public string? TrangThai { get; set; } 
+        public string? TrangThai { get; set; }
+        public string? GioiTinh { get; set; }
 
-  
     }
 }
