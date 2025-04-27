@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DATN_API.DTOs
+namespace DATN_MVC.DTOs
 {
     public class LoHangDTO    {
         public int MaNhaCungCap { get; set; }

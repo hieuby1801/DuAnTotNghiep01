@@ -75,7 +75,7 @@
             </div>
             <div class="col-md-4">
                 <label class="form-label">Nhà Cung Cấp</label>
-                <select asp-for="LoHang.MaNhaCungCap" class="form-select" required>
+                <select asp-for="loHangDto.MaNhaCungCap" class="form-select" required>
                     @foreach (var item in Model.nhaCungCaps)
                     {
                         <option value="@item.MaNhaCungCap">@item.TenNhaCungCap</option>
@@ -84,7 +84,7 @@
             </div>
             <div class="col-md-4">
                 <label class="form-label">Tổng giá trị Lô Hàng</label>
-                <input type="text" class="form-control" id="tongGiaTri" readonly />
+                <input asp-for="loHangDto.GiaTienLoHang" type="number" class="form-control" id="tongGiaTri" readonly />
             </div>
             <h2>Thông Tin Chi Tiết Lô Hàng</h2>
             <div class="col-md-3">
@@ -102,7 +102,7 @@
             <div id="chiTietContainer">
                 <div class="row chiTietLoHang mb-3 chi-tiet-lo">
                     <div class="col-md-3">                        
-                        <select class="form-select" asp-for="chiTietLoHangs[0].MaSach" required>
+                        <select class="form-select" asp-for="chiTietLoHangDtos[0].MaSach" required>
                             <option value="">-- Chọn mã sách --</option>
                             @foreach (var item in Model.Saches)
                             {
@@ -111,13 +111,13 @@
                         </select>
                     </div>
                     <div class="col-md-3">                        
-                        <input type="number" class="form-control so-luong" asp-for="chiTietLoHangs[0].SoLuongNhap" required />
+                        <input type="number" class="form-control so-luong" asp-for="chiTietLoHangDtos[0].SoLuongNhap" required />
                     </div>
                     <div class="col-md-3">
-                        <input type="number" class="form-control gia-nhap" asp-for="chiTietLoHangs[0].GiaNhap" required />
+                        <input type="number" class="form-control gia-nhap" asp-for="chiTietLoHangDtos[0].GiaNhap" required />
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control" asp-for="chiTietLoHangs[0].NhaXuatBan" required />
+                        <input class="form-control" asp-for="chiTietLoHangDtos[0].NhaXuatBan" required />
                     </div>
                 </div>
             </div>
@@ -177,7 +177,7 @@
                 const giaNhap = parseInt(row.querySelector('.gia-nhap')?.value || 0);
                 tong += soLuong * giaNhap;
             });
-            document.getElementById('tongGiaTri').value = tong.toLocaleString();
+            document.getElementById('tongGiaTri').value = tong;
         }
 
         document.addEventListener('input', function (e) {
