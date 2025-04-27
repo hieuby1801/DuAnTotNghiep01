@@ -12,6 +12,7 @@ namespace DATN_API.Service
         public List<QuanLyDonUserDTOs> LayDonHangTheoTrangThaiXL(int id, string trangThai);
         public List<QuanLyDonUserDTOs> LayDonHangTheoTrangThai(int id, string trangThai);
         public bool HuyDonHang(int maDonHang);
+        public bool DatLaiDonHang(int maDonHang);
 
-	}
+    }
 }

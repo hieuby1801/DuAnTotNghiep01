@@ -1,6 +1,7 @@
 ﻿using DATN_API.DTOs;
 using DATN_API.Models;
 using DATN_API.Service;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -74,6 +75,21 @@ namespace DATN_API.Controllers
 				return NotFound(new { message = "Không tìm thấy đơn hàng" });
 			}
 		}
-	}
+        [HttpPut("MuaLai/{maDonHang}")]
+        public IActionResult Mualai(int maDonHang)
+        {
+            var result = _nguoiDungService.DatLaiDonHang(maDonHang);
+
+            if (result)
+            {
+                return Ok(new { message = "Đặt lại đơn hàng thành công" });
+            }
+            else
+            {
+                return NotFound(new { message = "Không tìm thấy đơn hàng hoặc không thể cập nhật trạng thái" });
+            }
+        }
+
+    }
 
 }

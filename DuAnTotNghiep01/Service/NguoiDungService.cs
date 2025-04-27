@@ -281,10 +281,36 @@ namespace DATN_API.Service
 
             return isSuccess;
         }
+        public bool DatLaiDonHang(int maDonHang)
+        {
+            bool isSuccess = false;
+            var connectionString = _configuration.GetConnectionString("con");
 
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string sql = @"
+            UPDATE DonHang
+            SET 
+            TrangThai = N'Đang chờ thanh toán',
+            NgayDatHang = @NgayDat
+            WHERE MaDonHang = @MaDonHang";
 
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@MaDonHang", maDonHang);
+                    cmd.Parameters.AddWithValue("@NgayDat", DateTime.Now); // ✅ cập nhật ngày giờ hiện tại
 
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    if (rowsAffected > 0)
+                    {
+                        isSuccess = true;
+                    }
+                }
+            }
 
+            return isSuccess;
+        }
     }
 
 }
