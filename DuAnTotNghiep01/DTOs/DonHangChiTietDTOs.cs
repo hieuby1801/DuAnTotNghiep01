@@ -6,5 +6,6 @@
         public List<int> SoLuong { get; set; }
         public int MaDonHang { get; set; }
         public List<int> GiaTien { get; set; }
-	}
+    }
+
 }

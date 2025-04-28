@@ -7,8 +7,9 @@ namespace DATN_API.Service
     {
 		public List<GioHangDTO> LayThongTinGioHang(List<int> danhSachMaGioHang, int maNguoiDung);
 		public int Themdonhang(int manguoidung);
-		public ChiTietDonHang ThemChiTietDonHang(DonHangChiTietDTOs donHangChiTietDTOs);
-		public VanChuyenDTOs ThemVaoVanChuyen(VanChuyenDTOs vanChuyenDTOs);
+        public List<ChiTietDonHang> ThemChiTietDonHang(DonHangChiTietDTOs donHangChiTietDTOs);
+
+        public VanChuyenDTOs ThemVaoVanChuyen(VanChuyenDTOs vanChuyenDTOs);
 		public bool CapNhatTrangThaiDonHang(int maDonHang, string trangThai);
 
 	}

@@ -79,83 +79,78 @@ namespace DATN_API.Service
 				}
 			}
 		}
-		//Thêm chi Tiết đơn hàng
-		public ChiTietDonHang ThemChiTietDonHang(DonHangChiTietDTOs donHangChiTietDTOs)
-		{
-			var connectionString = _configuration.GetConnectionString("con");
+        //Thêm chi Tiết đơn hàng
+        public List<ChiTietDonHang> ThemChiTietDonHang(DonHangChiTietDTOs donHangChiTietDTOs)
+        {
+            var connectionString = _configuration.GetConnectionString("con");
 
-			using (SqlConnection conn = new SqlConnection(connectionString))
-			{
-				using (SqlCommand cmd = new SqlCommand("ThemChiTietDonHang", conn))
-				{
-					cmd.CommandType = CommandType.StoredProcedure;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("ThemChiTietDonHang", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-					// Tạo DataTable để truyền vào TVP (table-valued parameter)
-					DataTable chiTietTable = new DataTable();
-					chiTietTable.Columns.Add("MaSach", typeof(int));
-					chiTietTable.Columns.Add("SoLuong", typeof(int));
+                    DataTable chiTietTable = new DataTable();
+                    chiTietTable.Columns.Add("MaSach", typeof(int));
+                    chiTietTable.Columns.Add("SoLuong", typeof(int));
 
-					for (int i = 0; i < donHangChiTietDTOs.MaSach.Count; i++)
-					{
-						chiTietTable.Rows.Add(donHangChiTietDTOs.MaSach[i], donHangChiTietDTOs.SoLuong[i]);
-					}
+                    for (int i = 0; i < donHangChiTietDTOs.MaSach.Count; i++)
+                    {
+                        chiTietTable.Rows.Add(donHangChiTietDTOs.MaSach[i], donHangChiTietDTOs.SoLuong[i]);
+                    }
 
-					// Thêm tham số vào câu lệnh SQL
-					cmd.Parameters.AddWithValue("@MaDonHang", donHangChiTietDTOs.MaDonHang);
+                    cmd.Parameters.AddWithValue("@MaDonHang", donHangChiTietDTOs.MaDonHang);
+                    SqlParameter tvpParam = cmd.Parameters.AddWithValue("@ChiTietDonHangs", chiTietTable);
+                    tvpParam.SqlDbType = SqlDbType.Structured;
+                    tvpParam.TypeName = "dbo.ChiTietDonHangType";
 
-					// Truyền TVP (table-valued parameter)
-					SqlParameter tvpParam = cmd.Parameters.AddWithValue("@ChiTietDonHangs", chiTietTable);
-					tvpParam.SqlDbType = SqlDbType.Structured;
-					tvpParam.TypeName = "dbo.ChiTietDonHangType";
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
 
-					conn.Open();
-					cmd.ExecuteNonQuery();
-				}
-			}
+            List<ChiTietDonHang> listChiTiet = new List<ChiTietDonHang>();
 
-			// Lấy giá tiền của từng mặt hàng từ cơ sở dữ liệu sau khi gọi thủ tục
-			using (SqlConnection conn = new SqlConnection(connectionString))
-			{
-				var query = @"
-            SELECT MaSach, GiaTien 
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                var query = @"
+            SELECT MaSach, GiaTien, SoLuong
             FROM ChiTietDonHang
             WHERE MaDonHang = @MaDonHang";
 
-				using (SqlCommand cmd = new SqlCommand(query, conn))
-				{
-					cmd.Parameters.AddWithValue("@MaDonHang", donHangChiTietDTOs.MaDonHang);
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@MaDonHang", donHangChiTietDTOs.MaDonHang);
 
-					conn.Open();
-					using (SqlDataReader reader = cmd.ExecuteReader())
-					{
-						if (reader.HasRows)
-						{
-							while (reader.Read())
-							{
-								int maSach = reader.GetInt32(0);
-								int giaTien = reader.GetInt32(1);
+                    conn.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int maSach = reader.GetInt32(0);
+                            int giaTien = reader.GetInt32(1);
+                            int soLuong = reader.GetInt32(2);
 
-								// Trả về thông tin chi tiết đơn hàng với GiaTien
-								return new ChiTietDonHang
-								{
-									MaDonHang = donHangChiTietDTOs.MaDonHang,
-									MaSach = maSach,
-									SoLuong = donHangChiTietDTOs.SoLuong[0], // Có thể thay đổi để lấy từ nhiều giá trị
-									GiaTien = giaTien
-								};
-							}
-						}
-					}
-				}
-			}
+                            listChiTiet.Add(new ChiTietDonHang
+                            {
+                                MaDonHang = donHangChiTietDTOs.MaDonHang,
+                                MaSach = maSach,
+                                SoLuong = soLuong,
+                                GiaTien = giaTien
+                            });
+                        }
+                    }
+                }
+            }
 
-			return null; // Trả về null nếu không có dữ liệu
-		}
+            return listChiTiet;
+        }
 
 
 
-		// Thanh toán giỏ hàng bằng tiền mặt
-		public VanChuyenDTOs ThemVaoVanChuyen(VanChuyenDTOs vanChuyenDTOs)
+
+        // Thanh toán giỏ hàng bằng tiền mặt
+        public VanChuyenDTOs ThemVaoVanChuyen(VanChuyenDTOs vanChuyenDTOs)
 		{
 			var connectionString = _configuration.GetConnectionString("con");
 

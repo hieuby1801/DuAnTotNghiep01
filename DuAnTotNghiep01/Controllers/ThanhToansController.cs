@@ -106,29 +106,33 @@ namespace DATN_API.Controllers
 				SoLuong = request.soluong
 			};
  
-			var ketQuaChiTiet = _thanhToanService.ThemChiTietDonHang(chiTiet);
-			if (ketQuaChiTiet == null)
-			{
-				return BadRequest("Lỗi tạo chi tiết đơn hàng.");
-			}
+			
 			var nguoidung = _dangNhapService.LayTheoId(request.manguoidung);
 			if (nguoidung == null)
 			{
 				return BadRequest("Người dùng không tồn tại.");
 			}
-			// Tạo liên kết thanh toán MoMo (dùng dữ liệu mẫu để trả về URL thanh toán)
-			var momoRequest = new MomoRequest
-			{
-				OrderId = maDonHangMoi,  // Sử dụng mã đơn hàng mới
-				OrderInfo = nguoidung.TenNguoiDung+ "chuyển tiền" + nguoidung.SoDienThoai,  // Thông tin đơn hàng
-				Amount = ketQuaChiTiet.GiaTien *ketQuaChiTiet.SoLuong // Giá trị thanh toán (ví dụ 10.000 VND cho demo)
-			};
+            var ketQuaChiTiets = _thanhToanService.ThemChiTietDonHang(chiTiet);
+            if (ketQuaChiTiets == null || !ketQuaChiTiets.Any())
+            {
+                return BadRequest("Lỗi tạo chi tiết đơn hàng.");
+            }
 
-			// Gọi phương thức tạo URL thanh toán từ dịch vụ MoMo
-			var payUrl = await _paymentService.CreateMomoPaymentUrl(momoRequest);
+            var totalAmount = ketQuaChiTiets.Sum(x => x.GiaTien * x.SoLuong);
+
+            var momoRequest = new MomoRequest
+            {
+                OrderId = maDonHangMoi,
+                OrderInfo = nguoidung.TenNguoiDung + " chuyển tiền " + nguoidung.SoDienThoai,
+                Amount = totalAmount
+            };
+
+
+            // Gọi phương thức tạo URL thanh toán từ dịch vụ MoMo
+            var payUrl = await _paymentService.CreateMomoPaymentUrl(momoRequest);
 
 			// Trả về URL thanh toán cho người dùng
-			return Ok(new { PayUrl = payUrl,momoRequest.Amount });
+			return Ok(new { PayUrl = payUrl,momoRequest.Amount,totalAmount});
 		}
 
 		// Nhận kết quả từ MoMo và cập nhật trạng thái đơn hàng 
