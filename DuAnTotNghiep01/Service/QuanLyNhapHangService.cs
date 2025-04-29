@@ -79,36 +79,6 @@ namespace DATN_API.Service
                 }
             }
         }
-        public async Task<bool> insertTonKho(TonKhoDTO dto)
-        {
-			var connectionString = _configuration.GetConnectionString("con");
-
-			using (SqlConnection connection = new SqlConnection(connectionString))
-			{
-				await connection.OpenAsync();
-
-				string query = @"INSERT INTO TonKho (MaSach, MaLo, SoLuongTon, MaNhaCungCap)
-                             VALUES (@MaSach, @MaLo, @SoLuongTon, @MaNhaCungCap)";
-
-				using (SqlCommand command = new SqlCommand(query, connection))
-				{
-					command.Parameters.AddWithValue("@MaSach", dto.MaSach);
-					command.Parameters.AddWithValue("@MaLo", dto.MaLo);
-					command.Parameters.AddWithValue("@SoLuongTon", dto.SoLuongTon);
-					command.Parameters.AddWithValue("@MaNhaCungCap", dto.MaNhaCungCap);
-
-					try
-					{
-						await command.ExecuteNonQueryAsync();
-						return true;
-					}
-					catch
-					{
-						return false;
-					}
-				}
-			}
-		}
 		public async Task<bool> insertLichSuGia(LichSuGiaDTO dto)
 		{
 			var connectionString = _configuration.GetConnectionString("con");
