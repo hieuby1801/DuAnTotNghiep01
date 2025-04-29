@@ -1,0 +1,126 @@
+﻿@model DATN_MVC.Models.Modeltong
+@{
+    Layout = "~/Views/Shared/Admin.cshtml";
+}
+@section Styles {
+    <style>
+        .table-section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+            .section-header h2 {
+                font-weight: bold;
+                color: #2c3e50;
+            }
+
+        .add-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+            .add-button:hover {
+                background-color: #2980b9;
+            }
+
+        .inventory-table {
+            width: 100%;
+        }
+
+            .inventory-table th,
+            .inventory-table td {
+                text-align: center;
+                vertical-align: middle;
+            }
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #fff;
+        }
+
+            .badge.low-stock {
+                background-color: #e74c3c;
+            }
+
+            .badge.in-stock {
+                background-color: #2ecc71;
+            }
+
+        .edit-btn, .delete-btn {
+            background-color: transparent;
+            border: none;
+            color: #3498db;
+            font-weight: 500;
+            margin: 0 5px;
+            transition: 0.3s;
+        }
+
+            .edit-btn:hover {
+                color: #2980b9;
+            }
+
+        .delete-btn {
+            color: #e74c3c;
+        }
+
+            .delete-btn:hover {
+                color: #c0392b;
+            }
+    </style>
+}
+
+<div class="table-section">
+    <div class="section-header">
+        <h2>📦 Danh sách tồn kho</h2>
+        <button class="add-button" onclick="location.href='@Url.Action("ThemMoi", "TonKho")'">
+            <i class="bi bi-plus-lg"></i> Thêm mới
+        </button>
+    </div>
+
+    <table class="table table-bordered table-striped table-hover inventory-table">
+        <thead class="table-light">
+            <tr>
+                <th>Mã Tồn Kho</th>
+                <th>Mã Sách</th>
+                <th>Mã Lô</th>
+                <th>Số Lượng Tồn</th>
+                <th>Số Lượng Hỏng</th>
+                <th>Mã Nhà Cung Cấp</th>
+                <th>Trạng Thái</th>
+                <th>Hành động</th>
+          
+            </tr>
+        <tbody>
+            <tr>
+                <td>TK001</td>
+                <td>SK123</td>
+                <td>LO456</td>
+                <td>100</td>
+                <td>5</td>
+                <td>NCC789</td>
+                <td>
+                    <span class="badge in-stock">Còn Hàng</span>
+                </td>
+                <td>
+        </tbody>
+
+        </thead>
+
+    </table>
+</div>
