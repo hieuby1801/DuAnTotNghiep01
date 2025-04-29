@@ -154,7 +154,7 @@ namespace DATN_API.Controllers
 					MaDonHang = result.MaDonHang,
 					SDT = result.SDT,  // Lấy số điện thoại từ kết quả Momo
 					DiaChi = result.DiaChi,  // Lấy địa chỉ từ kết quả Momo
-					NgayNhanHang = result.NgayNhanHang  // Lấy ngày nhận hàng từ kết quả Momo
+					NgayNhanHang = result.NgayNhanHang  // Lấy ngày nhận hàng từ kết quả Momo lua
 				};
 
 				var ketQuaVanChuyen = _thanhToanService.ThemVaoVanChuyen(vanChuyen);
