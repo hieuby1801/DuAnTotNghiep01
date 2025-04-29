@@ -108,50 +108,5 @@ namespace DATN_API.Controllers
                 return BadRequest(new { message = "Có lỗi xảy ra trong quá trình thêm chi tiết lô hàng", errors = errorMessages });
             }
         }
-
-
-        [HttpPost("InsertTonKhoList")]
-		public async Task<IActionResult> InsertTonKhoList([FromBody] List<TonKhoDTO> listDto)
-		{
-			if (listDto == null || listDto.Count == 0)
-				return BadRequest(new { message = "Danh sách tồn kho trống" });
-
-			bool allSuccess = true;
-
-			foreach (var dto in listDto)
-			{
-				var success = await _nhapHangService.insertTonKho(dto);
-				if (!success)
-				{
-					allSuccess = false;
-					break;
-				}
-			}
-
-			if (allSuccess)
-				return Ok(new { message = "Thêm danh sách tồn kho thành công" });
-			else
-				return BadRequest();
-		}
-		[HttpPost("InsertLichSuGiaList")]
-		public async Task<IActionResult> InsertLichSuGiaList([FromBody] List<LichSuGiaDTO> listDto)
-		{
-			bool isSuccess = true;
-
-			foreach (var dto in listDto)
-			{
-				var result = await _nhapHangService.insertLichSuGia(dto);
-				if (!result)
-				{
-					isSuccess = false;
-					break;
-				}
-			}
-
-			if (isSuccess)
-				return Ok(new { message = "Thêm danh sách lịch sử giá thành công" });
-			else
-				return BadRequest(new { message = "Thêm danh sách lịch sử giá thất bại" });
-		}
 	}
 }
