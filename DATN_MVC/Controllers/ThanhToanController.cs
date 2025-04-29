@@ -53,7 +53,8 @@ namespace DATN_MVC.Controllers
             }
             return View(modeltong);
         }
-        public async Task<IActionResult> Xacnhanthanhtoan(string Phuongthuc, List<int> soluong, List<int> masach, 
+	
+		public async Task<IActionResult> Xacnhanthanhtoan(string Phuongthuc, List<int> soluong, List<int> masach, 
             string SDT, string diachi, string WardName, string DistrictName, string ProvinceName)
         {
             var diachifull = $"{diachi},{WardName},{DistrictName},{ProvinceName}";
@@ -88,8 +89,9 @@ namespace DATN_MVC.Controllers
                 }
                 return BadRequest("Lỗi khi tạo đơn hàng tiền mặt .");
             }
-            else
-            {
+            else if(Phuongthuc == "BankTransfer")
+
+			{
                 var donHangData = new ChiTietDonHangGui
                 {
                     manguoidung = int.Parse(idnd),
@@ -123,13 +125,55 @@ namespace DATN_MVC.Controllers
                     return BadRequest("Lỗi khi tạo đơn hàng QR.");
                 }
             }
-        }
+            else
+            {
+				var donHangData = new ChiTietDonHangGui
+				{
+					manguoidung = int.Parse(idnd),
+					MaSach = masach,
+					SoLuong = soluong,
+
+				};
+             
+				var repom = await _httpClient.PostAsJsonAsync("ThanhToans/ThemdonhangQRVCB", donHangData);
+
+				if (repom.IsSuccessStatusCode)
+				{
+					var responseContent = await repom.Content.ReadFromJsonAsync<QrVCB>();  // ResponseModel là kiểu dữ liệu bạn mong đợi từ API
+
+					// Gán giá trị PayUrl vào model
+					// Truy xuất URL từ đối tượng PayUrl
+					var model = new Modeltong
+					{
+						PayUrl = responseContent.PayUrl,  // Truy xuất URL thanh toán
+						
+					};
+					var response = await _httpClient.PostAsJsonAsync("GioHangs/Xoagiohang", xoagio);
+					if (response.IsSuccessStatusCode)
+					{
+						return View("ThanhCongVCB", model);
+					}
+					return BadRequest("Lỗi khi xóa giỏ .");
+				}
+				else
+				{
+					return BadRequest("Lỗi khi tạo đơn hàng QR.");
+				}
+			}
+
+		}
         public IActionResult ThanhCongtt(Modeltong model)
         {
 
             return View(model);
         }
-       
-    }
+		public IActionResult ThanhCongVCB(Modeltong model)
+		{
+
+			return View(model);
+		}
+
+
+	}
 }
 

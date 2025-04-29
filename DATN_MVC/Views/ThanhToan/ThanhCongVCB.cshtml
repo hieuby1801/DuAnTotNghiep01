@@ -115,40 +115,10 @@
             <button class="btn btn-red">TIẾP TỤC MUA SẮM</button>
             <button class="btn btn-white">XEM CHI TIẾT ĐƠN HÀNG</button>
         </div>
-        @{
-            var encoded = System.Net.WebUtility.UrlEncode(Model.PayUrl);
-        }
         <div style="text-align:center;margin-top:20px">
             <!-- ảnh QR tạo online -->
-            <img src="https://quickchart.io/qr?size=300&text=@encoded"
-                 alt="QR MoMo" width="300" />
-            <br />
-            <a href="@Model.PayUrl" target="_blank">Mở trang thanh toán</a>
-        </div>
-
-        <table class="table-products">
-            <tr>
-                <th>Hình</th>
-                <th>Tên sản phẩm</th>
-                <th>SKU</th>
-                <th>Giá</th>
-                <th>Số lượng</th>
-                <th>Thành tiền</th>
-            </tr>
-            <tr>
-                <td><img src="https://cdn0.fahasa.com/media/catalog/product/n/g/ngh_1.png" alt="Tư Duy Ngược"></td>
-                <td>Tư Duy Ngược</td>
-                <td>9786043440287</td>
-                <td>69.500đ</td>
-                <td>1</td>
-                <td>69.500đ</td>
-            </tr>
-        </table>
-
-        <div class="summary">
-            <p>Thành tiền: 69.500đ</p>
-            <p>Phí vận chuyển: 20.000đ</p>
-            <p class="total">Tổng Số Tiền (gồm VAT): 89.500đ</p>
+            <img src="@Model.PayUrl" alt="QR Thanh toán VietQR" width="300" />
+            <p style="margin-top:10px">Vui lòng quét mã để thanh toán</p>
         </div>
     </div>
 
