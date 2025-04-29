@@ -47,6 +47,7 @@ namespace DATN_MVC.Models
         public List<LichSuGiaDTO> lichSuGiaDtos { get; set; }
      
         public List<DonHang> DonHangs { get; set; }
+		public List<VanChuyen> VanChuyens { get; set; }
     }
 
 }
