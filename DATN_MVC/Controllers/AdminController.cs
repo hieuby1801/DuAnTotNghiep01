@@ -203,10 +203,7 @@ namespace DATN_MVC.Controllers
             return RedirectToAction();
         }
         
-        public async Task<IActionResult> VanChuyen()
-        {
-            return View();
-        }
+        
     }
 
 }

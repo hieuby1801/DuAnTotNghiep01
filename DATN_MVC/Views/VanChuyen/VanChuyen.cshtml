@@ -1,0 +1,138 @@
+﻿@model DATN_MVC.Models.Modeltong
+@{
+    Layout = "~/Views/Shared/Admin.cshtml";
+}
+
+@section Styles {
+    <style>
+        .table-container {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            max-width: 1200px;
+            margin: 40px auto;
+            overflow-x: auto;
+        }
+
+            .table-container h2 {
+                text-align: center;
+                margin-bottom: 30px;
+                font-size: 30px;
+                color: #2c3e50;
+                font-weight: bold;
+            }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fdfdfd;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 16px 20px;
+            border-bottom: 1px solid #ebebeb;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        th {
+            background: linear-gradient(to right, #ecf0f1, #f8f9fa);
+            font-weight: 700;
+            color: #34495e;
+        }
+
+        tr:hover {
+            background-color: #f0f8ff;
+        }
+
+        .update-btn {
+            background: linear-gradient(to right, #1abc9c, #16a085);
+            color: #fff;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+            .update-btn:hover {
+                background: linear-gradient(to right, #16a085, #138d75);
+            }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .status-chuanbi {
+            background-color: #f39c12; /* Cam */
+        }
+
+        .status-danggiao {
+            background-color: #3498db; /* Xanh dương */
+        }
+
+        .status-hoanthanh {
+            background-color: #2ecc71; /* Xanh lá */
+        }
+
+        .status-thatbai {
+            background-color: #e74c3c; /* Đỏ */
+        }
+    </style>
+}
+
+<div class="table-container">
+    <h2>🚚 Danh Sách Vận Chuyển</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Mã Đơn Hàng</th>
+                <th>Ngày Giao</th>
+                <th>Ngày Nhận</th>
+                <th>Trạng Thái</th>
+                <th>Địa Chỉ Giao</th>
+                <th>Số Điện Thoại</th>
+                <th>Hành Động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.VanChuyens != null)
+            {
+                foreach (var item in Model.VanChuyens)
+                {
+                    var trangThaiClass = item.TrangThai switch
+                    {
+                        "Chuẩn bị" => "status-badge status-chuanbi",
+                        "Đang giao" => "status-badge status-danggiao",
+                        "Hoàn thành" => "status-badge status-hoanthanh",
+                        "Thất bại" => "status-badge status-thatbai",
+                        _ => "status-badge status-chuanbi"
+                    };
+                    <tr>
+                        <td>@item.MaDonHang</td>
+                        <td>@item.NgayGiaoHang?.ToString("dd/MM/yyyy")</td>
+                        <td>@item.NgayNhanHang?.ToString("dd/MM/yyyy")</td>
+                        <td><span class="@trangThaiClass">@item.TrangThai</span></td>
+                        <td>@item.DiaChiGiao</td>
+                        <td>@item.SDT</td>
+                        <td>
+                            <button class="update-btn">✏️ Cập Nhật</button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

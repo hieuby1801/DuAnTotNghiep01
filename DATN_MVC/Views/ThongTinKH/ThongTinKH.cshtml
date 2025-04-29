@@ -211,17 +211,12 @@
                                     <label><input type="radio" name="gender" value="Nữ" @(Model.NguoiDung?.GioiTinh == "Nữ" ? "checked" : "")> Nữ</label>
                                 </div>
                         </div>
-                        <div class="form-group">
-                            <label>Ngày sinh</label>
-                                @if (Model.NguoiDung?.NgaySinh == null)
-                                {
-                                    <input type="date" disabled />
-                                }
-                                else
-                                {
-                                    <input type="date" name="Ngaysinh" value="@Model.NguoiDung?.NgaySinh?.ToString("yyyy-MM-dd")" />
-                                }
-                       </div>
+                            <div class="form-group">
+                                <label>Ngày sinh</label>
+                                <input type="date" name="Ngaysinh"
+                                       value="@(Model.NguoiDung?.NgaySinh != null ? Model.NguoiDung?.NgaySinh?.ToString("yyyy-MM-dd") : "")" />
+                            </div>
+
                             <button type="submit" name="Manguoidung" value="@Model.NguoiDung.MaNguoiDung" class="save-btn">Lưu thay đổi</button>
                         }
 						else
