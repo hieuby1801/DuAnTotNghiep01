@@ -206,7 +206,7 @@ namespace DATN_API.Controllers
 
 			var totalAmount = ketQuaChiTiets.Sum(x => x.GiaTien * x.SoLuong);
 
-			var momoRequest = new MomoRequest
+			var VCBreqeuet = new MomoRequest
 			{
 				OrderId = maDonHangMoi,
 				OrderInfo = nguoidung.TenNguoiDung + " chuyển tiền " + nguoidung.SoDienThoai,
@@ -215,11 +215,11 @@ namespace DATN_API.Controllers
 
 
 			// Gọi phương thức tạo URL thanh toán từ dịch vụ MoMo
-			var payUrl = $"https://img.vietqr.io/image/VCB-1024754309-compact.png?amount={totalAmount}&addInfo={Uri.EscapeDataString( "mã đơ hàng" + momoRequest.OrderId)}&accountName=Phan%20Chi%20Hoai%20Nam";
+			var payUrl = $"https://img.vietqr.io/image/VCB-1024754309-compact.png?amount={totalAmount}&addInfo={Uri.EscapeDataString( "mã đơ hàng" + VCBreqeuet.OrderId)}&accountName=Phan%20Chi%20Hoai%20Nam";
 
 
 			// Trả về URL thanh toán cho người dùng
-			return Ok(new { PayUrl = payUrl, momoRequest.Amount, totalAmount });
+			return Ok(new { PayUrl = payUrl, VCBreqeuet.Amount, totalAmount });
 		}
 
 
