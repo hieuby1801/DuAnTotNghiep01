@@ -83,6 +83,53 @@
 			cursor: pointer;
 		}
 	</style>
+	
+	<!-- 1. Thêm CSS vào <head> hoặc file .css chung -->
+	<style>
+		.payment-methods {
+			display: flex;
+			flex-direction: column; /* xếp dọc */
+			gap: 15px; /* khoảng cách giữa các dòng */
+			margin-top: 15px;
+		}
+
+		.payment-option {
+			display: block;
+			border: 2px solid #ccc;
+			border-radius: 10px;
+			background-color: #f8f8f8;
+			padding: 12px;
+			cursor: pointer;
+			transition: all 0.3s;
+		}
+
+			.payment-option:hover {
+				background-color: #f0f0f0;
+				border-color: #999;
+			}
+
+			/* Hiệu ứng khi checkbox được check */
+			.payment-option:has(input[type="checkbox"]:checked) {
+				background-color: #e0f7fa;
+				border-color: #00acc1;
+			}
+
+		.option-content {
+			display: flex;
+			align-items: center;
+			justify-content: space-between; /* chữ + icon bên trái, checkbox bên phải */
+			gap: 10px;
+		}
+
+			.option-content img {
+				height: 24px;
+			}
+
+			.option-content input[type="checkbox"] {
+				transform: scale(1.3);
+				cursor: pointer;
+			}
+	</style>
 
 </head>
 <body>
@@ -160,25 +207,40 @@
 			}
 		</div>
 		<div class="section">
-
 			<h5>Phương Thức Thanh Toán</h5>
 
-			<div class="radio-group">
-				<label>
-					<input type="radio" name="Phuongthuc" value="COD" required>
-					Thanh toán khi nhận hàng (COD)
+			<div class="payment-methods">
+				<label class="payment-option">
+					<div class="option-content">
+						<span>Thanh toán khi nhận hàng (COD)</span>
+						<input type="checkbox" name="Phuongthuc" value="COD" />
+					</div>
 				</label>
-				<label>
-					<input type="radio" name="Phuongthuc" value="BankTransfer">
-					Chuyển khoản ngân hàng
+
+				<label class="payment-option">
+					<div class="option-content">
+						<span>Chuyển khoản ngân hàng khác</span>
+						<input type="checkbox" name="Phuongthuc" value="BankTransfer" />
+					</div>
 				</label>
-				<label>
-					<input type="radio" name="Phuongthuc" value="VCB">
-					Chuyển khoản ngân hàng
+
+				<label class="payment-option">
+					<div class="option-content">
+						<img src="~/images/Logo VCB webp.webp" alt="Vietcombank" />
+						<span>Chuyển khoản Vietcombank</span>
+						<input type="checkbox" name="Phuongthuc" value="VCB" />
+					</div>
+				</label>
+
+				<label class="payment-option">
+					<div class="option-content">
+						<img src="~/images/logo momo.svg" alt="MoMo" />
+						<span>Thanh toán bằng MoMo</span>
+						<input type="checkbox" name="Phuongthuc" value="MoMo" />
+					</div>
 				</label>
 			</div>
 		</div>
-
 		<div class="section summary">
 			<h5>Tóm Tắt Đơn Hàng</h5>
 
