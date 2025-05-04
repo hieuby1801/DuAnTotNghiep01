@@ -56,8 +56,6 @@ namespace DATN_MVC.Controllers
 
 
 		}
-		
-
 		public async Task<IActionResult> XemGioHang()
 		{
 			var modeltong = new Modeltong();
@@ -108,7 +106,8 @@ namespace DATN_MVC.Controllers
 		{
 			var model = new Modeltong();
 			var idnd = HttpContext.Session.GetString("NguoiDungId");
-			if (idnd == null)
+            //Chưa đăng nhập
+            if (idnd == null)
 			{
 				var repon = await _httpClient.GetAsync($"GioHangs/ThemGioHangck/{masach}");
 
@@ -136,8 +135,9 @@ namespace DATN_MVC.Controllers
 				}
 				return RedirectToAction("XemGioHang");
 			}
-			else
-			{
+            // đã đăng nhập
+            else
+            {
 
 				// 4. Thêm sản phẩm vừa chọn
 				model.gioHangDTO = new GioHangDTO
@@ -151,20 +151,13 @@ namespace DATN_MVC.Controllers
 				var newContent = new StringContent(newJson, Encoding.UTF8, "application/json");
 
 				await _httpClient.PostAsync("GioHangs/ThemGioHang", newContent);
-
-
 				// 6. Trả về view giỏ hàng mới
 				return RedirectToAction("XemGioHang");
 			}
-
-
-
-
 		}
 		public GioHang? LayMotGioHangTheoMaSach(int maSach)
 		{
 			var gioHangList = LayGioHangTuCookie();
-
 			return gioHangList.FirstOrDefault(x => x.MaSach == maSach);
 		}
 		[HttpPost]
@@ -224,8 +217,6 @@ namespace DATN_MVC.Controllers
 			// Sau khi thao tác thành công, chuyển hướng đến trang giỏ hàng
 			return RedirectToAction("XemGioHang");
 		}
-
-
 		public IActionResult GioHang()
 		{
 			return View();
