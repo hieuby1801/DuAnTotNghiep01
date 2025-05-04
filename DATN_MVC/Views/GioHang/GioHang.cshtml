@@ -130,7 +130,6 @@
 		}
 	</script>
 
-
 </head>
 <body class="bg-light">
 
@@ -230,34 +229,6 @@
 
 	</script>
 
-	
-@*  Script cập nhật tổng tiền theo checkbox (updateTotalPrice) *@
-	<script>
-		function updateTotalPrice() {
-			var total = 0;
-			document.querySelectorAll('.product-checkbox:checked').forEach(function (checkbox) {
-				var maSach = checkbox.getAttribute('data-masach');
-				var quantity = document.getElementById('input-quantity-' + maSach).value;
-				var price = document.getElementById('price-' + maSach).textContent;
-
-				total += parseInt(price) * parseInt(quantity);
-			});
-			document.querySelector('.tong-tien').textContent = total + ' đ';
-		}
-
-		// Gán sự kiện checkbox
-		document.querySelectorAll('.product-checkbox').forEach(function (checkbox) {
-			checkbox.addEventListener('change', updateTotalPrice);
-		});
-
-		// Chọn tất cả checkbox
-		function toggleAll(source) {
-			document.querySelectorAll('.product-checkbox').forEach(function (checkbox) {
-				checkbox.checked = source.checked;
-			});
-			updateTotalPrice();
-		}
-	</script>
 
 	@*   Script xử lý thanh toán với checkbox được chọn (updateSelectedBooks) *@
 	<script>
