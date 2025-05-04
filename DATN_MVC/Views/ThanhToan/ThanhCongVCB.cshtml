@@ -112,9 +112,15 @@
         <p>Bạn sẽ sớm nhận được email xác nhận đơn hàng từ chúng tôi.</p>
 
         <div class="btn-group">
-            <button class="btn btn-red">TIẾP TỤC MUA SẮM</button>
-            <button class="btn btn-white">XEM CHI TIẾT ĐƠN HÀNG</button>
+            <form action="@Url.Action("Index", "TrangChu")" method="get" style="display:inline;">
+                <button type="submit" class="btn btn-red">TIẾP TỤC MUA SẮM</button>
+            </form>
+
+            <form action="@Url.Action("ChiTietDonHang", "DonHang")" method="get" style="display:inline;">
+                <button type="submit" class="btn btn-white">XEM CHI TIẾT ĐƠN HÀNG</button>
+            </form>
         </div>
+
         <div style="text-align:center;margin-top:20px">
             <!-- ảnh QR tạo online -->
             <img src="@Model.PayUrl" alt="QR Thanh toán VietQR" width="300" />

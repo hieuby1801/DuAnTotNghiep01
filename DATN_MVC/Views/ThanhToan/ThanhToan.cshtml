@@ -50,23 +50,18 @@
 				display: block;
 			}
 
-		.summary {
-			margin-top: 20px;
-		}
-
-			.summary span {
-				display: block;
-				margin: 5px 0;
-			}
-
-		button {
+		button, .btn-pay {
 			padding: 10px 20px;
 			font-size: 16px;
-			background-color: #c90000;
-			color: #fff;
+			color: white;
 			border: none;
 			border-radius: 6px;
 			cursor: pointer;
+			transition: background-color 0.3s ease;
+		}
+
+		button {
+			background-color: #c90000;
 		}
 
 			button:hover {
@@ -74,22 +69,79 @@
 			}
 
 		.btn-pay {
-			background-color: red;
-			color: white;
-			padding: 10px 20px;
-			font-size: 18px;
-			border: none;
-			border-radius: 5px;
-			cursor: pointer;
+			background-color: #28a745;
+			margin-top: 15px;
 		}
-	</style>
-	
-	<!-- 1. Thêm CSS vào <head> hoặc file .css chung -->
-	<style>
+
+			.btn-pay:hover {
+				background-color: #218838;
+			}
+
+		/* Summary section styles */
+		.section.summary {
+			font-family: 'Segoe UI', sans-serif;
+			background: #f9f9f9;
+			box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+			max-width: 1300px;
+			margin: auto;
+		}
+
+			.section.summary h5 {
+				font-size: 22px;
+				margin-bottom: 20px;
+				color: #333;
+				border-left: 5px solid #007bff;
+				padding-left: 10px;
+			}
+
+		.item-summary {
+			display: flex;
+			align-items: flex-start;
+			gap: 15px;
+			margin-bottom: 20px;
+			border-bottom: 1px solid #ddd;
+			padding-bottom: 15px;
+		}
+
+			.item-summary img {
+				width: 100px;
+				height: auto;
+				border-radius: 5px;
+			}
+
+			.item-summary p {
+				margin: 3px 0;
+				color: #444;
+			}
+
+		.item-info {
+			flex: 1;
+		}
+
+		.order-summary {
+			background-color: #fff;
+			border: 1px solid #ddd;
+			padding: 15px;
+			border-radius: 8px;
+			margin-top: 20px;
+		}
+
+			.order-summary h6 {
+				font-size: 18px;
+				margin-bottom: 10px;
+				color: #007bff;
+			}
+
+			.order-summary p {
+				margin: 5px 0;
+				color: #555;
+			}
+
+		/* Payment methods */
 		.payment-methods {
 			display: flex;
-			flex-direction: column; /* xếp dọc */
-			gap: 15px; /* khoảng cách giữa các dòng */
+			flex-direction: column;
+			gap: 15px;
 			margin-top: 15px;
 		}
 
@@ -108,7 +160,6 @@
 				border-color: #999;
 			}
 
-			/* Hiệu ứng khi checkbox được check */
 			.payment-option:has(input[type="checkbox"]:checked) {
 				background-color: #e0f7fa;
 				border-color: #00acc1;
@@ -117,7 +168,7 @@
 		.option-content {
 			display: flex;
 			align-items: center;
-			justify-content: space-between; /* chữ + icon bên trái, checkbox bên phải */
+			justify-content: space-between;
 			gap: 10px;
 		}
 
@@ -129,6 +180,7 @@
 				transform: scale(1.3);
 				cursor: pointer;
 			}
+
 	</style>
 
 </head>
@@ -185,26 +237,7 @@
 				<input type="text" name="Diachi" required>
 			</label>
 
-			@if (Model.ThongTins.Count > 0)
-			{
-				@for (int i = 0; i < Model.ThongTins.Count; i++)
-				{
-					<div>
-						<input type="hidden" name="masach[@i]" value="@Model.ThongTins[i].MaSach" />
-						<p><strong>Tên sách:</strong> @Model.ThongTins[i].TenSach</p>
-
-						<p><strong>Số lượng:</strong> @Model.ThongTins[i].SoLuong</p>
-						<input type="hidden" name="soluong[@i]" value="@Model.ThongTins[i].SoLuong" />
-
-						<p><strong>Giá:</strong> @Model.ThongTins[i].GiaBan</p>
-						<img src="@Url.Content(Model.ThongTins[i].HinhAnh)" alt="Alternate Text" style="width: 100px; height: auto;" />
-					</div>
-				}
-			}
-			else
-			{
-				<p>Không có sản phẩm nào trong giỏ hàng.</p>
-			}
+			
 		</div>
 		<div class="section">
 			<h5>Phương Thức Thanh Toán</h5>
@@ -213,22 +246,14 @@
 				<label class="payment-option">
 					<div class="option-content">
 						<span>Thanh toán khi nhận hàng (COD)</span>
-						<input type="checkbox" name="Phuongthuc" value="COD" />
+						<input type="radio" name="Phuongthuc" value="COD" />
 					</div>
 				</label>
-
-				<label class="payment-option">
-					<div class="option-content">
-						<span>Chuyển khoản ngân hàng khác</span>
-						<input type="checkbox" name="Phuongthuc" value="BankTransfer" />
-					</div>
-				</label>
-
 				<label class="payment-option">
 					<div class="option-content">
 						<img src="~/images/Logo VCB webp.webp" alt="Vietcombank" />
 						<span>Chuyển khoản Vietcombank</span>
-						<input type="checkbox" name="Phuongthuc" value="VCB" />
+						<input type="radio" name="Phuongthuc" value="VCB" />
 					</div>
 				</label>
 
@@ -236,42 +261,62 @@
 					<div class="option-content">
 						<img src="~/images/logo momo.svg" alt="MoMo" />
 						<span>Thanh toán bằng MoMo</span>
-						<input type="checkbox" name="Phuongthuc" value="MoMo" />
+						<input type="radio" name="Phuongthuc" value="MoMo" />
 					</div>
 				</label>
 			</div>
+
 		</div>
 		<div class="section summary">
 			<h5>Tóm Tắt Đơn Hàng</h5>
 
-			<strong>
-				Tổng Số Tiền :
-
-				@foreach (var item in Model.ThongTins)
+			@if (Model.ThongTins.Count > 0)
+			{
+				@for (int i = 0; i < Model.ThongTins.Count; i++)
 				{
-					var thanhTien = (item.GiaBan ?? 0) * (item.SoLuong ?? 0);
-					<p>@item.TenSach - SL: @item.SoLuong - Giá: @item.GiaBan đ → Thành tiền: @thanhTien đ</p>
-
+					<div class="item-summary">
+						<img src="@Url.Content(Model.ThongTins[i].HinhAnh)" alt="Hình ảnh sách" class="item-image" />
+						<div class="item-info">
+							<input type="hidden" name="masach[@i]" value="@Model.ThongTins[i].MaSach" />
+							<p><strong>@Model.ThongTins[i].TenSach</strong></p>
+							<p><strong>Số lượng:</strong> @Model.ThongTins[i].SoLuong</p>
+							<p><strong>Giá:</strong> @Model.ThongTins[i].GiaBan đ</p>
+							<p><strong>Thành tiền:</strong> @((Model.ThongTins[i].GiaBan ?? 0) * (Model.ThongTins[i].SoLuong ?? 0)) đ</p>
+						</div>
+					</div>
 				}
+			}
+			else
+			{
+				<p>Không có sản phẩm nào trong giỏ hàng.</p>
+			}
 
-				@{
-					var tongTien = Model.ThongTins.Sum(item => (item.GiaBan ?? 0) * (item.SoLuong ?? 0));
-				}
+			@if (Model.ThongTins.Count > 0)
+			{
+				<div class="order-summary">
+					<h6>Chi tiết đơn hàng:</h6>
+					@* @foreach (var item in Model.ThongTins)
+					{
+						var thanhTien = (item.GiaBan ?? 0) * (item.SoLuong ?? 0);
+						<p style="display:none;">
+							<strong>@item.TenSach</strong> - SL: @item.SoLuong - Giá: @item.GiaBan đ →
+							<strong>Thành tiền: @thanhTien đ</strong>
+						</p>
+					} *@
 
-				<p><strong>Tổng Số Tiền : @tongTien đ</strong></p>
 
-				<p>Thành tiền: @tongTien đ</p>
-			</strong>
+					@{
+						var tongTien = Model.ThongTins.Sum(item => (item.GiaBan ?? 0) * (item.SoLuong ?? 0));
+					}
 
-			<br><br>
-			<button class="btn-pay" onclick="showQR()">Xác nhận thanh toán</button>
-			<div id="qr-container" style="display:none; margin-top: 20px;">
-				<h3>Quét mã QR để thanh toán bằng MB Bank</h3>
 
-				alt="QR Code MB Bank"
-				width="200" height="200" />
-			</div>
+					<p><strong>Tổng Số Tiền: @tongTien đ</strong></p>
+				</div>
+
+				<button class="btn-pay" onclick="showQR()">Xác nhận thanh toán</button>
+			}
 		</div>
+
 	</form>
 	<script>
 		function showQR() {

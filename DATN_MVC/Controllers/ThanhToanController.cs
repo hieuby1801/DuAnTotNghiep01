@@ -89,7 +89,7 @@ namespace DATN_MVC.Controllers
                 }
                 return BadRequest("Lỗi khi tạo đơn hàng tiền mặt .");
             }
-            else if(Phuongthuc == "BankTransfer")
+            else if(Phuongthuc == "MoMo")
 
 			{
                 var donHangData = new ChiTietDonHangGui
