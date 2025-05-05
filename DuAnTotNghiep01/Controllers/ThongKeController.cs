@@ -28,5 +28,60 @@ namespace DATN_API.Controllers
                 return StatusCode(500, $"Lỗi hệ thống: {ex.Message}");
             }
         }
+        [HttpGet("DoanhThuTheoThang")]
+        public ActionResult<List<ThongKeDoanhThuNgayDTO>> GetDoanhThuTheoThang(DateTime tuNgay, DateTime denNgay)
+        {
+            try
+            {
+                var result = _thongKeService.ThongKeDoanhThuTheoThang(tuNgay, denNgay);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Lỗi hệ thống: {ex.Message}");
+            }
+        }
+
+        [HttpGet("DoanhThuTheoNam")]
+        public ActionResult<List<ThongKeDoanhThuNgayDTO>> GetDoanhThuTheoNam(DateTime tuNgay, DateTime denNgay)
+        {
+            try
+            {
+                var result = _thongKeService.ThongKeDoanhThuTheoNam(tuNgay, denNgay);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Lỗi hệ thống: {ex.Message}");
+            }
+        }
+        [HttpGet("DoanhThuTheoSach")]
+        public ActionResult<List<ThongKeDoanhThuSachDTO>> GetDoanhThuTheoSach(DateTime tuNgay, DateTime denNgay)
+        {
+            try
+            {
+                var result = _thongKeService.ThongKeDoanhThuTheoSach(tuNgay, denNgay);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Lỗi hệ thống: {ex.Message}");
+            }
+        }
+
+        [HttpGet("DoanhThuTheoTheLoai")]
+        public ActionResult<List<ThongKeDoanhThuTheLoaiDTO>> GetDoanhThuTheoTheLoai(DateTime tuNgay, DateTime denNgay)
+        {
+            try
+            {
+                var result = _thongKeService.ThongKeDoanhThuTheoTheLoai(tuNgay, denNgay);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Lỗi hệ thống: {ex.Message}");
+            }
+        }
+
     }
 }

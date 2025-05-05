@@ -1,161 +1,140 @@
 ﻿@model DATN_MVC.Models.Modeltong
-
+@using Newtonsoft.Json
 
 @{
-	Layout = "~/Views/Shared/Admin.cshtml";
+    Layout = "~/Views/Shared/Admin.cshtml";
 }
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Thống kê Doanh thu</title>
-	<link rel="stylesheet" href="styles.css">
-	<style>
-		body {
-			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-			background-color: #f0f2f5;
-			margin: 0;
-			padding: 0;
-		}
+    <meta charset="UTF-8">
+    <title>Thống kê Doanh thu</title>
+    <style>
+        /* CSS giữ nguyên như bạn đã có trước */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
 
-		.container {
-			width: 90%;
-			max-width: 900px;
-			margin: 60px auto;
-			background-color: #ffffff;
-			border-radius: 10px;
-			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-			padding: 30px;
-		}
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 60px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
 
-		h2 {
-			text-align: center;
-			color: #2c3e50;
-			margin-bottom: 30px;
-		}
+        h2, h3 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
 
-		.form-thong-ke {
-			display: flex;
-			flex-direction: column;
-			gap: 20px;
-		}
+        .form-thong-ke {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
 
-			.form-thong-ke div {
-				display: flex;
-				flex-direction: column;
-			}
+            .form-thong-ke div {
+                display: flex;
+                flex-direction: column;
+            }
 
-			.form-thong-ke label {
-				margin-bottom: 5px;
-				font-weight: 600;
-				color: #555;
-			}
+            .form-thong-ke label {
+                margin-bottom: 5px;
+                font-weight: 600;
+                color: #555;
+            }
 
-			.form-thong-ke input,
-			.form-thong-ke select {
-				padding: 12px 15px;
-				font-size: 15px;
-				border: 1px solid #ccc;
-				border-radius: 8px;
-				transition: border-color 0.3s;
-			}
+            .form-thong-ke input,
+            .form-thong-ke select {
+                padding: 12px 15px;
+                font-size: 15px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+            }
 
-				.form-thong-ke input:focus,
-				.form-thong-ke select:focus {
-					border-color: #4CAF50;
-					outline: none;
-				}
+            .form-thong-ke button {
+                padding: 12px;
+                font-size: 16px;
+                background-color: #4CAF50;
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+            }
 
-			.form-thong-ke button {
-				padding: 12px;
-				font-size: 16px;
-				background-color: #4CAF50;
-				color: #fff;
-				border: none;
-				border-radius: 8px;
-				cursor: pointer;
-				transition: background-color 0.3s;
-			}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
 
-				.form-thong-ke button:hover {
-					background-color: #388e3c;
-				}
+        th, td {
+            padding: 14px 16px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
 
-		/* Bảng kết quả */
-		.result-table {
-			margin-top: 40px;
-			overflow-x: auto;
-		}
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
 
-		table {
-			width: 100%;
-			border-collapse: collapse;
-			background-color: #fff;
-			border-radius: 10px;
-			overflow: hidden;
-			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-		}
+        tr:hover {
+            background-color: #f1f1f1;
+        }
 
-		th, td {
-			padding: 14px 16px;
-			text-align: center;
-			border-bottom: 1px solid #e0e0e0;
-		}
-
-		th {
-			background-color: #4CAF50;
-			color: white;
-			text-transform: uppercase;
-			font-size: 14px;
-		}
-
-		td {
-			color: #333;
-			font-size: 15px;
-		}
-
-		tr:hover {
-			background-color: #f1f1f1;
-		}
-	</style>
+        canvas {
+            margin-top: 30px;
+        }
+    </style>
 </head>
 <body>
-	<form asp-controller="ThongKe" asp-action="DoanhThuTheoKhoang" method="post" class="form-thong-ke">
-    <div class="container">
-        <h2>Thống kê Doanh thu</h2>
+    <form asp-controller="ThongKe" asp-action="DoanhThuTheoKhoang" method="post" class="form-thong-ke">
+        <div class="container">
+            <h2>Thống kê Doanh thu</h2>
 
-        <div>
-            <label for="tuNgay">Từ ngày:</label>
-            <input type="date" id="tuNgay" name="tuNgay" required value="@ViewBag.TuNgay" />
-        </div>
+            <div>
+                <label for="tuNgay">Từ ngày:</label>
+                <input type="date" id="tuNgay" name="tuNgay" required value="@ViewBag.TuNgay" />
+            </div>
 
-        <div>
-            <label for="denNgay">Đến ngày:</label>
-            <input type="date" id="denNgay" name="denNgay" required value="@ViewBag.DenNgay" />
-        </div>
+            <div>
+                <label for="denNgay">Đến ngày:</label>
+                <input type="date" id="denNgay" name="denNgay" required value="@ViewBag.DenNgay" />
+            </div>
 
-        <div>
-            <label for="thongKeTheo">Thống kê theo:</label>
-				<select id="thongKeTheo" name="thongKeTheo" required>
-					<option value="">-- Chọn kiểu thống kê --</option>
-					<option value="ngay" selected="@(ViewBag.ThongKeTheo == "ngay" ? "selected" : null)">Theo ngày</option>
-					<option value="thang" selected="@(ViewBag.ThongKeTheo == "thang" ? "selected" : null)">Theo tháng</option>
+            <div>
+                <label for="thongKeTheo">Thống kê theo:</label>
+                <select id="thongKeTheo" name="thongKeTheo" required>
+                    <option value="">-- Chọn kiểu thống kê --</option>
+                    <option value="ngay" selected="@(ViewBag.ThongKeTheo == "ngay" ? "selected" : null)">Theo ngày</option>
+                    <option value="thang" selected="@(ViewBag.ThongKeTheo == "thang" ? "selected" : null)">Theo tháng</option>
+                    <option value="nam" selected="@(ViewBag.ThongKeTheo == "nam" ? "selected" : null)">Theo năm</option>
+                    <option value="sach" selected="@(ViewBag.ThongKeTheo == "sach" ? "selected" : null)">Theo sách</option>
+                    <option value="theloai" selected="@(ViewBag.ThongKeTheo == "theloai" ? "selected" : null)">Theo thể loại</option>
+                </select>
+            </div>
 
-				</select>
-        </div>
-        <div>
-            <button type="submit">Thống kê</button>
-        </div>
+            <div>
+                <button type="submit">Thống kê</button>
+            </div>
 
-        <!-- Bảng kết quả -->
-        <div class="result-table" style="margin-top: 30px;">
+            <!-- Bảng theo ngày/tháng/năm -->
             @if (Model?.ThongKeNgays != null && Model.ThongKeNgays.Any())
             {
-                <table border="1" cellpadding="10">
+                <h3>Kết quả thống kê</h3>
+                <table>
                     <thead>
                         <tr>
-                            <th>thời gian</th>
+                            <th>Thời gian</th>
                             <th>Tổng doanh thu</th>
                         </tr>
                     </thead>
@@ -163,21 +142,166 @@
                         @foreach (var item in Model.ThongKeNgays)
                         {
                             <tr>
-                                <td>@item.Ngay.ToString("yyyy-MM-dd")</td>
+                                <td>
+                                    @{
+                                        string kieuThongKe = ViewBag.ThongKeTheo as string;
+                                        if (kieuThongKe == "thang")
+                                        {
+                                            @($"Tháng {item.Ngay.Month}/{item.Ngay.Year}")
+                                        }
+                                        else if (kieuThongKe == "nam")
+                                        {
+                                            @($"Năm {item.Ngay.Year}")
+                                        }
+                                        else
+                                        {
+                                            @item.Ngay.ToString("dd/MM/yyyy")
+                                        }
+                                    }
+                                </td>
                                 <td>@item.TongDoanhThu.ToString("N0")</td>
                             </tr>
                         }
                     </tbody>
                 </table>
             }
-            else
+
+            <!-- Bảng theo sách -->
+            @if (Model?.ThongKeTheoSach != null && Model.ThongKeTheoSach.Any())
             {
-                <p>Không có dữ liệu để hiển thị.</p>
+                <h3>Thống kê theo sách</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mã sách</th>
+                            <th>Tên sách</th>
+                            <th>Số lượng bán</th>
+                            <th>Số đơn hàng</th>
+                            <th>Tổng doanh thu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ThongKeTheoSach)
+                        {
+                            <tr>
+                                <td>@item.MaSach</td>
+                                <td>@item.TenSach</td>
+                                <td>@item.TongSoLuongBan</td>
+                                <td>@item.SoDonHang</td>
+                                <td>@item.TongDoanhThu.ToString("N0")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <canvas id="chartSach" width="1000" height="400"></canvas>
+            }
+
+            <!-- Bảng theo thể loại -->
+            @if (Model?.ThongKeTheoTheLoai != null && Model.ThongKeTheoTheLoai.Any())
+            {
+                <h3>Thống kê theo thể loại</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mã thể loại</th>
+                            <th>Tên thể loại</th>
+                            <th>Số lượng bán</th>
+                            <th>Số đơn hàng</th>
+                            <th>Tổng doanh thu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ThongKeTheoTheLoai)
+                        {
+                            <tr>
+                                <td>@item.MaTheLoai</td>
+                                <td>@item.TenTheLoai</td>
+                                <td>@item.TongSoLuongBan</td>
+                                <td>@item.SoDonHang</td>
+                                <td>@item.TongDoanhThu.ToString("N0")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <canvas id="chartTheLoai" width="1000" height="400"></canvas>
             }
         </div>
-    </div>
-</form>
+    </form>
 
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        @* Biểu đồ theo sách *@
+        @if (Model?.ThongKeTheoSach != null && Model.ThongKeTheoSach.Any())
+        {
+            <text>
+                    const labelsSach = @Html.Raw(JsonConvert.SerializeObject(Model.ThongKeTheoSach.Select(x => x.TenSach)));
+                    const dataSach = @Html.Raw(JsonConvert.SerializeObject(Model.ThongKeTheoSach.Select(x => x.TongDoanhThu)));
+
+                    new Chart(document.getElementById('chartSach'), {
+                        type: 'bar',
+                        data: {
+                            labels: labelsSach,
+                            datasets: [{
+                                label: 'Doanh thu theo sách',
+                                data: dataSach,
+                                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        callback: function(value) {
+                                            return value.toLocaleString('vi-VN');
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+            </text>
+        }
+
+        @* Biểu đồ theo thể loại *@
+        @if (Model?.ThongKeTheoTheLoai != null && Model.ThongKeTheoTheLoai.Any())
+        {
+            <text>
+                    const labelsTheLoai = @Html.Raw(JsonConvert.SerializeObject(Model.ThongKeTheoTheLoai.Select(x => x.TenTheLoai)));
+                    const dataTheLoai = @Html.Raw(JsonConvert.SerializeObject(Model.ThongKeTheoTheLoai.Select(x => x.TongDoanhThu)));
+
+                    new Chart(document.getElementById('chartTheLoai'), {
+                        type: 'bar',
+                        data: {
+                            labels: labelsTheLoai,
+                            datasets: [{
+                                label: 'Doanh thu theo thể loại',
+                                data: dataTheLoai,
+                                backgroundColor: 'rgba(255, 99, 132, 0.7)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        callback: function(value) {
+                                            return value.toLocaleString('vi-VN');
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+            </text>
+        }
+    </script>
 </body>
 </html>
-s
