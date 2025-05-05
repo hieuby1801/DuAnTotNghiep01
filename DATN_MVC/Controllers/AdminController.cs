@@ -202,8 +202,11 @@ namespace DATN_MVC.Controllers
 
             return RedirectToAction();
         }
-        
-        
+        public IActionResult ThongKe()
+        {
+            return View();
+        }
+
     }
 
 }
