@@ -223,6 +223,58 @@
         }
 
     </style>
+       <style>
+
+        .menu-item {
+            position: relative;
+            padding: 12px 16px;
+            border-radius: 12px;
+            transition: background 0.3s;
+        }
+
+            .menu-item:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            .menu-item > i {
+                margin-right: 10px;
+                color: #fff;
+            }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 48px;
+            left: 0;
+            background-color: #fff;
+            min-width: 200px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            z-index: 99;
+            overflow: hidden;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+            .dropdown a {
+                display: block;
+                padding: 12px 16px;
+                color: #2c3e50;
+                text-decoration: none;
+                font-size: 14px;
+                transition: background-color 0.2s ease-in-out;
+            }
+
+                .dropdown a:hover {
+                    background-color: #f2f2f2;
+                }
+
+        .menu-item:hover .dropdown {
+            display: block;
+        }
+
+       </style>
+
+
 </head>
 
 <body>
@@ -243,8 +295,12 @@
                     <li id="donHangItem" onclick="location.href='@Url.Action("QuanLyDonhang", "DonHang")'; changeActiveMenu(this)" style="cursor: pointer;">
                         <i class="bi bi-cart-check"></i> Đơn hàng
                     </li>
-                    <li onclick="changeActiveMenu(this)">
+                    <li class="menu-item">
                         <i class="bi bi-bar-chart-line"></i> Thống kê
+                        <div class="dropdown">
+                            <a href="#">Thống kê theo ngày</a>
+                            <a href="#">Thống kê theo tuần</a>
+                        </div>
                     </li>
                     <li onclick="location.href='@Url.Action("DanhSachNhapHang", "QuanLyNhapHang")'; changeActiveMenu(this)" style="cursor:pointer;">
                         <i class="bi bi-boxes"></i> Nhập Hàng
@@ -258,7 +314,7 @@
                     <li onclick="location.href='@Url.Action("DanhSachNhapHang", "QuanLyNhapHang")'; changeActiveMenu(this)" style="cursor:pointer;">
                         <i class="bi bi-boxes"></i> Nhập Hàng
                     </li>
-                    <li onclick="location.href='@Url.Action("VanChuyen", "Admin")'; changeActiveMenu(this)" style="cursor:pointer;">
+                    <li onclick="location.href='@Url.Action("VanChuyen", "VanChuyen")'; changeActiveMenu(this)" style="cursor:pointer;">
                         <i class="bi bi-truck"></i> Vận Chuyển
                     </li>
                     <li onclick="location.href='@Url.Action("TonKho", "TonKho")'; changeActiveMenu(this)" style="cursor:pointer;">

@@ -3,6 +3,20 @@
     ViewData["Title"] = "ThongTinDonHang";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@{
+    string loc = Context.Request.Query["loc"];
+    var donHangLoc = Model.donUserDTOs;
+
+    if (loc == "DaHuy")
+    {
+        donHangLoc = donHangLoc.Where(d => d.TrangThaiDonHang == "Hủy đơn").ToList();
+    }
+    else if (loc == "DangXuLy")
+    {
+        donHangLoc = donHangLoc.Where(d => d.TrangThaiVanChuyen == "Đang xử lý").ToList();
+    }
+}
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -262,22 +276,27 @@
                 <div class="order-header">
                     <h1>Đơn hàng của tôi</h1>
                     <div class="order-status">
-                        <span class="active">Tất cả (@Model.donUserDTOs.Count())</span>
+                        <span onclick="location.href='?loc=Tatca'" style="cursor:pointer; class="active">Tất cả (@Model.donUserDTOs.Count())</span>
                         <span>Chờ thanh toán ((@Model.donUserDTOs.Count())</span>
-                        <span>Đang xử lý (0)</span>
-                        <span>Đang giao (0)</span>
-                        <span>Hoàn tất (0)</span> 
-                        <span>Bị hủy ()</span>
-                        <span>Đổi trả (0)</span>
+                        <span onclick="location.href='?loc=DangXuLy'" style="cursor:pointer;">Vận Chuyển (@Model.donUserDTOs.Count(d => d.TrangThaiVanChuyen == "Đang xử lý"))</span>
+                        <span>Đang giao ()</span>
+                        <span>Hoàn tất ()</span>
+                        <span onclick="location.href='?loc=DaHuy'" style="cursor:pointer;">Bị hủy(@Model.donUserDTOs.Count(d => d.TrangThaiDonHang == "Hủy đơn"))</span>
+                     
+                       
                     </div>
                 </div>
 
                 <div class="order-card">
-                    @foreach (var donHang in Model.donUserDTOs)
+                    @foreach (var donHang in donHangLoc)
                     {
                         <div class="order-info">
                             <div class="order-id">
                                 <a href="#">#@donHang.MaDonHang</a>
+                                @if (loc == "Đang xử lý")
+                                {
+                                    <span class="cancelled">@donHang.TrangThaiVanChuyen</span>
+                                }
                                 <span class="cancelled">@donHang.TrangThaiDonHang</span>
                             </div>
                             <div class="order-date">@donHang.NgayDatHang</div>
