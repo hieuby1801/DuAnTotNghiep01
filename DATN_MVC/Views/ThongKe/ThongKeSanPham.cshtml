@@ -1,0 +1,161 @@
+﻿@{
+    Layout = "~/Views/Shared/Admin.cshtml";
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thống kê Doanh thu</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Cấu trúc chung của trang */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding-top: 50px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* Form thống kê */
+        .form-thong-ke {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+            .form-thong-ke label {
+                font-size: 14px;
+                color: #555;
+            }
+
+            .form-thong-ke input,
+            .form-thong-ke select,
+            .form-thong-ke button {
+                padding: 10px;
+                font-size: 14px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            .form-thong-ke button {
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                cursor: pointer;
+            }
+
+                .form-thong-ke button:hover {
+                    background-color: #45a049;
+                }
+
+        /* Bảng kết quả */
+        .result-table {
+            margin-top: 30px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #fff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            text-align: center;
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        td {
+            color: #555;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Thống kê Doanh thu1</h2>
+
+        <form class="form-thong-ke" method="get" action="#">
+            <label for="TuNgay">Từ ngày:</label>
+            <input type="date" id="TuNgay" name="TuNgay" required>
+
+            <label for="DenNgay">Đến ngày:</label>
+            <input type="date" id="DenNgay" name="DenNgay" required>
+
+            <label for="KieuThongKe">Thống kê theo:</label>
+            <select id="KieuThongKe" name="KieuThongKe">
+                <option value="ngay">Theo Ngày</option>
+                <option value="thang">Theo Tháng</option>
+            </select>
+
+            <button type="submit">Thống kê</button>
+        </form>
+
+        <!-- Bảng kết quả -->
+        <div class="result-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ngày/Tháng</th>
+                        <th>Tổng doanh thu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dữ liệu sẽ được hiển thị tại đây -->
+                    <tr>
+                        <td>01/01/2025</td>
+                        <td>5,000,000 VNĐ</td>
+                    </tr>
+                    <tr>
+                        <td>02/01/2025</td>
+                        <td>4,200,000 VNĐ</td>
+                    </tr>
+                    <tr>
+                        <td>Tháng 1, 2025</td>
+                        <td>50,000,000 VNĐ</td>
+                    </tr>
+                    <tr>
+                        <td>Tháng 2, 2025</td>
+                        <td>45,000,000 VNĐ</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>
+s

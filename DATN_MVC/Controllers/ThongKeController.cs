@@ -4,7 +4,7 @@ namespace DATN_MVC.Controllers
 {
     public class ThongKeController : Controller
     {
-        public IActionResult Index()
+        public IActionResult ThongKeSanPham()
         {
             return View();
         }
