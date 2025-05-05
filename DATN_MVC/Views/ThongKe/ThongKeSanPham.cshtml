@@ -12,98 +12,112 @@
 	<title>Thống kê Doanh thu</title>
 	<link rel="stylesheet" href="styles.css">
 	<style>
-		/* Cấu trúc chung của trang */
 		body {
-			font-family: Arial, sans-serif;
-			background-color: #f4f4f9;
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			background-color: #f0f2f5;
 			margin: 0;
 			padding: 0;
 		}
 
 		.container {
-			width: 80%;
-			margin: 0 auto;
-			padding-top: 50px;
-			background-color: #fff;
-			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-			padding: 20px;
+			width: 90%;
+			max-width: 900px;
+			margin: 60px auto;
+			background-color: #ffffff;
+			border-radius: 10px;
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+			padding: 30px;
 		}
 
 		h2 {
 			text-align: center;
-			color: #333;
+			color: #2c3e50;
+			margin-bottom: 30px;
 		}
 
-		/* Form thống kê */
 		.form-thong-ke {
 			display: flex;
 			flex-direction: column;
-			gap: 15px;
-			margin-bottom: 20px;
+			gap: 20px;
 		}
 
+			.form-thong-ke div {
+				display: flex;
+				flex-direction: column;
+			}
+
 			.form-thong-ke label {
-				font-size: 14px;
+				margin-bottom: 5px;
+				font-weight: 600;
 				color: #555;
 			}
 
 			.form-thong-ke input,
-			.form-thong-ke select,
-			.form-thong-ke button {
-				padding: 10px;
-				font-size: 14px;
+			.form-thong-ke select {
+				padding: 12px 15px;
+				font-size: 15px;
 				border: 1px solid #ccc;
-				border-radius: 5px;
+				border-radius: 8px;
+				transition: border-color 0.3s;
 			}
 
+				.form-thong-ke input:focus,
+				.form-thong-ke select:focus {
+					border-color: #4CAF50;
+					outline: none;
+				}
+
 			.form-thong-ke button {
+				padding: 12px;
+				font-size: 16px;
 				background-color: #4CAF50;
-				color: white;
+				color: #fff;
 				border: none;
+				border-radius: 8px;
 				cursor: pointer;
+				transition: background-color 0.3s;
 			}
 
 				.form-thong-ke button:hover {
-					background-color: #45a049;
+					background-color: #388e3c;
 				}
 
 		/* Bảng kết quả */
 		.result-table {
-			margin-top: 30px;
+			margin-top: 40px;
 			overflow-x: auto;
 		}
 
 		table {
 			width: 100%;
 			border-collapse: collapse;
-			margin: 20px 0;
 			background-color: #fff;
-			box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+			border-radius: 10px;
+			overflow: hidden;
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 		}
 
 		th, td {
+			padding: 14px 16px;
 			text-align: center;
-			padding: 12px;
-			border: 1px solid #ddd;
+			border-bottom: 1px solid #e0e0e0;
 		}
 
 		th {
-			background-color: #f2f2f2;
-			color: #333;
+			background-color: #4CAF50;
+			color: white;
+			text-transform: uppercase;
+			font-size: 14px;
 		}
 
 		td {
-			color: #555;
-		}
-
-		tr:nth-child(even) {
-			background-color: #f9f9f9;
+			color: #333;
+			font-size: 15px;
 		}
 
 		tr:hover {
 			background-color: #f1f1f1;
 		}
-
 	</style>
 </head>
 <body>
@@ -123,11 +137,13 @@
 
         <div>
             <label for="thongKeTheo">Thống kê theo:</label>
-            <select id="thongKeTheo" name="thongKeTheo">
+				<select id="thongKeTheo" name="thongKeTheo" required>
+					<option value="">-- Chọn kiểu thống kê --</option>
+					<option value="ngay" selected="@(ViewBag.ThongKeTheo == "ngay" ? "selected" : null)">Theo ngày</option>
+					<option value="thang" selected="@(ViewBag.ThongKeTheo == "thang" ? "selected" : null)">Theo tháng</option>
 
-            </select>
+				</select>
         </div>
-
         <div>
             <button type="submit">Thống kê</button>
         </div>
