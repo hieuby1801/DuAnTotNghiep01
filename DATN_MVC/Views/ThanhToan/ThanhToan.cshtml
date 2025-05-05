@@ -304,7 +304,7 @@
 						
 					}
 					<p><strong>Tổng Số Tiền: <span id="totalPrice">@tongTien đ</span></strong></p>
-
+					<p><strong id="shippingFeetext"> ></strong> </p>
 					<input type="hidden" id="shippingFeeInput" name="Phivanchuyen" />
 
 					<button class="btn-pay" type="submit" onclick="payOrder()">Xác nhận thanh toán</button>
@@ -346,6 +346,7 @@
 			tongTien += tienShip;
 			// Cập nhật phí vận chuyển và tổng tiền trong HTML
 			document.getElementById('shippingFeeInput').value = tienShip;
+			document.getElementById('shippingFeetext').innerText = `Phí Vận Chuyển:${tienShip}`;
 			document.getElementById('totalPrice').innerText = `${tongTien} đ`;
 		}
 		async function loadDistricts() {
