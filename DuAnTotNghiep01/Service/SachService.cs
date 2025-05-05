@@ -88,7 +88,7 @@ namespace DATN_API.Service
 								TenSach = reader.GetString(reader.GetOrdinal("TenSach")),
 								HinhAnh = reader.GetString(reader.GetOrdinal("HinhAnh")),
 								GiaBan = reader.GetInt32(reader.GetOrdinal("GiaBan")),
-								TongSoLuongDaBan = reader.GetInt32(reader.GetOrdinal("TongSoLuongDaBan"))
+								TongSoLuongDaBan = reader.GetInt32(reader.GetOrdinal("SoLuongBan"))
 							};
 
 							result.Add(sach);
