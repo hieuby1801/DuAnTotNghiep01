@@ -98,6 +98,7 @@
     <table>
         <thead>
             <tr>
+                <th>Mã Vận Chuyển</th>
                 <th>Mã Đơn Hàng</th>
                 <th>Ngày Giao</th>
                 <th>Ngày Nhận</th>
@@ -108,6 +109,7 @@
             </tr>
         </thead>
         <tbody>
+        
             @if (Model.VanChuyens != null)
             {
                 foreach (var item in Model.VanChuyens)
@@ -121,18 +123,24 @@
                         _ => "status-badge status-chuanbi"
                     };
                     <tr>
+                        <td>@item.MaVanChuyen</td>
                         <td>@item.MaDonHang</td>
                         <td>@item.NgayGiaoHang?.ToString("dd/MM/yyyy")</td>
                         <td>@item.NgayNhanHang?.ToString("dd/MM/yyyy")</td>
                         <td><span class="@trangThaiClass">@item.TrangThai</span></td>
                         <td>@item.DiaChiGiao</td>
                         <td>@item.SDT</td>
+                          <form asp-action="Duyetvanchuyen" method="post">
                         <td>
-                            <button class="update-btn">✏️ Duyệt Đơn</button>
+                            <input type="hidden" name="mavanchuyen" value="@item.MaVanChuyen" />
+                            <input type="hidden" name="madonhang" value="@item.MaDonHang" />
+                            <button type="submit" class="update-btn">✏️ Duyệt Đơn</button>
                         </td>
+                        </form>
                     </tr>
                 }
             }
+        
         </tbody>
     </table>
 </div>
