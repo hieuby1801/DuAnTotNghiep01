@@ -1,5 +1,6 @@
 ﻿using DATN_API.DTOs;
 using DATN_API.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -61,7 +62,7 @@ namespace DATN_API.Service
 			return gioHangList;
 		}
 		//Thêm đơn hàng 
-		public int Themdonhang(int manguoidung)
+		public int Themdonhang(int manguoidung,int PhiVanChuyen)
 		{
 			var connectionString = _configuration.GetConnectionString("con");
 
@@ -73,6 +74,7 @@ namespace DATN_API.Service
 				{
 					command.CommandType = CommandType.StoredProcedure;
 					command.Parameters.AddWithValue("@MaNguoiDung", manguoidung);
+					command.Parameters.AddWithValue("@TongTien", PhiVanChuyen);
 
 					// Trả về mã đơn hàng mới từ stored procedure
 					return Convert.ToInt32(command.ExecuteScalar());
@@ -148,9 +150,9 @@ namespace DATN_API.Service
 
 
 
-
-        // Thanh toán giỏ hàng bằng tiền mặt
-        public VanChuyenDTOs ThemVaoVanChuyen(VanChuyenDTOs vanChuyenDTOs)
+	
+		// Thanh toán giỏ hàng bằng tiền mặt
+		public VanChuyenDTOs ThemVaoVanChuyen(VanChuyenDTOs vanChuyenDTOs)
 		{
 			var connectionString = _configuration.GetConnectionString("con");
 
@@ -189,6 +191,12 @@ namespace DATN_API.Service
 			return result > 0;  // Trả về true nếu cập nhật thành công, false nếu thất bại
 		}
 
-
+		public DonHang LaydonhangtheoidDH(int id)
+		{
+			var donhang = _context.DonHang
+				.Where(dh => dh.MaDonHang == id)
+				.FirstOrDefault(); // Trả về toàn bộ đối tượng DonHang
+			return donhang; // Trả về đối tượng DonHang
+		}
 	}
 }

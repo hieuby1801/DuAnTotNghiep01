@@ -45,7 +45,7 @@ namespace DATN_API.Controllers
 				return BadRequest("Số lượng sách và số lượng không khớp.");
 
 			// Tạo đơn hàng mới
-			var maDonHangMoi = _thanhToanService.Themdonhang(request.manguoidung);
+			var maDonHangMoi = _thanhToanService.Themdonhang(request.manguoidung,request.TongTien);
 			if (maDonHangMoi == null)
 			{
 				return BadRequest("Lỗi tạo đơn hàng mới.");
@@ -93,7 +93,7 @@ namespace DATN_API.Controllers
 				return BadRequest("Số lượng sách và số lượng không khớp.");
 
 			// Tạo đơn hàng mới (giả lập quá trình tạo đơn hàng)
-			var maDonHangMoi = _thanhToanService.Themdonhang(request.manguoidung);
+			var maDonHangMoi = _thanhToanService.Themdonhang(request.manguoidung,request.TongTien);
 			if (maDonHangMoi == null)
 			{
 				return BadRequest("Lỗi tạo đơn hàng mới.");
@@ -119,9 +119,14 @@ namespace DATN_API.Controllers
                 return BadRequest("Lỗi tạo chi tiết đơn hàng.");
             }
 
-            var totalAmount = ketQuaChiTiets.Sum(x => x.GiaTien * x.SoLuong);
+			var dohang = _thanhToanService.LaydonhangtheoidDH(maDonHangMoi);
+			if (dohang == null)
+			{
+				return BadRequest("Lỗi tạo đơn hàng mới.");
+			}
+			var totalAmount = dohang.TongTien;
 
-            var momoRequest = new MomoRequest
+			var momoRequest = new MomoRequest
             {
                 OrderId = maDonHangMoi,
                 OrderInfo = nguoidung.TenNguoiDung + " chuyển tiền " + nguoidung.SoDienThoai,
@@ -178,7 +183,7 @@ namespace DATN_API.Controllers
 				return BadRequest("Số lượng sách và số lượng không khớp.");
 
 			// Tạo đơn hàng mới (giả lập quá trình tạo đơn hàng)
-			var maDonHangMoi = _thanhToanService.Themdonhang(request.manguoidung);
+			var maDonHangMoi = _thanhToanService.Themdonhang(request.manguoidung, request.TongTien);
 			if (maDonHangMoi == null)
 			{
 				return BadRequest("Lỗi tạo đơn hàng mới.");
@@ -203,8 +208,12 @@ namespace DATN_API.Controllers
 			{
 				return BadRequest("Lỗi tạo chi tiết đơn hàng.");
 			}
-
-			var totalAmount = ketQuaChiTiets.Sum(x => x.GiaTien * x.SoLuong);
+			var dohang = _thanhToanService.LaydonhangtheoidDH(maDonHangMoi);
+			if(dohang == null)
+			{
+				return BadRequest("Lỗi tạo đơn hàng mới.");
+			}
+			var totalAmount = dohang.TongTien;
 
 			var VCBreqeuet = new MomoRequest
 			{
