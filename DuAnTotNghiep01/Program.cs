@@ -36,6 +36,7 @@ builder.Services.AddScoped<INhaCungCapService, NhaCungCapService>();
 builder.Services.AddScoped<IDonHangSeverce, DonHangService>();
 builder.Services.AddScoped<IVanChuyenService, VanChuyenService >();
 builder.Services.AddScoped<Iquankhoservice, QuanKhoservice>();
+builder.Services.AddScoped<IThongKeService, ThongKeService>();
 
 
 
