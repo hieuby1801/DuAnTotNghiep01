@@ -55,7 +55,7 @@ namespace DATN_MVC.Controllers
         }
 	
 		public async Task<IActionResult> Xacnhanthanhtoan(string Phuongthuc, List<int> soluong, List<int> masach, 
-            string SDT, string diachi, string WardName, string DistrictName, string ProvinceName)
+            string SDT, string diachi, string WardName, string DistrictName, string ProvinceName,int Phivanchuyen)
         {
             var diachifull = $"{diachi},{WardName},{DistrictName},{ProvinceName}";
             var idnd = HttpContext.Session.GetString("NguoiDungId");
@@ -76,6 +76,8 @@ namespace DATN_MVC.Controllers
                     MaSach = masach,
                     NgayNhanHang = DateTime.Now,
                     SDT = SDT,
+                    TongTien = Phivanchuyen,
+                    
                 };
                 var repom = await _httpClient.PostAsJsonAsync("ThanhToans/Themdonhangtienmat", donhangtm);
                 if (repom.IsSuccessStatusCode)
@@ -83,7 +85,7 @@ namespace DATN_MVC.Controllers
                     var response = await _httpClient.PostAsJsonAsync("GioHangs/Xoagiohang", xoagio);
                     if (repom.IsSuccessStatusCode)
                     {
-                        return RedirectToAction("ThanhCongtt");
+                        return RedirectToAction("ThanhCongtm");
                     }
                     return BadRequest("Lỗi khi xóa giỏ .");
                 }
@@ -97,8 +99,8 @@ namespace DATN_MVC.Controllers
                     manguoidung = int.Parse(idnd),
                     MaSach = masach,
                     SoLuong = soluong,
-                   
-                };
+					TongTien = Phivanchuyen,
+				};
 
                 var repom = await _httpClient.PostAsJsonAsync("ThanhToans/ThemdonhangQR", donHangData);
 
@@ -132,7 +134,7 @@ namespace DATN_MVC.Controllers
 					manguoidung = int.Parse(idnd),
 					MaSach = masach,
 					SoLuong = soluong,
-
+					TongTien = Phivanchuyen,
 				};
              
 				var repom = await _httpClient.PostAsJsonAsync("ThanhToans/ThemdonhangQRVCB", donHangData);
@@ -160,9 +162,13 @@ namespace DATN_MVC.Controllers
 					return BadRequest("Lỗi khi tạo đơn hàng QR.");
 				}
 			}
-
 		}
-        public IActionResult ThanhCongtt(Modeltong model)
+		public IActionResult ThanhCongtm()
+		{
+
+			return View();
+		}
+		public IActionResult ThanhCongtt(Modeltong model)
         {
 
             return View(model);

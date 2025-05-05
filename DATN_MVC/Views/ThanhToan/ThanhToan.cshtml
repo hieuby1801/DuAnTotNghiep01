@@ -3,7 +3,7 @@
 	ViewData["Title"] = "ThanhToan";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 
-
+	
 }
 <!DOCTYPE html>
 <html lang="vi">
@@ -277,7 +277,8 @@
 					<div class="item-summary">
 						<img src="@Url.Content(Model.ThongTins[i].HinhAnh)" alt="Hình ảnh sách" class="item-image" />
 						<div class="item-info">
-							<input type="hidden" name="masach[@i]" value="@Model.ThongTins[i].MaSach" />
+							<input type="hidden" name="masach" value="@Model.ThongTins[i].MaSach" />
+							<input type="hidden" name="soluong" value="@Model.ThongTins[i].SoLuong" />
 							<p><strong>@Model.ThongTins[i].TenSach</strong></p>
 							<p><strong>Số lượng:</strong> @Model.ThongTins[i].SoLuong</p>
 							<p><strong>Giá:</strong> @Model.ThongTins[i].GiaBan đ</p>
@@ -295,34 +296,24 @@
 			{
 				<div class="order-summary">
 					<h6>Chi tiết đơn hàng:</h6>
-					@* @foreach (var item in Model.ThongTins)
-					{
-						var thanhTien = (item.GiaBan ?? 0) * (item.SoLuong ?? 0);
-						<p style="display:none;">
-							<strong>@item.TenSach</strong> - SL: @item.SoLuong - Giá: @item.GiaBan đ →
-							<strong>Thành tiền: @thanhTien đ</strong>
-						</p>
-					} *@
-
 
 					@{
 						var tongTien = Model.ThongTins.Sum(item => (item.GiaBan ?? 0) * (item.SoLuong ?? 0));
+						// Kiểm tra xem tỉnh thành là Đà Nẵng hay không
+						
+						
 					}
+					<p><strong>Tổng Số Tiền: <span id="totalPrice">@tongTien đ</span></strong></p>
 
+					<input type="hidden" id="shippingFeeInput" name="Phivanchuyen" />
 
-					<p><strong>Tổng Số Tiền: @tongTien đ</strong></p>
+					<button class="btn-pay" type="submit" onclick="payOrder()">Xác nhận thanh toán</button>
 				</div>
-
-				<button class="btn-pay" onclick="showQR()">Xác nhận thanh toán</button>
 			}
-		</div>
 
+
+		</div>
 	</form>
-	<script>
-		function showQR() {
-			document.getElementById("qr-container").style.display = "block";
-		}
-	</script>
 	<script>
 		async function loadProvinces() {
 			const res = await fetch("https://provinces.open-api.vn/api/p/");
@@ -337,12 +328,26 @@
 				select.appendChild(opt);
 			});
 		}
-
 		function updateProvinceName() {
 			const selectedOption = document.getElementById("province").selectedOptions[0];
-			document.getElementById("provinceName").value = selectedOption.getAttribute('data-name') || "";
+			const name = selectedOption.getAttribute('data-name') || "";
+			document.getElementById("provinceName").value = name;
+			updateShippingFee(name);
+		
 		}
+		// tính tông tiền kềm tiền ship 
+		function updateShippingFee(provinceName) {
+			// Tính tổng tiền sản phẩm (ví dụ, từ Model)
+			const tienShip = (provinceName === "Thành phố Đà Nẵng") ? 15000 : 30000;
 
+			// Tính tổng tiền sản phẩm (ví dụ, từ Model)
+			let tongTien = @Model.ThongTins.Sum(item => (item.GiaBan ?? 0) * (item.SoLuong ?? 0));
+			// Cộng tiền ship vào tổng tiền
+			tongTien += tienShip;
+			// Cập nhật phí vận chuyển và tổng tiền trong HTML
+			document.getElementById('shippingFeeInput').value = tienShip;
+			document.getElementById('totalPrice').innerText = `${tongTien} đ`;
+		}
 		async function loadDistricts() {
 			const provinceCode = document.getElementById("province").value;
 			const res = await fetch(`https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`);
@@ -389,7 +394,6 @@
 		// Gọi hàm load tỉnh khi trang web load
 		loadProvinces();
 	</script>
-
 </body>
 
 </html>
