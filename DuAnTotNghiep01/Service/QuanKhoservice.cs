@@ -27,7 +27,7 @@ namespace DATN_API.Service
 					string updateVanChuyenQuery = @"
 				UPDATE VanChuyen
 				SET TrangThai = N'Đang chờ nhận hàng',
-					NgayNhanHang = GETDATE()
+					NgayGiaoHang = GETDATE()
 				WHERE MaVanChuyen = @MaVanChuyen;
 			";
 
@@ -69,7 +69,7 @@ namespace DATN_API.Service
 								{
 									MaVanChuyen = reader.GetInt32(reader.GetOrdinal("MaVanChuyen")),
 									TrangThai = reader.GetString(reader.GetOrdinal("TrangThai")),
-									NgayNhanHang = reader.GetDateTime(reader.GetOrdinal("NgayNhanHang")),
+									NgayGiaoHang = reader.GetDateTime(reader.GetOrdinal("NgayGiaoHang")),
 									// Thêm các cột khác nếu cần
 								};
 							}
