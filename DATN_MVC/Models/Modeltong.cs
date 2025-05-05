@@ -48,6 +48,7 @@ namespace DATN_MVC.Models
 		
         public List<DonHang> DonHangs { get; set; }
 		public List<VanChuyen> VanChuyens { get; set; }
+		public List<ThongKeDoanhThuNgayDTO> ThongKeNgays { get; set; }
     }
 
 }

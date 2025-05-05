@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DATN_MVC.DTOs;
+using DATN_MVC.Models;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace DATN_MVC.Controllers
@@ -11,10 +13,10 @@ namespace DATN_MVC.Controllers
             _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri("https://localhost:7189/api/");
         }
-        public async Task<IActionResult> DoanhThuTheoKhoang(
-    DateTime? tuNgay, DateTime? denNgay, string thongKeTheo = "ngay")
+        [HttpPost]
+        public async Task<IActionResult> DoanhThuTheoKhoang(DateTime? tuNgay, DateTime? denNgay, string thongKeTheo = "ngay")
         {
-            var danhSach = new List<ThongKeDoanhThuNgayDTO>();
+            var danhSach = new Modeltong();
             if (tuNgay.HasValue && denNgay.HasValue)
             {
                 string endpoint = thongKeTheo.ToLower() == "thang"
@@ -25,7 +27,7 @@ namespace DATN_MVC.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
-                    danhSach = JsonConvert.DeserializeObject<List<ThongKeDoanhThuNgayDTO>>(json)
+                    danhSach.ThongKeNgays = JsonConvert.DeserializeObject<List<ThongKeDoanhThuNgayDTO>>(json)
                                 ?? new List<ThongKeDoanhThuNgayDTO>();
                 }
             }
@@ -34,8 +36,12 @@ namespace DATN_MVC.Controllers
             ViewBag.DenNgay = denNgay?.ToString("yyyy-MM-dd");
             ViewBag.ThongKeTheo = thongKeTheo;
 
-            return View(danhSach);
+            return View("ThongKeSanPham", danhSach);
         }
 
+        public IActionResult ThongKeSanPham(Modeltong modeltong)
+        {
+            return View(modeltong);
+        }
     }
 }
