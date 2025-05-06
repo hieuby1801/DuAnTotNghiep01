@@ -113,7 +113,5 @@ namespace DATN_MVC.Controllers
                 return BadRequest(new { message = "Có lỗi xảy ra khi thêm lô hàng", details = errorMessage });
             }
         }
-
-
     }
 }

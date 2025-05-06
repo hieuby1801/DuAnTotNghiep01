@@ -26,6 +26,13 @@ namespace DATN_MVC.Controllers
             }
             return View(model);
         }
-        
+
+        [HttpGet]
+        public async Task<IActionResult> CapNhapDonHang(int maDonHang)
+        {
+            var model = new Modeltong();
+
+            return View(model);
+        }
     }
 }
