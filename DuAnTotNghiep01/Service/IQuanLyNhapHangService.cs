@@ -9,5 +9,7 @@ namespace DATN_API.Service
         public Task<bool> insertLoHang(LoHangDTO dto);
         public Task<bool> insertChiTietLoHang(ChiTietLoHangDTO dto);
         public Task<bool> insertLichSuGia(LichSuGiaDTO dto);
-	}
+        public LoHang getLoHang(int maLo);
+        public List<ChiTietLoHang> getChiTietLoHang(int maLo);
+    }
 }

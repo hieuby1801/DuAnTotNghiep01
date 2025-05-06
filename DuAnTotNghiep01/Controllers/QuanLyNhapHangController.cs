@@ -108,5 +108,26 @@ namespace DATN_API.Controllers
                 return BadRequest(new { message = "Có lỗi xảy ra trong quá trình thêm chi tiết lô hàng", errors = errorMessages });
             }
         }
-	}
+        [HttpGet("{maLo}")]
+        public IActionResult GetLoHang(int maLo)
+        {
+            var loHang = _nhapHangService.getLoHang(maLo);
+            if (loHang == null)
+            {
+                return NotFound(new { message = "Lô hàng không tồn tại" });
+            }
+            return Ok(loHang);
+        }
+        [HttpGet("{maLo}/chi-tiet")]
+        public IActionResult GetChiTietLoHang(int maLo)
+        {
+            var chiTietLoHangs = _nhapHangService.getChiTietLoHang(maLo);
+            if (chiTietLoHangs == null || !chiTietLoHangs.Any())
+            {
+                return NotFound(new { message = "Không tìm thấy chi tiết lô hàng cho mã lô này." });
+            }
+
+            return Ok(chiTietLoHangs);
+        }
+    }
 }

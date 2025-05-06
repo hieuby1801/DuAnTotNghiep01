@@ -97,7 +97,7 @@ namespace DATN_MVC.Controllers
                 if (response2.IsSuccessStatusCode)
                 {
                     // Nếu insert chi tiết lô hàng thành công
-                    return Ok(new { message = "Thêm lô hàng và chi tiết lô hàng thành công" });
+                    return RedirectToAction("DanhSachNhapHang", "QuanLyNhapHang");
                 }
                 else
                 {
@@ -112,6 +112,12 @@ namespace DATN_MVC.Controllers
                 var errorMessage = await response1.Content.ReadAsStringAsync();
                 return BadRequest(new { message = "Có lỗi xảy ra khi thêm lô hàng", details = errorMessage });
             }
+        }
+        [HttpGet]
+        public async Task<IActionResult> ChiTietLoHang(int maLo)
+        {
+            var model = new Modeltong();
+            return Ok(model);   
         }
     }
 }

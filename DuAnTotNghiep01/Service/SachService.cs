@@ -271,7 +271,6 @@ namespace DATN_API.Service
                 TrangThai = sach.TrangThai ?? "",  // Kiểm tra NULL cho TrangThai
                 NgonNgu = chiTiet.NgonNgu ?? "",  // Kiểm tra NULL cho NgonNgu
                 KichThuoc = chiTiet.KichThuoc ?? "",  // Kiểm tra NULL cho KichThuoc
-                TrongLuong = chiTiet.TrongLuong ?? 0m,    // Kiểm tra NULL cho TrongLuong
                 SoTrang = chiTiet.SoTrang ?? 0,  // Kiểm tra NULL cho SoTrang
                 HinhThuc = chiTiet.HinhThuc ?? "",  // Kiểm tra NULL cho HinhThuc
                 MoTa = chiTiet.MoTa ?? "",  // Kiểm tra NULL cho MoTa

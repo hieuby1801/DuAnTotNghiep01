@@ -107,5 +107,16 @@ namespace DATN_API.Service
 				}
 			}
 		}
-	}
+        public LoHang getLoHang(int maLo)
+        {
+            return _context.loHang.FirstOrDefault(l => l.MaLo == maLo);
+        }
+        public List<ChiTietLoHang> getChiTietLoHang(int maLo)
+        {
+            return _context.chiTietLoHangs
+                           .Where(ct => ct.MaLo == maLo)
+                           .ToList();
+        }
+
+    }
 }
