@@ -1,6 +1,8 @@
-﻿using DATN_MVC.Models;
+﻿using DATN_MVC.DTOs;
+using DATN_MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace DATN_MVC.Controllers
 {
@@ -12,7 +14,7 @@ namespace DATN_MVC.Controllers
             _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri("https://localhost:7189/api/");
         }
-        public async Task<IActionResult> VanChuyenAsync()
+        public async Task<IActionResult> VanChuyen()
         {
 
             var model = new Modeltong ();
@@ -25,5 +27,29 @@ namespace DATN_MVC.Controllers
             }
             return View(model);
         }
+        [HttpPost]
+        public async Task<IActionResult> Duyetvanchuyen(int madonhang, int mavanchuyen)
+        {
+            var request = new DuyetVanChuyenRequest
+            {
+                MaDonHang = madonhang,
+                MaVanChuyen = mavanchuyen
+            };
+
+            // Gửi yêu cầu POST đến API
+            var response = await _httpClient.PostAsJsonAsync("QuanKhos/Duyetvanchuyen1", request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Thành công
+                return RedirectToAction("VanChuyen");
+            }
+            else
+            {
+                // Thất bại
+                return RedirectToAction("VanChuyen1");
+            }
+        }
+
     }
 }

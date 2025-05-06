@@ -1,4 +1,5 @@
 ﻿
+using DATN_API.DTOs;
 using DATN_MVC.DTOs;
 
 namespace DATN_MVC.Models
@@ -33,8 +34,8 @@ namespace DATN_MVC.Models
 		public QuanLyDonUserDTOs donUserDTO { get; set; }
 		public string PayUrl { get; set; }
         public string RealQRImageBase64 { get; set; } // để chứa link ảnh QR thực sự
-
-        public LoHang LoHang { get; set; }
+		
+		public LoHang LoHang { get; set; }
         public List<LoHang> LoHangs { get; set; }
         public LoHangDTO loHangDto { get; set; }
         public ChiTietDonHang ChiTietDonHang { get; set; }
@@ -45,9 +46,15 @@ namespace DATN_MVC.Models
         public List<ChiTietLoHangDTO> chiTietLoHangDtos { get; set; }
         public LichSuGiaDTO lichSuGiaDto { get; set; }
         public List<LichSuGiaDTO> lichSuGiaDtos { get; set; }
-     
+		
         public List<DonHang> DonHangs { get; set; }
 		public List<VanChuyen> VanChuyens { get; set; }
+		public List<ThongKeDoanhThuNgayDTO> ThongKeNgays { get; set; }
+
+		public List<ThongKeDoanhThuSachDTO> ThongKeTheoSach { get; set; }
+		public List<ThongKeDoanhThuTheLoaiDTO> ThongKeTheoTheLoai { get;set; }
+        
+
     }
 
 }

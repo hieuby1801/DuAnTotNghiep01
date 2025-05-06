@@ -3,7 +3,7 @@
 	ViewData["Title"] = "ThanhToan";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 
-
+	
 }
 <!DOCTYPE html>
 <html lang="vi">
@@ -50,23 +50,18 @@
 				display: block;
 			}
 
-		.summary {
-			margin-top: 20px;
-		}
-
-			.summary span {
-				display: block;
-				margin: 5px 0;
-			}
-
-		button {
+		button, .btn-pay {
 			padding: 10px 20px;
 			font-size: 16px;
-			background-color: #c90000;
-			color: #fff;
+			color: white;
 			border: none;
 			border-radius: 6px;
 			cursor: pointer;
+			transition: background-color 0.3s ease;
+		}
+
+		button {
+			background-color: #c90000;
 		}
 
 			button:hover {
@@ -74,14 +69,118 @@
 			}
 
 		.btn-pay {
-			background-color: red;
-			color: white;
-			padding: 10px 20px;
-			font-size: 18px;
-			border: none;
-			border-radius: 5px;
-			cursor: pointer;
+			background-color: #28a745;
+			margin-top: 15px;
 		}
+
+			.btn-pay:hover {
+				background-color: #218838;
+			}
+
+		/* Summary section styles */
+		.section.summary {
+			font-family: 'Segoe UI', sans-serif;
+			background: #f9f9f9;
+			box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+			max-width: 1300px;
+			margin: auto;
+		}
+
+			.section.summary h5 {
+				font-size: 22px;
+				margin-bottom: 20px;
+				color: #333;
+				border-left: 5px solid #007bff;
+				padding-left: 10px;
+			}
+
+		.item-summary {
+			display: flex;
+			align-items: flex-start;
+			gap: 15px;
+			margin-bottom: 20px;
+			border-bottom: 1px solid #ddd;
+			padding-bottom: 15px;
+		}
+
+			.item-summary img {
+				width: 100px;
+				height: auto;
+				border-radius: 5px;
+			}
+
+			.item-summary p {
+				margin: 3px 0;
+				color: #444;
+			}
+
+		.item-info {
+			flex: 1;
+		}
+
+		.order-summary {
+			background-color: #fff;
+			border: 1px solid #ddd;
+			padding: 15px;
+			border-radius: 8px;
+			margin-top: 20px;
+		}
+
+			.order-summary h6 {
+				font-size: 18px;
+				margin-bottom: 10px;
+				color: #007bff;
+			}
+
+			.order-summary p {
+				margin: 5px 0;
+				color: #555;
+			}
+
+		/* Payment methods */
+		.payment-methods {
+			display: flex;
+			flex-direction: column;
+			gap: 15px;
+			margin-top: 15px;
+		}
+
+		.payment-option {
+			display: block;
+			border: 2px solid #ccc;
+			border-radius: 10px;
+			background-color: #f8f8f8;
+			padding: 12px;
+			cursor: pointer;
+			transition: all 0.3s;
+		}
+
+			.payment-option:hover {
+				background-color: #f0f0f0;
+				border-color: #999;
+			}
+
+			.payment-option:has(input[type="checkbox"]:checked) {
+				background-color: #e0f7fa;
+				border-color: #00acc1;
+			}
+
+		.option-content {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 10px;
+		}
+
+			.option-content img {
+				height: 24px;
+			}
+
+			.option-content input[type="checkbox"] {
+				transform: scale(1.3);
+				cursor: pointer;
+			}
+
 	</style>
 
 </head>
@@ -138,19 +237,53 @@
 				<input type="text" name="Diachi" required>
 			</label>
 
+			
+		</div>
+		<div class="section">
+			<h5>Phương Thức Thanh Toán</h5>
+
+			<div class="payment-methods">
+				<label class="payment-option">
+					<div class="option-content">
+						<span>Thanh toán khi nhận hàng (COD)</span>
+						<input type="radio" name="Phuongthuc" value="COD" />
+					</div>
+				</label>
+				<label class="payment-option">
+					<div class="option-content">
+						<img src="~/images/Logo VCB webp.webp" alt="Vietcombank" />
+						<span>Chuyển khoản Vietcombank</span>
+						<input type="radio" name="Phuongthuc" value="VCB" />
+					</div>
+				</label>
+
+				<label class="payment-option">
+					<div class="option-content">
+						<img src="~/images/logo momo.svg" alt="MoMo" />
+						<span>Thanh toán bằng MoMo</span>
+						<input type="radio" name="Phuongthuc" value="MoMo" />
+					</div>
+				</label>
+			</div>
+
+		</div>
+		<div class="section summary">
+			<h5>Tóm Tắt Đơn Hàng</h5>
+
 			@if (Model.ThongTins.Count > 0)
 			{
 				@for (int i = 0; i < Model.ThongTins.Count; i++)
 				{
-					<div>
-						<input type="hidden" name="masach[@i]" value="@Model.ThongTins[i].MaSach" />
-						<p><strong>Tên sách:</strong> @Model.ThongTins[i].TenSach</p>
-
-						<p><strong>Số lượng:</strong> @Model.ThongTins[i].SoLuong</p>
-						<input type="hidden" name="soluong[@i]" value="@Model.ThongTins[i].SoLuong" />
-
-						<p><strong>Giá:</strong> @Model.ThongTins[i].GiaBan</p>
-						<img src="@Url.Content(Model.ThongTins[i].HinhAnh)" alt="Alternate Text" style="width: 100px; height: auto;" />
+					<div class="item-summary">
+						<img src="@Url.Content(Model.ThongTins[i].HinhAnh)" alt="Hình ảnh sách" class="item-image" />
+						<div class="item-info">
+							<input type="hidden" name="masach" value="@Model.ThongTins[i].MaSach" />
+							<input type="hidden" name="soluong" value="@Model.ThongTins[i].SoLuong" />
+							<p><strong>@Model.ThongTins[i].TenSach</strong></p>
+							<p><strong>Số lượng:</strong> @Model.ThongTins[i].SoLuong</p>
+							<p><strong>Giá:</strong> @Model.ThongTins[i].GiaBan đ</p>
+							<p><strong>Thành tiền:</strong> @((Model.ThongTins[i].GiaBan ?? 0) * (Model.ThongTins[i].SoLuong ?? 0)) đ</p>
+						</div>
 					</div>
 				}
 			}
@@ -158,60 +291,31 @@
 			{
 				<p>Không có sản phẩm nào trong giỏ hàng.</p>
 			}
-		</div>
-		<div class="section">
 
-			<h5>Phương Thức Thanh Toán</h5>
+			@if (Model.ThongTins.Count > 0)
+			{
+				<div class="order-summary">
+					<h6>Chi tiết đơn hàng:</h6>
 
-			<div class="radio-group">
-				<label>
-					<input type="radio" name="Phuongthuc" value="COD" required>
-					Thanh toán khi nhận hàng (COD)
-				</label>
-				<label>
-					<input type="radio" name="Phuongthuc" value="BankTransfer">
-					Chuyển khoản ngân hàng
-				</label>
-			</div>
-		</div>
+					@{
+						var tongTien = Model.ThongTins.Sum(item => (item.GiaBan ?? 0) * (item.SoLuong ?? 0));
+						// Kiểm tra xem tỉnh thành là Đà Nẵng hay không
+						
+						
+					}
+					<p><strong>Tổng Số Tiền: <span id="totalPrice">@tongTien đ</span></strong></p>
 
-		<div class="section summary">
-			<h5>Tóm Tắt Đơn Hàng</h5>
+					<p><strong id="shippingFeetext"> ></strong> </p>
 
-			<strong>
-				Tổng Số Tiền :
+					<input type="hidden" id="shippingFeeInput" name="Phivanchuyen" />
 
-				@foreach (var item in Model.ThongTins)
-				{
-					var thanhTien = (item.GiaBan ?? 0) * (item.SoLuong ?? 0);
-					<p>@item.TenSach - SL: @item.SoLuong - Giá: @item.GiaBan đ → Thành tiền: @thanhTien đ</p>
+					<button class="btn-pay" type="submit" onclick="payOrder()">Xác nhận thanh toán</button>
+				</div>
+			}
 
-				}
 
-				@{
-					var tongTien = Model.ThongTins.Sum(item => (item.GiaBan ?? 0) * (item.SoLuong ?? 0));
-				}
-
-				<p><strong>Tổng Số Tiền : @tongTien đ</strong></p>
-
-				<p>Thành tiền: @tongTien đ</p>
-			</strong>
-
-			<br><br>
-			<button class="btn-pay" onclick="showQR()">Xác nhận thanh toán</button>
-			<div id="qr-container" style="display:none; margin-top: 20px;">
-				<h3>Quét mã QR để thanh toán bằng MB Bank</h3>
-
-				alt="QR Code MB Bank"
-				width="200" height="200" />
-			</div>
 		</div>
 	</form>
-	<script>
-		function showQR() {
-			document.getElementById("qr-container").style.display = "block";
-		}
-	</script>
 	<script>
 		async function loadProvinces() {
 			const res = await fetch("https://provinces.open-api.vn/api/p/");
@@ -226,12 +330,27 @@
 				select.appendChild(opt);
 			});
 		}
-
 		function updateProvinceName() {
 			const selectedOption = document.getElementById("province").selectedOptions[0];
-			document.getElementById("provinceName").value = selectedOption.getAttribute('data-name') || "";
+			const name = selectedOption.getAttribute('data-name') || "";
+			document.getElementById("provinceName").value = name;
+			updateShippingFee(name);
+		
 		}
+		// tính tông tiền kềm tiền ship 
+		function updateShippingFee(provinceName) {
+			// Tính tổng tiền sản phẩm (ví dụ, từ Model)
+			const tienShip = (provinceName === "Thành phố Đà Nẵng") ? 15000 : 30000;
 
+			// Tính tổng tiền sản phẩm (ví dụ, từ Model)
+			let tongTien = @Model.ThongTins.Sum(item => (item.GiaBan ?? 0) * (item.SoLuong ?? 0));
+			// Cộng tiền ship vào tổng tiền
+			tongTien += tienShip;
+			// Cập nhật phí vận chuyển và tổng tiền trong HTML
+			document.getElementById('shippingFeeInput').value = tienShip;
+			document.getElementById('shippingFeetext').innerText = `Phí Vận Chuyển:${tienShip}`;
+			document.getElementById('totalPrice').innerText = `${tongTien} đ`;
+		}
 		async function loadDistricts() {
 			const provinceCode = document.getElementById("province").value;
 			const res = await fetch(`https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`);
@@ -278,7 +397,6 @@
 		// Gọi hàm load tỉnh khi trang web load
 		loadProvinces();
 	</script>
-
 </body>
 
 </html>

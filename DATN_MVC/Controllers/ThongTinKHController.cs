@@ -1,6 +1,7 @@
 ﻿using DATN_MVC.DTOs;
 using DATN_MVC.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Security.Policy;
 
@@ -161,8 +162,11 @@ namespace DATN_MVC.Controllers
 
             return RedirectToAction("ThongTinKH");
         }
+		
 
 
 
-    }
+
+	}
 }
+         

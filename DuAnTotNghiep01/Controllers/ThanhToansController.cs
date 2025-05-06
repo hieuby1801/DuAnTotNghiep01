@@ -5,6 +5,7 @@ using DATN_API.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static System.Net.WebRequestMethods;
 
 namespace DATN_API.Controllers
 {
@@ -44,7 +45,7 @@ namespace DATN_API.Controllers
 				return BadRequest("Số lượng sách và số lượng không khớp.");
 
 			// Tạo đơn hàng mới
-			var maDonHangMoi = _thanhToanService.Themdonhang(request.manguoidung);
+			var maDonHangMoi = _thanhToanService.Themdonhang(request.manguoidung,request.TongTien);
 			if (maDonHangMoi == null)
 			{
 				return BadRequest("Lỗi tạo đơn hàng mới.");
@@ -92,7 +93,7 @@ namespace DATN_API.Controllers
 				return BadRequest("Số lượng sách và số lượng không khớp.");
 
 			// Tạo đơn hàng mới (giả lập quá trình tạo đơn hàng)
-			var maDonHangMoi = _thanhToanService.Themdonhang(request.manguoidung);
+			var maDonHangMoi = _thanhToanService.Themdonhang(request.manguoidung,request.TongTien);
 			if (maDonHangMoi == null)
 			{
 				return BadRequest("Lỗi tạo đơn hàng mới.");
@@ -118,9 +119,14 @@ namespace DATN_API.Controllers
                 return BadRequest("Lỗi tạo chi tiết đơn hàng.");
             }
 
-            var totalAmount = ketQuaChiTiets.Sum(x => x.GiaTien * x.SoLuong);
+			var dohang = _thanhToanService.LaydonhangtheoidDH(maDonHangMoi);
+			if (dohang == null)
+			{
+				return BadRequest("Lỗi tạo đơn hàng mới.");
+			}
+			var totalAmount = dohang.TongTien;
 
-            var momoRequest = new MomoRequest
+			var momoRequest = new MomoRequest
             {
                 OrderId = maDonHangMoi,
                 OrderInfo = nguoidung.TenNguoiDung + " chuyển tiền " + nguoidung.SoDienThoai,
@@ -170,6 +176,61 @@ namespace DATN_API.Controllers
 				return BadRequest("Thanh toán thất bại.");
 			}
 		}
+		[HttpPost("ThemdonhangQRVCB")]
+		public IActionResult ChuyenKhoanVCB([FromBody] DonHangQRRequest request)
+		{
+			if (request.masach.Count != request.soluong.Count)
+				return BadRequest("Số lượng sách và số lượng không khớp.");
+
+			// Tạo đơn hàng mới (giả lập quá trình tạo đơn hàng)
+			var maDonHangMoi = _thanhToanService.Themdonhang(request.manguoidung, request.TongTien);
+			if (maDonHangMoi == null)
+			{
+				return BadRequest("Lỗi tạo đơn hàng mới.");
+			}
+
+			// Tạo chi tiết đơn hàng (danh sách sách và số lượng)
+			var chiTiet = new DonHangChiTietDTOs
+			{
+				MaDonHang = maDonHangMoi,
+				MaSach = request.masach,
+				SoLuong = request.soluong
+			};
+
+
+			var nguoidung = _dangNhapService.LayTheoId(request.manguoidung);
+			if (nguoidung == null)
+			{
+				return BadRequest("Người dùng không tồn tại.");
+			}
+			var ketQuaChiTiets = _thanhToanService.ThemChiTietDonHang(chiTiet);
+			if (ketQuaChiTiets == null || !ketQuaChiTiets.Any())
+			{
+				return BadRequest("Lỗi tạo chi tiết đơn hàng.");
+			}
+			var dohang = _thanhToanService.LaydonhangtheoidDH(maDonHangMoi);
+			if(dohang == null)
+			{
+				return BadRequest("Lỗi tạo đơn hàng mới.");
+			}
+			var totalAmount = dohang.TongTien;
+
+			var VCBreqeuet = new MomoRequest
+			{
+				OrderId = maDonHangMoi,
+				OrderInfo = nguoidung.TenNguoiDung + " chuyển tiền " + nguoidung.SoDienThoai,
+				Amount = totalAmount
+			};
+
+
+			// Gọi phương thức tạo URL thanh toán từ dịch vụ MoMo
+			var payUrl = $"https://img.vietqr.io/image/VCB-1024754309-compact.png?amount={totalAmount}&addInfo={Uri.EscapeDataString( "mã đơ hàng" + VCBreqeuet.OrderId)}&accountName=Phan%20Chi%20Hoai%20Nam";
+
+
+			// Trả về URL thanh toán cho người dùng
+			return Ok(new { PayUrl = payUrl, VCBreqeuet.Amount, totalAmount });
+		}
+
 
 
 	}

@@ -12,7 +12,7 @@ namespace DATN_API.Request
     {
 		public int OrderId { get; set; }
 		public string OrderInfo { get; set; }
-		public int Amount { get; set; }
+		public int? Amount { get; set; }
 	
 	}
 }
