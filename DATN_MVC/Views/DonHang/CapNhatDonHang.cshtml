@@ -1,0 +1,269 @@
+﻿@model DATN_MVC.Models.Modeltong
+@{
+    Layout = "~/Views/Shared/Admin.cshtml";
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <title>@ViewData["Title"] - Cập nhật Đơn hàng</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f3f6fb;
+            color: #333;
+        }
+
+        .admin-container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(to bottom, #34495e, #2c3e50);
+            color: #fff;
+            padding: 25px 20px;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+            .sidebar .logo {
+                text-align: center;
+                margin-bottom: 40px;
+            }
+
+                .sidebar .logo img {
+                    width: 120px;
+                }
+
+            .sidebar ul {
+                list-style: none;
+            }
+
+            .sidebar li {
+                display: flex;
+                align-items: center;
+                padding: 12px 15px;
+                margin-bottom: 10px;
+                border-radius: 12px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+                .sidebar li i {
+                    margin-right: 12px;
+                    transition: transform 0.3s ease;
+                }
+
+                .sidebar li:hover i {
+                    transform: scale(1.1);
+                }
+
+                .sidebar li:hover,
+                .sidebar li.active {
+                    background: #1abc9c;
+                    color: #fff;
+                }
+
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+            header h1 {
+                font-size: 24px;
+            }
+
+            header input {
+                padding: 10px 20px;
+                border: 1px solid #ddd;
+                border-radius: 30px;
+                width: 260px;
+                font-size: 14px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            }
+
+        .table-section {
+            background: #fff;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.03);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+            .section-header h2 {
+                font-size: 20px;
+            }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            color: #777;
+        }
+
+        .edit-btn, .delete-btn {
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .edit-btn {
+            background-color: #2980b9;
+        }
+
+            .edit-btn:hover {
+                background-color: #2573a6;
+            }
+
+        .delete-btn {
+            background-color: #e74c3c;
+        }
+
+            .delete-btn:hover {
+                background-color: #c0392b;
+            }
+
+        .filter-btn {
+            color: #fff;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+            .filter-btn:nth-child(1) {
+                background-color: #6c757d; /* Tất cả - xám */
+            }
+
+            .filter-btn:nth-child(2) {
+                background-color: #ffc107; /* Đang chờ thanh toán - vàng */
+            }
+
+            .filter-btn:nth-child(3) {
+                background-color: #28a745; /* Đã thanh toán - xanh lá */
+            }
+
+            .filter-btn:nth-child(4) {
+                background-color: #dc3545; /* Huỷ bỏ - đỏ */
+            }
+
+            .filter-btn:hover {
+                opacity: 0.9;
+            }
+
+            .filter-btn.active {
+                outline: 5px solid #000;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            }
+
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <h2>Cập Nhật Đơn Hàng</h2>
+        <form asp-action="NhapThongTinLoHang" asp-controller="QuanLyNhapHang" method="post" enctype="multipart/form-data" class="row g-4">
+            <div class="col-md-2">
+                <label class="form-label">Mã đơn hàng</label>
+                <input asp-for="LoHang.MaLo" type="text" class="form-control" value="@Model." readonly />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Ngày nhập</label>
+                <input type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" readonly />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Nhà Cung Cấp</label>
+                <select asp-for="loHangDto.MaNhaCungCap" class="form-select" required>
+                    @foreach (var item in Model.nhaCungCaps)
+                    {
+                        <option value="@item.MaNhaCungCap">@item.TenNhaCungCap</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Tổng giá trị Lô Hàng</label>
+                <input asp-for="loHangDto.GiaTienLoHang" type="number" class="form-control" id="tongGiaTri" readonly />
+            </div>
+            <h2>Thông Tin Chi Tiết Lô Hàng</h2>
+            <div class="col-md-3">
+                <label class="form-label">Mã sách</label>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Số Lượng Nhập</label>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Giá Nhập</label>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Nhà Xuất Bản</label>
+            </div>
+            <div id="chiTietContainer">
+                <div class="row chiTietLoHang mb-3 chi-tiet-lo">
+                    <div class="col-md-3">
+                        <select class="form-select" asp-for="chiTietLoHangDtos[0].MaSach" required>
+
+                            <option value="">-- Chọn mã sách --</option>
+                            @foreach (var item in Model.Saches)
+                            {
+                                <option value="@item.MaSach">@item.MaSach</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" class="form-control so-luong" asp-for="chiTietLoHangDtos[0].SoLuongNhap" required />
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" class="form-control gia-nhap" asp-for="chiTietLoHangDtos[0].GiaNhap" required />
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control" asp-for="chiTietLoHangDtos[0].NhaXuatBan" required />
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-secondary" onclick="themDong()">Thêm dòng</button>
+            <button type="submit" class="btn btn-primary">Lưu Thông Tin Nhập Hàng</button>
+            
+        </form>
+    </div>
+</body>
+</html>
