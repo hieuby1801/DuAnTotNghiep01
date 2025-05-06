@@ -15,11 +15,14 @@ namespace DATN_API.Service
 			_Context = context;
 			_configuration = configuration;
 		}
-		public List<VanChuyen> GetVanChuyenss()
-		{
-			return _Context.VanChuyen.ToList();
-		}
-		public List<VanChuyenDTOs> Layvanchuyenshipper()
+        public List<VanChuyen> GetVanChuyenss()
+        {
+            return _Context.VanChuyen
+                .Where(x => x.TrangThai == "Đang xử lý")
+                .ToList();
+        }
+
+        public List<VanChuyenDTOs> Layvanchuyenshipper()
 		{
 			var connectionString = _configuration.GetConnectionString("con");
 			var vanChuyens = new List<VanChuyenDTOs>();
