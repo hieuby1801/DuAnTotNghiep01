@@ -118,7 +118,7 @@ namespace DATN_API.Controllers
             }
             return Ok(loHang);
         }
-        [HttpGet("{maLo}/chi-tiet")]
+        [HttpGet("chi-tiet/{maLo}")]
         public IActionResult GetChiTietLoHang(int maLo)
         {
             var chiTietLoHangs = _nhapHangService.getChiTietLoHang(maLo);

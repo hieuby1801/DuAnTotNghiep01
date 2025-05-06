@@ -53,9 +53,10 @@ namespace DATN_MVC.Models
 
 		public List<ThongKeDoanhThuSachDTO> ThongKeTheoSach { get; set; }
 		public List<ThongKeDoanhThuTheLoaiDTO> ThongKeTheoTheLoai { get;set; }
-        
+		public List<TonKho> TonKhos { get; set; } = new List<TonKho>();
 
-    }
+
+	}
 
 }
 

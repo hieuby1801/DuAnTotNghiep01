@@ -113,7 +113,7 @@ namespace DATN_API.Service
         }
         public List<ChiTietLoHang> getChiTietLoHang(int maLo)
         {
-            return _context.chiTietLoHangs
+            return _context.ChiTietLoHang
                            .Where(ct => ct.MaLo == maLo)
                            .ToList();
         }

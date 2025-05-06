@@ -1,4 +1,5 @@
 ﻿using DATN_API.DTOs;
+using DATN_API.Models;
 using DATN_API.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -35,5 +36,23 @@ namespace DATN_API.Controllers
             return NotFound("Không tìm thấy thông tin vận chuyển.1");
 
         }
+		[HttpGet("Laytonkho")]
+		public IActionResult Laytonkho()
+		{
+			
+			{
+				var result = _iquankhoservice.Laytonkho();
+
+				if (result != null)
+				{
+					return Ok(result);
+				}
+				else
+				{
+					return NotFound("Không tìm thấy thông tin tồn kho.");
+				}
+			}
+			return NotFound("Không tìm thấy thông tin tồn kho.");
+		}
 	}
 }

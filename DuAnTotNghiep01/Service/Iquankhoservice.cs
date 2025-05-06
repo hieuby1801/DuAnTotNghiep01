@@ -6,6 +6,8 @@ namespace DATN_API.Service
 	public interface Iquankhoservice
 	{
         public VanChuyen Duyetvanchuyen(DuyetVanChuyenRequest request);
+		public List<TonKho> Laytonkho();
 
-    }
+
+	}
 }
