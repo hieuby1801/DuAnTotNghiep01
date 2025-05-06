@@ -157,7 +157,14 @@
 				</button>
 			</form>
 		</div>
-		<div class="username-display">Chào shipper: @Tengnuoidung</div>
+		<div class="username-display">
+			Chào shipper: @Tengnuoidung
+			<ul class="menu-logout" style="display:inline; list-style:none; margin-left:10px;">
+				<li onclick="location.href='@Url.Action("DangXuat", "DangNhap")'; changeActiveMenu(this)" style="cursor:pointer; display:inline; color:blue; text-decoration:underline;">
+					<i class="bi bi-box-arrow-right"></i> Đăng xuất
+				</li>
+			</ul>
+		</div>
 	</div>
 
 	<!-- DASHBOARD -->

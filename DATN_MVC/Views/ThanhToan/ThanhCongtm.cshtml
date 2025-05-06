@@ -110,10 +110,14 @@
         <p>Cảm ơn bạn đã mua hàng DaViCiBook</p>
         <p>Mã đơn hàng của bạn là: <span class="order-code">#103665076</span></p>
         <p>Bạn sẽ sớm nhận được email xác nhận đơn hàng từ chúng tôi.</p>
-
         <div class="btn-group">
-            <button class="btn btn-red">TIẾP TỤC MUA SẮM</button>
-            <button class="btn btn-white">XEM CHI TIẾT ĐƠN HÀNG</button>
+            <form action="@Url.Action("Index", "TrangChu")" method="get" style="display:inline;">
+                <button type="submit" class="btn btn-red">TIẾP TỤC MUA SẮM</button>
+            </form>
+
+            <form action="@Url.Action("ChiTietDonHang", "DonHang")" method="get" style="display:inline;">
+                <button type="submit" class="btn btn-white">XEM CHI TIẾT ĐƠN HÀNG</button>
+            </form>
         </div>
        
        
