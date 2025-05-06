@@ -6,7 +6,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Chi Tiết Lô Hàng</title>
+    <title>Nhập Lô Hàng Mới</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -62,83 +62,49 @@
 </head>
 <body>
     <div class="form-container">
-        <h2>Thông Tin Lô Hàng</h2>
-        
-        <div class="col-md-2">
-            <label class="form-label">Mã lô</label>
-            <input type="text" class="form-control" value="LoHang.MaLo" readonly />
-        </div>
-        <div class="col-md-2">
-            <label class="form-label">Ngày nhập</label>
-            <input type="date" class="form-control" value="" readonly />
-        </div>
-        <div class="col-md-4">
-            <label class="form-label">Nhà Cung Cấp</label>
-            <select asp-for="loHangDto.MaNhaCungCap" class="form-select" required>
-                @foreach (var item in Model.nhaCungCaps)
-                {
-                    <option value="@item.MaNhaCungCap">@item.TenNhaCungCap</option>
-                }
-            </select>
-        </div>
-        <div class="col-md-4">
-            <label class="form-label">Tổng giá trị Lô Hàng</label>
-            <input asp-for="loHangDto.GiaTienLoHang" type="number" class="form-control" id="tongGiaTri" readonly />
-        </div>
-        <h2>Thông Tin Chi Tiết Lô Hàng</h2>
-        <div class="col-md-3">
-            <label class="form-label">Mã sách</label>
-        </div>
-        <div class="col-md-3">
-            <label class="form-label">Số Lượng Nhập</label>
-        </div>
-        <div class="col-md-3">
-            <label class="form-label">Giá Nhập</label>
-        </div>
-        <div class="col-md-3">
-            <label class="form-label">Nhà Xuất Bản</label>
-        </div>
-        <div id="chiTietContainer">
-            <div class="row chiTietLoHang mb-3 chi-tiet-lo">
-                <div class="col-md-3">
-                    <select class="form-select" asp-for="chiTietLoHangDtos[0].MaSach" required>
-
-                        <option value="">-- Chọn mã sách --</option>
-                        @foreach (var item in Model.Saches)
-                        {
-                            <option value="@item.MaSach">@item.MaSach</option>
-                        }
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <input type="number" class="form-control so-luong" asp-for="chiTietLoHangDtos[0].SoLuongNhap" required />
-                </div>
-                <div class="col-md-3">
-                    <input type="number" class="form-control gia-nhap" asp-for="chiTietLoHangDtos[0].GiaNhap" required />
-                </div>
-                <div class="col-md-3">
-                    <input class="form-control" asp-for="chiTietLoHangDtos[0].NhaXuatBan" required />
-                </div>
+        <div class="row g-4">
+            <h2>Thông Tin Lô Hàng</h2>
+            <div class="col-md-2">
+                <label class="form-label">Mã lô</label>
+                <input type="text" class="form-control" value="@Model.LoHang.MaLo" readonly />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Ngày nhập</label>
+                <input class="form-control" value="@Model.LoHang.NgayNhap" readonly />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Nhà Cung Cấp</label>
+                <input type="text" class="form-control" value="@Model.LoHang.MaNhaCungCap" readonly />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Tổng giá trị Lô Hàng</label>
+                <input type="number" class="form-control" value="@Model.LoHang.GiaTienLoHang" readonly />
             </div>
         </div>
-    </div>
-    
-    <script>
-        function tinhTongGiaTri() {
-            let tong = 0;
-            document.querySelectorAll('.chi-tiet-lo').forEach(row => {
-                const soLuong = parseInt(row.querySelector('.so-luong')?.value || 0);
-                const giaNhap = parseInt(row.querySelector('.gia-nhap')?.value || 0);
-                tong += soLuong * giaNhap;
-            });
-            document.getElementById('tongGiaTri').value = tong;
-        }
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Mã Sách</th>
+                    <th>Số Lượng</th>
+                    <th>Giá Nhập</th>
+                    <th>Nhà Xuất Bản</th>
+                    </tr>
+            </thead>
+            <tbody>
 
-        document.addEventListener('input', function (e) {
-            if (e.target.classList.contains('so-luong') || e.target.classList.contains('gia-nhap')) {
-                tinhTongGiaTri();
-            }
-        });
-    </script>
+                @foreach (var item in Model.chiTietLoHangs)
+                {
+                    <tr>
+                        <td>@item.MaSach</td>
+                        <td>@item.SoLuongNhap</td>
+                        <td>@item.GiaNhap</td>                        
+                        <td>@item.NhaXuatBan</td>                       
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
+

@@ -117,7 +117,21 @@ namespace DATN_MVC.Controllers
         public async Task<IActionResult> ChiTietLoHang(int maLo)
         {
             var model = new Modeltong();
-            return Ok(model);   
+            var response = await _httpClient.GetAsync($"QuanLyNhapHang/{maLo}"); // Đảm bảo BaseAddress đã cấu hình sẵn
+            if (response.IsSuccessStatusCode)
+            {
+                var loHang = await response.Content.ReadFromJsonAsync<LoHang>();
+                model.LoHang = loHang;
+            }
+
+            var response1 = await _httpClient.GetAsync($"QuanLyNhapHang/chi-tiet/{maLo}"); // Đảm bảo BaseAddress đã cấu hình sẵn
+            if (response1.IsSuccessStatusCode)
+            {
+                var dsCTLoHang = await response1.Content.ReadFromJsonAsync<List<ChiTietLoHang>>();
+                model.chiTietLoHangs = dsCTLoHang;
+            }
+                      
+            return View(model);
         }
     }
 }
