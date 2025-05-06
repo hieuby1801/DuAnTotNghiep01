@@ -1,4 +1,5 @@
 ﻿
+using DATN_API.DTOs;
 using DATN_MVC.DTOs;
 
 namespace DATN_MVC.Models
@@ -48,6 +49,12 @@ namespace DATN_MVC.Models
 		
         public List<DonHang> DonHangs { get; set; }
 		public List<VanChuyen> VanChuyens { get; set; }
+		public List<ThongKeDoanhThuNgayDTO> ThongKeNgays { get; set; }
+
+		public List<ThongKeDoanhThuSachDTO> ThongKeTheoSach { get; set; }
+		public List<ThongKeDoanhThuTheLoaiDTO> ThongKeTheoTheLoai { get;set; }
+        
+
     }
 
 }

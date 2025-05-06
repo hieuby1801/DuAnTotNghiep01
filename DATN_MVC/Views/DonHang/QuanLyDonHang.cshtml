@@ -200,22 +200,18 @@
 
 <body>
     <div class="admin-container">
-
         <main class="main-content">
-
             <div class="table-section">
                 <div class="section-header">
-                    <button class="filter-btn">Tất cả</button>
-                    <button class="filter-btn">Đang chờ thanh toán</button>
-                    <button class="filter-btn">Đã thanh toán</button>
-                    <button class="filter-btn">Huỷ bỏ</button>
+                    <button type="button" class="filter-btn active" data-status="all">Tất cả</button>
+                    <button type="button" class="filter-btn" data-status="Đang chờ thanh toán">Đang chờ thanh toán</button>
+                    <button type="button" class="filter-btn" data-status="Đã thanh toán">Đã thanh toán</button>
+                    <button type="button" class="filter-btn" data-status="Huỷ bỏ">Huỷ bỏ</button>
                 </div>
-
                 <div class="section-header">
                     <h2>Danh sách Đơn hàng</h2>
                     <button class="add-button">Thêm Đơn hàng</button>
                 </div>
-
                 <table>
                     <thead>
                         <tr>
@@ -237,12 +233,12 @@
                                     <td>@item.MaDonHang</td>
                                     <td>@item.MaNguoiDung</td>
                                     <td>@item.NgayDatHang</td>
-                                    <td> @item.TrangThai</td>
-                                    <td> @item.TongTien</td>
-                                    
+                                    <td>@item.TrangThai</td>
+                                    <td>@item.TongTien</td>                                    
                                     <td>
-                                       
-                                        <button class="delete-btn">Xem Chi Tiết</button>
+                                        <a asp-action="CapNhatDonHang" asp-route-maDonHang="@item.MaDonHang" class="add-btn" style="text-decoration: none;">
+                                            Cập nhật
+                                        </a>
                                     </td>
                                 </tr>
                             }
@@ -250,7 +246,7 @@
                         else
                         {
                             <tr>
-                                <td colspan="5" class="text-center text-muted">Không có sách nào được hiển thị.</td>
+                                <td colspan="6" class="text-center text-muted">Không có sách nào được hiển thị.</td>
                             </tr>
                         }
                     </tbody>
@@ -258,6 +254,34 @@
             </div>
         </main>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const filterButtons = document.querySelectorAll(".filter-btn");
+            const rows = document.querySelectorAll("tbody tr");
+
+            filterButtons.forEach(button => {
+                button.addEventListener("click", function () {
+                    // Bỏ class 'active' khỏi tất cả nút
+                    filterButtons.forEach(btn => btn.classList.remove("active"));
+                    // Thêm class 'active' vào nút được chọn
+                    this.classList.add("active");
+
+                    const filter = this.getAttribute("data-status"); // lấy trạng thái từ nút
+
+                    rows.forEach(row => {
+                        const statusCell = row.querySelector("td:nth-child(4)"); // cột trạng thái
+                        const status = statusCell?.textContent?.trim() ?? "";
+
+                        if (filter === "all" || status === filter) {
+                            row.style.display = "";
+                        } else {
+                            row.style.display = "none";
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 
     <script>
         function toggleForm() {
@@ -269,21 +293,6 @@
                 thongBao.style.display = "none";
             }
         }
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const filterButtons = document.querySelectorAll(".filter-btn");
-
-            filterButtons.forEach(button => {
-                button.addEventListener("click", function () {
-                    // Xóa class 'active' ở tất cả các nút
-                    filterButtons.forEach(btn => btn.classList.remove("active"));
-
-                    // Thêm class 'active' cho nút đang được click
-                    this.classList.add("active");
-                });
-            });
-        });
     </script>
 
 </body>
