@@ -13,8 +13,7 @@
 		public List<SanPhamDto>? SanPhams { get; set; }
     }
     public class SanPhamDto
-    {
-      
+    {      
         public string? TenSach { get; set; }
         public string? HinhAnh { get; set; }
         public int? SoLuong { get; set; }
