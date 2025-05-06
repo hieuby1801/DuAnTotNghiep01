@@ -58,7 +58,7 @@ namespace DATN_API.Service
             INNER JOIN ChiTietDonHang ctdh ON dh.MaDonHang = ctdh.MaDonHang
             LEFT JOIN VanChuyen vc ON dh.MaDonHang = vc.MaDonHang
             INNER JOIN Sach s ON ctdh.MaSach = s.MaSach
-            WHERE dh.MaNguoiDung = @MaNguoiDung";
+            WHERE dh.MaNguoiDung = @MaNguoiDung AND dh.TrangThai != N'Đã thanh toán' ";
 
                 using (SqlCommand cmd = new SqlCommand(sql, conn))
                 {
