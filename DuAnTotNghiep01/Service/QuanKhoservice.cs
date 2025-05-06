@@ -86,6 +86,10 @@ namespace DATN_API.Service
 				}
 			}
 		}
+		public List<TonKho> Laytonkho ()
+		{
+			return _context.TonKho.ToList();
+		}
 
 
 
